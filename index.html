@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
-  <meta name="theme-color" content="#f7f7f8" />
+  <meta name="theme-color" content="#f5f7fb" />
   <title>每月預算記帳本</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -14,17 +14,25 @@
   <style>
     * {
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    html {
-      scroll-behavior: smooth;
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #4f46e5;
+      --primary-light: #eef2ff;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+      --radius: 18px;
     }
 
     body {
       margin: 0;
-      background: #f5f6f8;
-      color: #202124;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -32,11 +40,14 @@
         "Noto Sans TC",
         "Microsoft JhengHei",
         sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
     button,
     input,
-    select {
+    select,
+    textarea {
       font: inherit;
     }
 
@@ -44,33 +55,223 @@
       cursor: pointer;
     }
 
-    .app {
-      width: 100%;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 20px;
+    .hidden {
+      display: none !important;
     }
 
-    /* ---------- Header ---------- */
+    .app {
+      min-height: 100vh;
+    }
 
-    .header {
+    /* =========================
+       Login
+    ========================= */
+
+    .auth-page {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top right, #e0e7ff 0, transparent 35%),
+        radial-gradient(circle at bottom left, #dbeafe 0, transparent 35%),
+        var(--bg);
     }
 
-    .brand h1 {
+    .auth-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 15px 50px rgba(15, 23, 42, 0.1);
+    }
+
+    .auth-logo {
+      font-size: 46px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .auth-title {
+      text-align: center;
       margin: 0;
       font-size: 28px;
-      letter-spacing: -0.5px;
     }
 
-    .brand p {
-      margin: 5px 0 0;
-      color: #777;
+    .auth-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin: 8px 0 28px;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #f3f4f6;
+      padding: 5px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+    }
+
+    .auth-tab {
+      border: 0;
+      background: transparent;
+      padding: 10px;
+      border-radius: 9px;
+      color: var(--muted);
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    /* =========================
+       Forms
+    ========================= */
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
       font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      border-radius: 11px;
+      padding: 12px 13px;
+      outline: none;
+      transition: 0.15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 11px 16px;
+      font-weight: 700;
+      transition: 0.15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .btn-success {
+      background: #dcfce7;
+      color: var(--success);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .btn-large {
+      padding: 14px 18px;
+      font-size: 16px;
+    }
+
+    .message {
+      margin-top: 14px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* =========================
+       Header
+    ========================= */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .month-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .month-control input {
+      width: 155px;
+      padding: 8px 10px;
     }
 
     .user-area {
@@ -80,273 +281,308 @@
     }
 
     .user-email {
+      color: var(--muted);
       font-size: 13px;
-      color: #666;
+      max-width: 190px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    /* ---------- Buttons ---------- */
+    /* =========================
+       Navigation
+    ========================= */
 
-    .btn {
+    .desktop-nav {
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .desktop-nav-inner {
+      max-width: 1180px;
+      margin: auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-btn {
       border: 0;
-      border-radius: 10px;
-      padding: 10px 15px;
-      font-weight: 600;
-      transition: 0.15s;
+      background: transparent;
+      padding: 14px 17px;
+      color: var(--muted);
+      font-weight: 700;
+      border-bottom: 3px solid transparent;
     }
 
-    .btn:active {
-      transform: scale(0.97);
+    .nav-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
     }
 
-    .btn-primary {
-      background: #222;
-      color: white;
+    .mobile-nav {
+      display: none;
     }
 
-    .btn-secondary {
-      background: #e9eaed;
-      color: #333;
+    /* =========================
+       Main
+    ========================= */
+
+    .main {
+      max-width: 1180px;
+      margin: auto;
+      padding: 24px 20px 50px;
     }
 
-    .btn-danger {
-      background: #ffe8e8;
-      color: #c62828;
+    .page {
+      display: none;
     }
 
-    .btn-small {
-      padding: 7px 10px;
-      font-size: 13px;
+    .page.active {
+      display: block;
     }
 
-    /* ---------- Cards ---------- */
+    .page-title {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      margin: 5px 0 22px;
+    }
+
+    /* =========================
+       Cards
+    ========================= */
 
     .card {
-      background: white;
-      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       padding: 20px;
-      margin-bottom: 18px;
-      box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.03),
-        0 4px 18px rgba(0, 0, 0, 0.04);
     }
 
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0 0 16px;
     }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 19px;
-    }
-
-    /* ---------- Login ---------- */
-
-    .auth-wrap {
-      max-width: 430px;
-      margin: 8vh auto;
-    }
-
-    .auth-title {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .auth-title h1 {
-      margin: 0;
-      font-size: 30px;
-    }
-
-    .auth-title p {
-      color: #777;
-      margin-top: 8px;
-    }
-
-    .field {
-      margin-bottom: 14px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    input,
-    select {
-      width: 100%;
-      border: 1px solid #dcdfe4;
-      background: #fff;
-      border-radius: 10px;
-      padding: 11px 12px;
-      outline: none;
-      color: #222;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #777;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .auth-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    /* ---------- Month ---------- */
-
-    .month-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .month-control {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .month-control input {
-      width: 160px;
-      font-weight: 600;
-    }
-
-    /* ---------- Stats ---------- */
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
+      margin-bottom: 18px;
     }
 
-    .stat {
-      padding: 17px;
-      border-radius: 14px;
-      background: #f7f7f8;
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
     }
 
     .stat-label {
       font-size: 13px;
-      color: #777;
+      color: var(--muted);
       margin-bottom: 8px;
     }
 
     .stat-value {
-      font-size: 24px;
-      font-weight: 750;
-      letter-spacing: -0.5px;
-      word-break: break-word;
+      font-size: 26px;
+      font-weight: 800;
     }
 
-    /* ---------- Budget ---------- */
+    .stat-value.small {
+      font-size: 21px;
+    }
 
-    .budget-grid {
+    .dashboard-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1.25fr 1fr;
+      gap: 18px;
+    }
+
+    /* =========================
+       Budget
+    ========================= */
+
+    .budget-list {
+      display: grid;
       gap: 14px;
     }
 
-    .budget-item {
-      border: 1px solid #e5e6e9;
-      border-radius: 14px;
-      padding: 15px;
-      min-width: 0;
-      background: #fff;
+    .budget-row {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
     }
 
-    .budget-item-header {
+    .budget-row-head {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 12px;
       margin-bottom: 9px;
     }
 
     .budget-name {
       font-weight: 700;
-      font-size: 15px;
     }
 
-    .budget-input {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .budget-input span {
-      color: #777;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-
-    .budget-input input {
-      min-width: 0;
-      text-align: right;
-      font-weight: 650;
-      font-size: 16px;
+    .budget-number {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
     }
 
     .progress {
-      height: 8px;
-      background: #eceef1;
-      border-radius: 99px;
+      height: 9px;
+      border-radius: 999px;
+      background: #eef0f4;
       overflow: hidden;
-      margin-top: 12px;
     }
 
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: #333;
       border-radius: inherit;
-      transition: width 0.25s ease;
+      background: var(--primary);
+      transition: width 0.3s;
     }
 
-    .budget-info {
+    .progress-bar.over {
+      background: var(--danger);
+    }
+
+    .budget-edit-area {
+      margin-top: 14px;
+    }
+
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .budget-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .budget-readonly {
+      background: #f9fafb;
+      border-radius: 13px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .budget-total-row {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
-      margin-top: 8px;
-      font-size: 12px;
-      color: #777;
+      padding: 8px 0;
     }
 
-    .over-budget {
-      color: #c62828;
+    .budget-total-row + .budget-total-row {
+      border-top: 1px solid var(--border);
+    }
+
+    /* =========================
+       Transaction
+    ========================= */
+
+    .transaction-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .transaction-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 5px;
+    }
+
+    .recent-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .transaction-item {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .transaction-main {
+      min-width: 0;
+    }
+
+    .transaction-title {
+      font-weight: 750;
+      margin-bottom: 5px;
+    }
+
+    .transaction-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .transaction-amount {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .transaction-amount.expense {
+      color: var(--danger);
+    }
+
+    .transaction-buttons {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .mini-btn {
+      border: 0;
+      padding: 6px 9px;
+      border-radius: 8px;
+      font-size: 12px;
       font-weight: 700;
     }
 
-    .budget-save {
-      margin-top: 16px;
-      display: flex;
-      justify-content: flex-end;
+    .mini-edit {
+      background: var(--primary-light);
+      color: var(--primary);
     }
 
-    /* ---------- Transaction form ---------- */
-
-    .transaction-form {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr 1fr 1fr 1fr auto;
-      gap: 10px;
-      align-items: end;
+    .mini-delete {
+      background: #fee2e2;
+      color: var(--danger);
     }
 
-    .transaction-form .field {
-      margin: 0;
+    .empty {
+      text-align: center;
+      padding: 35px 15px;
+      color: var(--muted);
     }
 
-    /* ---------- Search ---------- */
+    /* =========================
+       Filters
+    ========================= */
 
     .filter-grid {
       display: grid;
@@ -355,86 +591,25 @@
       margin-bottom: 15px;
     }
 
-    /* ---------- Transaction list ---------- */
-
-    .transaction-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .transaction {
-      display: grid;
-      grid-template-columns: 100px 1fr 110px 100px 90px;
-      gap: 12px;
-      align-items: center;
-      padding: 13px 14px;
-      border: 1px solid #e7e8eb;
-      border-radius: 12px;
-      background: #fff;
-    }
-
-    .transaction-date {
-      color: #777;
+    .list-summary {
+      color: var(--muted);
       font-size: 13px;
+      margin-bottom: 12px;
     }
 
-    .transaction-main {
-      min-width: 0;
-    }
-
-    .transaction-item {
-      font-weight: 650;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .transaction-note {
-      color: #888;
-      font-size: 12px;
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .transaction-category,
-    .transaction-payment {
-      font-size: 13px;
-      color: #666;
-    }
-
-    .transaction-amount {
-      text-align: right;
-      font-weight: 750;
-    }
-
-    .transaction-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 5px;
-    }
-
-    /* ---------- Empty ---------- */
-
-    .empty {
-      padding: 35px 15px;
-      text-align: center;
-      color: #888;
-    }
-
-    /* ---------- Modal ---------- */
+    /* =========================
+       Modal
+    ========================= */
 
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.45);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 1000;
     }
 
     .modal-backdrop.show {
@@ -442,37 +617,77 @@
     }
 
     .modal {
-      width: 100%;
-      max-width: 520px;
-      max-height: 90vh;
-      overflow-y: auto;
       background: white;
-      border-radius: 18px;
-      padding: 20px;
+      width: 100%;
+      max-width: 580px;
+      border-radius: 20px;
+      padding: 22px;
+      max-height: 90vh;
+      overflow: auto;
     }
 
-    .modal h3 {
-      margin: 0 0 18px;
-    }
-
-    .modal-actions {
+    .modal-head {
       display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 18px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
     }
 
-    /* ---------- Loading ---------- */
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: #f3f4f6;
+      font-size: 20px;
+    }
+
+    /* =========================
+       Toast
+    ========================= */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translate(-50%, 100px);
+      opacity: 0;
+      z-index: 200;
+      background: #111827;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: 0.25s;
+      pointer-events: none;
+      max-width: calc(100% - 30px);
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    /* =========================
+       Loading
+    ========================= */
 
     .loading {
       position: fixed;
       inset: 0;
+      z-index: 300;
       display: none;
       align-items: center;
       justify-content: center;
       background: rgba(255, 255, 255, 0.65);
-      z-index: 2000;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
     }
 
     .loading.show {
@@ -481,180 +696,153 @@
 
     .loading-box {
       background: white;
-      padding: 18px 22px;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-      font-weight: 650;
+      border-radius: 15px;
+      padding: 20px 25px;
+      box-shadow: var(--shadow);
+      font-weight: 700;
     }
 
-    /* ---------- Toast ---------- */
+    /* =========================
+       Responsive
+    ========================= */
 
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 25px;
-      transform: translate(-50%, 20px);
-      opacity: 0;
-      pointer-events: none;
-      background: #222;
-      color: white;
-      padding: 11px 16px;
-      border-radius: 10px;
-      z-index: 3000;
-      transition: 0.2s;
-      max-width: calc(100vw - 30px);
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* ---------- Mobile ---------- */
-
-    @media (max-width: 800px) {
-      .app {
-        padding: 14px;
+    @media (max-width: 850px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .header {
-        align-items: flex-start;
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding-bottom: 76px;
       }
 
-      .brand h1 {
-        font-size: 23px;
+      .topbar-inner {
+        padding: 12px 14px;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .month-control {
+        margin-left: auto;
+      }
+
+      .month-control input {
+        width: 135px;
       }
 
       .user-area {
-        flex-direction: column;
-        align-items: flex-end;
+        width: 100%;
+        justify-content: space-between;
       }
 
-      .user-email {
-        max-width: 150px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .desktop-nav {
+        display: none;
+      }
+
+      .mobile-nav {
+        position: fixed;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 80;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(15px);
+        border-top: 1px solid var(--border);
+        padding:
+          7px
+          7px
+          calc(7px + env(safe-area-inset-bottom));
+      }
+
+      .mobile-nav button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        padding: 7px 2px;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 10px;
+      }
+
+      .mobile-nav button.active {
+        color: var(--primary);
+        background: var(--primary-light);
+      }
+
+      .main {
+        padding: 18px 13px 25px;
+      }
+
+      .page-title {
+        font-size: 23px;
       }
 
       .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
       }
 
-      /*
-        V2.2 重點修正：
-        預算改為手機單欄排列。
-        不讓第 5、6 個項目被裁切。
-      */
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-value {
+        font-size: 21px;
+      }
+
+      .card {
+        padding: 15px;
+        border-radius: 15px;
+      }
+
       .budget-grid {
         grid-template-columns: 1fr;
       }
 
-      .budget-item {
-        width: 100%;
+      .transaction-form-grid {
+        grid-template-columns: 1fr;
       }
 
-      .transaction-form {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .transaction-form .full-mobile {
-        grid-column: 1 / -1;
+      .full {
+        grid-column: auto;
       }
 
       .filter-grid {
         grid-template-columns: 1fr;
       }
 
-      .transaction {
-        grid-template-columns: 1fr auto;
-        gap: 8px 12px;
-      }
-
-      .transaction-date {
-        grid-column: 1;
+      .transaction-item {
+        align-items: flex-start;
       }
 
       .transaction-amount {
-        grid-column: 2;
-        grid-row: 1 / span 2;
+        font-size: 15px;
       }
 
-      .transaction-main {
-        grid-column: 1 / -1;
-      }
-
-      .transaction-category,
-      .transaction-payment {
-        grid-column: 1;
-      }
-
+      .budget-actions,
       .transaction-actions {
-        grid-column: 2;
-        grid-row: 4;
-      }
-
-      .month-bar {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .month-control {
-        width: 100%;
-      }
-
-      .month-control input {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 15px;
-        border-radius: 14px;
-      }
-
-      .stats-grid {
-        gap: 9px;
-      }
-
-      .stat {
-        padding: 13px;
-      }
-
-      .stat-value {
-        font-size: 20px;
-      }
-
-      .budget-item {
-        padding: 14px;
-      }
-
-      .budget-input input {
-        font-size: 17px;
-        min-height: 44px;
-      }
-
-      .transaction-form {
+        display: grid;
         grid-template-columns: 1fr;
       }
 
-      .transaction-form .full-mobile {
-        grid-column: auto;
+      .budget-actions .btn,
+      .transaction-actions .btn {
+        width: 100%;
       }
 
-      .auth-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .header {
-        gap: 8px;
+      .toast {
+        bottom: 90px;
       }
     }
   </style>
@@ -662,580 +850,1383 @@
 
 <body>
 
-  <!-- ==================== 登入 ==================== -->
+  <!-- =========================
+       LOGIN / REGISTER
+  ========================== -->
 
-  <div id="authScreen" class="auth-wrap">
-    <div class="auth-title">
-      <h1>💰 每月預算記帳本</h1>
-      <p>雲端同步版 V2.2</p>
-    </div>
+  <div id="authPage" class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">💰</div>
+      <h1 class="auth-title">每月預算記帳本</h1>
+      <div class="auth-subtitle">雲端同步版 V2.3</div>
 
-    <div class="card">
-      <div class="field">
-        <label>Email</label>
-        <input
-          id="authEmail"
-          type="email"
-          placeholder="輸入 Email"
-          autocomplete="email"
-        />
-      </div>
-
-      <div class="field">
-        <label>密碼</label>
-        <input
-          id="authPassword"
-          type="password"
-          placeholder="輸入密碼"
-          autocomplete="current-password"
-        />
-      </div>
-
-      <div class="auth-actions">
-        <button class="btn btn-primary" onclick="login()">
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active" onclick="switchAuthMode('login')">
           登入
         </button>
-
-        <button class="btn btn-secondary" onclick="register()">
+        <button id="registerTab" class="auth-tab" onclick="switchAuthMode('register')">
           註冊
         </button>
       </div>
+
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input
+            id="authEmail"
+            type="email"
+            placeholder="請輸入 Email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">密碼</label>
+          <input
+            id="authPassword"
+            type="password"
+            placeholder="至少 6 個字元"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <button id="authSubmit" class="btn btn-primary btn-block btn-large">
+          登入
+        </button>
+      </form>
+
+      <div id="authMessage" class="message"></div>
     </div>
   </div>
 
-  <!-- ==================== 主畫面 ==================== -->
 
-  <div id="appScreen" class="hidden">
+  <!-- =========================
+       APP
+  ========================== -->
 
-    <div class="app">
+  <div id="app" class="app hidden">
 
-      <header class="header">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-inner">
+
         <div class="brand">
-          <h1>💰 每月預算記帳本</h1>
-          <p>雲端同步版 V2.2</p>
-        </div>
-
-        <div class="user-area">
-          <span id="userEmail" class="user-email"></span>
-          <button class="btn btn-secondary btn-small" onclick="logout()">
-            登出
-          </button>
-        </div>
-      </header>
-
-      <!-- 月份 -->
-
-      <div class="month-bar">
-        <div>
-          <strong>目前月份</strong>
+          💰 每月預算記帳本
         </div>
 
         <div class="month-control">
-          <button
-            class="btn btn-secondary btn-small"
-            onclick="previousMonth()"
-          >
-            ‹
-          </button>
-
+          <span>📅</span>
           <input
             id="monthInput"
             type="month"
             onchange="changeMonth()"
           />
+        </div>
 
-          <button
-            class="btn btn-secondary btn-small"
-            onclick="nextMonth()"
-          >
-            ›
+        <div class="user-area">
+          <span id="userEmail" class="user-email"></span>
+          <button class="btn btn-secondary" onclick="logout()">
+            登出
           </button>
         </div>
+
       </div>
+    </header>
 
-      <!-- ==================== 統計 ==================== -->
 
-      <section class="card">
-        <div class="section-title">
-          <h2>📊 本月概況</h2>
-        </div>
+    <!-- DESKTOP NAV -->
+    <nav class="desktop-nav">
+      <div class="desktop-nav-inner">
+
+        <button
+          class="nav-btn active"
+          data-page="home"
+          onclick="showPage('home')"
+        >
+          🏠 首頁
+        </button>
+
+        <button
+          class="nav-btn"
+          data-page="transaction"
+          onclick="showPage('transaction')"
+        >
+          ➕ 記帳
+        </button>
+
+        <button
+          class="nav-btn"
+          data-page="budget"
+          onclick="showPage('budget')"
+        >
+          💰 預算
+        </button>
+
+        <button
+          class="nav-btn"
+          data-page="details"
+          onclick="showPage('details')"
+        >
+          📋 明細
+        </button>
+
+      </div>
+    </nav>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- =========================
+           HOME
+      ========================== -->
+
+      <section id="page-home" class="page active">
+
+        <h1 class="page-title">🏠 本月概況</h1>
+        <p class="page-subtitle">
+          <span id="homeMonthText"></span> 的財務狀況
+        </p>
 
         <div class="stats-grid">
 
-          <div class="stat">
-            <div class="stat-label">本月收入</div>
-            <div id="statIncome" class="stat-value">$0</div>
+          <div class="stat-card">
+            <div class="stat-label">💵 本月收入</div>
+            <div id="statIncome" class="stat-value">
+              $0
+            </div>
           </div>
 
-          <div class="stat">
-            <div class="stat-label">本月總支出</div>
-            <div id="statExpense" class="stat-value">$0</div>
+          <div class="stat-card">
+            <div class="stat-label">💸 本月總支出</div>
+            <div id="statExpense" class="stat-value">
+              $0
+            </div>
           </div>
 
-          <div class="stat">
-            <div class="stat-label">信用卡支出</div>
-            <div id="statCard" class="stat-value">$0</div>
+          <div class="stat-card">
+            <div class="stat-label">💰 本月剩餘</div>
+            <div id="statRemaining" class="stat-value">
+              $0
+            </div>
           </div>
 
-          <div class="stat">
-            <div class="stat-label">本月剩餘</div>
-            <div id="statRemaining" class="stat-value">$0</div>
+          <div class="stat-card">
+            <div class="stat-label">💳 信用卡支出</div>
+            <div id="statCreditCard" class="stat-value small">
+              $0
+            </div>
           </div>
 
         </div>
+
+
+        <div class="dashboard-grid">
+
+          <!-- Budget usage -->
+          <div class="card">
+            <h2 class="card-title">
+              📊 預算使用狀況
+            </h2>
+
+            <div id="homeBudgetList" class="budget-list"></div>
+          </div>
+
+
+          <!-- Recent transactions -->
+          <div class="card">
+            <h2 class="card-title">
+              🧾 最近記帳
+            </h2>
+
+            <div id="homeRecentList" class="recent-list"></div>
+
+            <button
+              class="btn btn-secondary btn-block"
+              style="margin-top: 14px;"
+              onclick="showPage('details')"
+            >
+              查看全部明細 →
+            </button>
+          </div>
+
+        </div>
+
       </section>
 
-      <!-- ==================== 預算 ==================== -->
 
-      <section class="card">
+      <!-- =========================
+           TRANSACTION
+      ========================== -->
 
-        <div class="section-title">
-          <h2>📝 調整本月預算</h2>
-        </div>
+      <section id="page-transaction" class="page">
 
-        <div class="budget-grid">
+        <h1 class="page-title">➕ 新增記帳</h1>
+        <p class="page-subtitle">
+          記錄這個月的每一筆支出
+        </p>
 
-          <!-- 收入 -->
+        <div class="card">
 
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">💵 月收入</div>
+          <form id="transactionForm" onsubmit="addTransaction(event)">
+
+            <div class="transaction-form-grid">
+
+              <div class="form-group">
+                <label class="form-label">
+                  日期
+                </label>
+
+                <input
+                  id="txDate"
+                  type="date"
+                  required
+                />
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-label">
+                  項目
+                </label>
+
+                <input
+                  id="txItem"
+                  type="text"
+                  placeholder="例如：午餐、Netflix、加油"
+                  required
+                />
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-label">
+                  分類
+                </label>
+
+                <select id="txCategory" required>
+                  <option value="必要生活費">
+                    必要生活費
+                  </option>
+
+                  <option value="信用卡">
+                    信用卡
+                  </option>
+
+                  <option value="現金／預備金">
+                    現金／預備金
+                  </option>
+
+                  <option value="自由支出">
+                    自由支出
+                  </option>
+
+                  <option value="投資">
+                    投資
+                  </option>
+
+                  <option value="其他">
+                    其他
+                  </option>
+                </select>
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-label">
+                  支付方式
+                </label>
+
+                <select id="txPaymentMethod" required>
+                  <option value="信用卡">
+                    💳 信用卡
+                  </option>
+
+                  <option value="現金">
+                    💵 現金
+                  </option>
+                </select>
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-label">
+                  金額
+                </label>
+
+                <input
+                  id="txAmount"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                  required
+                />
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-label">
+                  備註
+                </label>
+
+                <input
+                  id="txNote"
+                  type="text"
+                  placeholder="選填"
+                />
+              </div>
+
+
+              <div class="form-group full">
+                <div class="transaction-actions">
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="resetTransactionForm()"
+                  >
+                    清除
+                  </button>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    ➕ 新增這筆記帳
+                  </button>
+
+                </div>
+              </div>
+
             </div>
 
-            <div class="budget-input">
-              <span>$</span>
+          </form>
+
+        </div>
+
+
+        <div class="card" style="margin-top:18px;">
+
+          <h2 class="card-title">
+            🧾 最近新增
+          </h2>
+
+          <div id="transactionRecentList"></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           BUDGET
+      ========================== -->
+
+      <section id="page-budget" class="page">
+
+        <h1 class="page-title">💰 本月預算</h1>
+        <p class="page-subtitle">
+          這裡只管理預算，不會新增記帳
+        </p>
+
+
+        <!-- READ ONLY -->
+        <div id="budgetReadonly" class="card">
+
+          <div class="budget-readonly">
+
+            <div class="budget-total-row">
+              <span>本月收入</span>
+              <strong id="readonlyIncome">$0</strong>
+            </div>
+
+            <div class="budget-total-row">
+              <span>預算總額</span>
+              <strong id="readonlyBudgetTotal">$0</strong>
+            </div>
+
+            <div class="budget-total-row">
+              <span>已支出</span>
+              <strong id="readonlyExpense">$0</strong>
+            </div>
+
+            <div class="budget-total-row">
+              <span>預算剩餘</span>
+              <strong id="readonlyBudgetRemaining">$0</strong>
+            </div>
+
+          </div>
+
+
+          <div id="readonlyBudgetList" class="budget-list"></div>
+
+
+          <button
+            class="btn btn-primary btn-block"
+            style="margin-top:18px;"
+            onclick="enableBudgetEdit()"
+          >
+            ✏️ 編輯本月預算
+          </button>
+
+        </div>
+
+
+        <!-- EDIT -->
+        <div id="budgetEdit" class="card hidden">
+
+          <h2 class="card-title">
+            ✏️ 調整本月預算
+          </h2>
+
+          <div class="budget-grid">
+
+            <div class="form-group">
+              <label class="form-label">
+                💵 月收入
+              </label>
+
               <input
                 id="budgetIncome"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
-          </div>
 
-          <!-- 必要生活費 -->
 
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">🏠 必要生活費</div>
-            </div>
+            <div class="form-group">
+              <label class="form-label">
+                🏠 必要生活費
+              </label>
 
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetNecessary"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressNecessary" class="progress-bar"></div>
-            </div>
 
-            <div class="budget-info">
-              <span id="actualNecessary">$0</span>
-              <span id="percentNecessary">0%</span>
-            </div>
-          </div>
+            <div class="form-group">
+              <label class="form-label">
+                💳 信用卡
+              </label>
 
-          <!-- 信用卡 -->
-
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">💳 信用卡</div>
-            </div>
-
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetCreditCard"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressCreditCard" class="progress-bar"></div>
-            </div>
 
-            <div class="budget-info">
-              <span id="actualCreditCard">$0</span>
-              <span id="percentCreditCard">0%</span>
-            </div>
-          </div>
+            <div class="form-group">
+              <label class="form-label">
+                💵 現金／預備金
+              </label>
 
-          <!-- 現金／預備金 -->
-
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">💰 現金／預備金</div>
-            </div>
-
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetCashReserve"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressCashReserve" class="progress-bar"></div>
-            </div>
 
-            <div class="budget-info">
-              <span id="actualCashReserve">$0</span>
-              <span id="percentCashReserve">0%</span>
-            </div>
-          </div>
+            <div class="form-group">
+              <label class="form-label">
+                🎮 自由支出
+              </label>
 
-          <!-- 自由支出 -->
-
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">🎮 自由支出</div>
-            </div>
-
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetFreeSpending"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressFreeSpending" class="progress-bar"></div>
-            </div>
 
-            <div class="budget-info">
-              <span id="actualFreeSpending">$0</span>
-              <span id="percentFreeSpending">0%</span>
-            </div>
-          </div>
+            <div class="form-group">
+              <label class="form-label">
+                📈 投資
+              </label>
 
-          <!-- 投資 -->
-
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">📈 投資</div>
-            </div>
-
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetInvestment"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressInvestment" class="progress-bar"></div>
-            </div>
 
-            <div class="budget-info">
-              <span id="actualInvestment">$0</span>
-              <span id="percentInvestment">0%</span>
-            </div>
-          </div>
+            <div class="form-group">
+              <label class="form-label">
+                📦 其他
+              </label>
 
-          <!-- 其他 -->
-
-          <div class="budget-item">
-            <div class="budget-item-header">
-              <div class="budget-name">📦 其他</div>
-            </div>
-
-            <div class="budget-input">
-              <span>$</span>
               <input
                 id="budgetOther"
                 type="number"
                 min="0"
                 step="1"
-                inputmode="numeric"
-                placeholder="0"
               />
             </div>
 
-            <div class="progress">
-              <div id="progressOther" class="progress-bar"></div>
-            </div>
-
-            <div class="budget-info">
-              <span id="actualOther">$0</span>
-              <span id="percentOther">0%</span>
-            </div>
           </div>
 
-        </div>
 
-        <div class="budget-save">
-          <button class="btn btn-primary" onclick="saveBudget()">
-            💾 儲存本月預算
-          </button>
+          <div class="budget-actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="cancelBudgetEdit()"
+            >
+              取消
+            </button>
+
+            <button
+              class="btn btn-primary"
+              onclick="saveBudget()"
+            >
+              💾 儲存本月預算
+            </button>
+
+          </div>
+
         </div>
 
       </section>
 
-      <!-- ==================== 新增記帳 ==================== -->
 
-      <section class="card">
+      <!-- =========================
+           DETAILS
+      ========================== -->
 
-        <div class="section-title">
-          <h2>➕ 新增記帳</h2>
-        </div>
+      <section id="page-details" class="page">
 
-        <div class="transaction-form">
+        <h1 class="page-title">📋 記帳明細</h1>
+        <p class="page-subtitle">
+          <span id="detailsMonthText"></span> 的全部記帳
+        </p>
 
-          <div class="field">
-            <label>日期</label>
-            <input id="txDate" type="date" />
-          </div>
 
-          <div class="field">
-            <label>項目</label>
+        <div class="card">
+
+          <div class="filter-grid">
+
             <input
-              id="txItem"
-              type="text"
-              placeholder="例如：午餐"
+              id="searchInput"
+              type="search"
+              placeholder="🔍 搜尋項目或備註..."
+              oninput="renderTransactions()"
             />
-          </div>
 
-          <div class="field">
-            <label>分類</label>
-            <select id="txCategory">
-              <option value="necessary">必要生活費</option>
-              <option value="credit_card">信用卡</option>
-              <option value="cash_reserve">現金／預備金</option>
-              <option value="free_spending">自由支出</option>
-              <option value="investment">投資</option>
-              <option value="other">其他</option>
-            </select>
-          </div>
 
-          <div class="field">
-            <label>付款方式</label>
-            <select id="txPayment">
+            <select
+              id="filterCategory"
+              onchange="renderTransactions()"
+            >
+              <option value="">全部分類</option>
+              <option value="必要生活費">必要生活費</option>
               <option value="信用卡">信用卡</option>
-              <option value="現金">現金</option>
+              <option value="現金／預備金">現金／預備金</option>
+              <option value="自由支出">自由支出</option>
+              <option value="投資">投資</option>
               <option value="其他">其他</option>
             </select>
+
+
+            <select
+              id="filterPayment"
+              onchange="renderTransactions()"
+            >
+              <option value="">全部支付方式</option>
+              <option value="信用卡">信用卡</option>
+              <option value="現金">現金</option>
+            </select>
+
           </div>
 
-          <div class="field">
-            <label>金額</label>
-            <input
-              id="txAmount"
-              type="number"
-              min="0"
-              step="1"
-              inputmode="numeric"
-              placeholder="$"
-            />
+
+          <div id="listSummary" class="list-summary">
+            共 0 筆
           </div>
 
-          <button
-            class="btn btn-primary"
-            onclick="addTransaction()"
-          >
-            新增
-          </button>
+
+          <div id="transactionList"></div>
 
         </div>
 
       </section>
 
-      <!-- ==================== 搜尋 ==================== -->
+    </main>
 
-      <section class="card">
 
-        <div class="section-title">
-          <h2>🔎 本月記帳</h2>
-        </div>
+    <!-- MOBILE NAV -->
 
-        <div class="filter-grid">
+    <nav class="mobile-nav">
 
-          <input
-            id="searchInput"
-            type="search"
-            placeholder="搜尋項目／備註"
-            oninput="renderTransactions()"
-          />
+      <button
+        class="active"
+        data-page="home"
+        onclick="showPage('home')"
+      >
+        🏠<br />首頁
+      </button>
 
-          <select
-            id="filterCategory"
-            onchange="renderTransactions()"
-          >
-            <option value="">全部分類</option>
-            <option value="necessary">必要生活費</option>
-            <option value="credit_card">信用卡</option>
-            <option value="cash_reserve">現金／預備金</option>
-            <option value="free_spending">自由支出</option>
-            <option value="investment">投資</option>
-            <option value="other">其他</option>
-          </select>
+      <button
+        data-page="transaction"
+        onclick="showPage('transaction')"
+      >
+        ➕<br />記帳
+      </button>
 
-          <select
-            id="filterPayment"
-            onchange="renderTransactions()"
-          >
-            <option value="">全部付款方式</option>
-            <option value="信用卡">信用卡</option>
-            <option value="現金">現金</option>
-            <option value="其他">其他</option>
-          </select>
+      <button
+        data-page="budget"
+        onclick="showPage('budget')"
+      >
+        💰<br />預算
+      </button>
 
-        </div>
+      <button
+        data-page="details"
+        onclick="showPage('details')"
+      >
+        📋<br />明細
+      </button>
 
-        <div id="transactionList" class="transaction-list"></div>
+    </nav>
 
-      </section>
-
-    </div>
   </div>
 
-  <!-- ==================== 編輯 Modal ==================== -->
+
+  <!-- =========================
+       EDIT MODAL
+  ========================== -->
 
   <div id="editModal" class="modal-backdrop">
 
     <div class="modal">
 
-      <h3>✏️ 編輯記帳</h3>
+      <div class="modal-head">
 
-      <input id="editId" type="hidden" />
+        <h2 class="modal-title">
+          ✏️ 編輯記帳
+        </h2>
 
-      <div class="field">
-        <label>日期</label>
-        <input id="editDate" type="date" />
-      </div>
-
-      <div class="field">
-        <label>項目</label>
-        <input id="editItem" type="text" />
-      </div>
-
-      <div class="field">
-        <label>分類</label>
-        <select id="editCategory">
-          <option value="necessary">必要生活費</option>
-          <option value="credit_card">信用卡</option>
-          <option value="cash_reserve">現金／預備金</option>
-          <option value="free_spending">自由支出</option>
-          <option value="investment">投資</option>
-          <option value="other">其他</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>付款方式</label>
-        <select id="editPayment">
-          <option value="信用卡">信用卡</option>
-          <option value="現金">現金</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>金額</label>
-        <input
-          id="editAmount"
-          type="number"
-          min="0"
-          step="1"
-          inputmode="numeric"
-        />
-      </div>
-
-      <div class="field">
-        <label>備註</label>
-        <input
-          id="editNote"
-          type="text"
-          placeholder="可留空"
-        />
-      </div>
-
-      <div class="modal-actions">
         <button
-          class="btn btn-secondary"
+          class="close-btn"
           onclick="closeEditModal()"
         >
-          取消
+          ×
         </button>
 
-        <button
-          class="btn btn-primary"
-          onclick="saveEditTransaction()"
-        >
-          儲存
-        </button>
       </div>
 
+
+      <form onsubmit="saveEditedTransaction(event)">
+
+        <input id="editId" type="hidden" />
+
+        <div class="form-group">
+          <label class="form-label">日期</label>
+
+          <input
+            id="editDate"
+            type="date"
+            required
+          />
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">項目</label>
+
+          <input
+            id="editItem"
+            type="text"
+            required
+          />
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">分類</label>
+
+          <select id="editCategory" required>
+            <option value="必要生活費">必要生活費</option>
+            <option value="信用卡">信用卡</option>
+            <option value="現金／預備金">現金／預備金</option>
+            <option value="自由支出">自由支出</option>
+            <option value="投資">投資</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">支付方式</label>
+
+          <select id="editPaymentMethod" required>
+            <option value="信用卡">信用卡</option>
+            <option value="現金">現金</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">金額</label>
+
+          <input
+            id="editAmount"
+            type="number"
+            min="0"
+            step="1"
+            required
+          />
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">備註</label>
+
+          <input
+            id="editNote"
+            type="text"
+          />
+        </div>
+
+
+        <div class="budget-actions">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeEditModal()"
+          >
+            取消
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            💾 儲存修改
+          </button>
+
+        </div>
+
+      </form>
+
     </div>
+
   </div>
 
-  <!-- Loading -->
 
-  <div id="loading" class="loading">
-    <div class="loading-box">
-      處理中…
-    </div>
-  </div>
-
-  <!-- Toast -->
-
+  <!-- TOAST -->
   <div id="toast" class="toast"></div>
 
 
-  <script>
-    /* ============================================================
-       Supabase 設定
-       ============================================================ */
-
-    const SUPABASE_URL =
-      "https://dxzzgcsatudrgjnbtbnl.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_m5bOwLJZRbhQls_76MoDrw_jCiF7Sbd";
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
+  <!-- LOADING -->
+  <div id="loading" class="loading">
+    <div class="loading-box">
+      ⏳ 處理中...
+    </div>
+  </div>
 
 
-    /* ============================================================
-       全域變數
-       ============================================================ */
+<script>
+/* =========================================================
+   Supabase
+========================================================= */
 
-    let currentUser = null;
-    let currentMonth = getSafeCurrentMonth();
-    let transactions = [];
-    let currentBudget = null;
+const SUPABASE_URL =
+  "https://dxzzgcsatudrgjnbtbnl.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_m5bOwLJZRbhQls_76MoDrw_jCiF7Sbd";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
-    /* ============================================================
-       預設預算
-       ============================================================ */
+/* =========================================================
+   Global State
+========================================================= */
 
-    const DEFAULT_BUDGET = {
+let currentUser = null;
+let currentMonth = getSafeCurrentMonth();
+
+let budget = {
+  income: 36000,
+  necessary: 7000,
+  credit_card: 15000,
+  cash_reserve: 5000,
+  free_spending: 10000,
+  investment: 0,
+  other: 0
+};
+
+let transactions = [];
+
+let currentPage = "home";
+let authMode = "login";
+let booting = false;
+
+
+/* =========================================================
+   Helpers
+========================================================= */
+
+function getSafeCurrentMonth() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+
+  const month =
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
+
+  return `${year}-${month}`;
+}
+
+
+function normalizeMonth(month) {
+
+  if (
+    typeof month === "string" &&
+    /^\d{4}-\d{2}$/.test(month)
+  ) {
+    return month;
+  }
+
+  return getSafeCurrentMonth();
+}
+
+
+function getNextMonth(month) {
+
+  month = normalizeMonth(month);
+
+  const [year, monthNumber] =
+    month.split("-").map(Number);
+
+  const date =
+    new Date(
+      year,
+      monthNumber,
+      1
+    );
+
+  const y =
+    date.getFullYear();
+
+  const m =
+    String(date.getMonth() + 1)
+      .padStart(2, "0");
+
+  return `${y}-${m}-01`;
+}
+
+
+function formatMoney(value) {
+
+  const number =
+    Number(value || 0);
+
+  return "$" +
+    number.toLocaleString("zh-TW");
+}
+
+
+function escapeHtml(value) {
+
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function getMonthLabel(month) {
+
+  const [year, monthNumber] =
+    normalizeMonth(month)
+      .split("-");
+
+  return `${year} 年 ${Number(monthNumber)} 月`;
+}
+
+
+function setMonthInput() {
+
+  const input =
+    document.getElementById("monthInput");
+
+  if (input) {
+    input.value =
+      normalizeMonth(currentMonth);
+  }
+
+  const label =
+    getMonthLabel(currentMonth);
+
+  const homeText =
+    document.getElementById("homeMonthText");
+
+  const detailsText =
+    document.getElementById("detailsMonthText");
+
+  if (homeText) {
+    homeText.textContent = label;
+  }
+
+  if (detailsText) {
+    detailsText.textContent = label;
+  }
+}
+
+
+function showLoading(show = true) {
+
+  const loading =
+    document.getElementById("loading");
+
+  loading.classList.toggle(
+    "show",
+    show
+  );
+}
+
+
+function toast(message) {
+
+  const element =
+    document.getElementById("toast");
+
+  element.textContent =
+    message;
+
+  element.classList.add("show");
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(() => {
+      element.classList.remove("show");
+    }, 2800);
+}
+
+
+/* =========================================================
+   Auth
+========================================================= */
+
+function switchAuthMode(mode) {
+
+  authMode = mode;
+
+  const loginTab =
+    document.getElementById("loginTab");
+
+  const registerTab =
+    document.getElementById("registerTab");
+
+  const submit =
+    document.getElementById("authSubmit");
+
+  if (mode === "login") {
+
+    loginTab.classList.add("active");
+    registerTab.classList.remove("active");
+
+    submit.textContent = "登入";
+
+  } else {
+
+    loginTab.classList.remove("active");
+    registerTab.classList.add("active");
+
+    submit.textContent = "建立帳號";
+  }
+
+  clearAuthMessage();
+}
+
+
+function showAuthMessage(
+  message,
+  type = "error"
+) {
+
+  const element =
+    document.getElementById("authMessage");
+
+  element.textContent =
+    message;
+
+  element.className =
+    `message show ${type}`;
+}
+
+
+function clearAuthMessage() {
+
+  const element =
+    document.getElementById("authMessage");
+
+  element.textContent = "";
+  element.className = "message";
+}
+
+
+async function handleAuth(event) {
+
+  event.preventDefault();
+
+  const email =
+    document
+      .getElementById("authEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("authPassword")
+      .value;
+
+  clearAuthMessage();
+
+  showLoading(true);
+
+  try {
+
+    if (authMode === "login") {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      currentUser =
+        data.user;
+
+      await startApp();
+
+    } else {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signUp({
+          email,
+          password
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.session) {
+
+        currentUser =
+          data.user;
+
+        await startApp();
+
+      } else {
+
+        showAuthMessage(
+          "註冊成功！請到 Email 完成驗證後再登入。",
+          "success"
+        );
+      }
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    showAuthMessage(
+      getAuthErrorMessage(error),
+      "error"
+    );
+
+  } finally {
+
+    showLoading(false);
+  }
+}
+
+
+function getAuthErrorMessage(error) {
+
+  const message =
+    error?.message || "";
+
+  if (
+    message
+      .toLowerCase()
+      .includes("invalid login credentials")
+  ) {
+    return "Email 或密碼錯誤，請確認帳號密碼。";
+  }
+
+  if (
+    message
+      .toLowerCase()
+      .includes("email not confirmed")
+  ) {
+    return "Email 尚未驗證，請先到信箱完成驗證。";
+  }
+
+  if (
+    message
+      .toLowerCase()
+      .includes("user already registered")
+  ) {
+    return "這個 Email 已經註冊過了，請直接登入。";
+  }
+
+  return message ||
+    "操作失敗，請稍後再試。";
+}
+
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  currentUser = null;
+  transactions = [];
+
+  document
+    .getElementById("app")
+    .classList.add("hidden");
+
+  document
+    .getElementById("authPage")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("authPassword")
+    .value = "";
+
+  toast("已登出");
+}
+
+
+/* =========================================================
+   App Start
+========================================================= */
+
+async function init() {
+
+  setMonthInput();
+
+  const {
+    data
+  } =
+    await supabaseClient.auth.getSession();
+
+  if (data?.session?.user) {
+
+    currentUser =
+      data.session.user;
+
+    await startApp();
+  }
+}
+
+
+async function startApp() {
+
+  if (!currentUser) {
+    return;
+  }
+
+  if (booting) {
+    return;
+  }
+
+  booting = true;
+
+  try {
+
+    document
+      .getElementById("authPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("app")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("userEmail")
+      .textContent =
+      currentUser.email || "";
+
+    currentMonth =
+      normalizeMonth(currentMonth);
+
+    setMonthInput();
+
+    await loadMonthData();
+
+    showPage(currentPage);
+
+  } finally {
+
+    booting = false;
+  }
+}
+
+
+/* =========================================================
+   Month
+========================================================= */
+
+async function changeMonth() {
+
+  const input =
+    document.getElementById("monthInput");
+
+  let value =
+    input?.value || "";
+
+  value =
+    normalizeMonth(value);
+
+  currentMonth =
+    value;
+
+  setMonthInput();
+
+  await loadMonthData();
+}
+
+
+async function loadMonthData() {
+
+  if (!currentUser) {
+    return;
+  }
+
+  showLoading(true);
+
+  try {
+
+    await Promise.all([
+      loadBudget(currentMonth),
+      loadTransactions(currentMonth)
+    ]);
+
+    renderAll();
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast(
+      "讀取資料時發生錯誤"
+    );
+
+  } finally {
+
+    showLoading(false);
+  }
+}
+
+
+/* =========================================================
+   Budget
+========================================================= */
+
+async function loadBudget(month) {
+
+  month =
+    normalizeMonth(month);
+
+  const monthDate =
+    `${month}-01`;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("budgets")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .eq("month", monthDate)
+      .maybeSingle();
+
+  if (error) {
+
+    console.error(
+      "Supabase loadBudget error:",
+      error
+    );
+
+    throw error;
+  }
+
+  if (data) {
+
+    budget = {
+      income:
+        Number(data.income || 0),
+
+      necessary:
+        Number(data.necessary || 0),
+
+      credit_card:
+        Number(data.credit_card || 0),
+
+      cash_reserve:
+        Number(data.cash_reserve || 0),
+
+      free_spending:
+        Number(data.free_spending || 0),
+
+      investment:
+        Number(data.investment || 0),
+
+      other:
+        Number(data.other || 0)
+    };
+
+  } else {
+
+    budget = {
       income: 36000,
       necessary: 7000,
       credit_card: 15000,
@@ -1244,1464 +2235,1537 @@
       investment: 0,
       other: 0
     };
+  }
+
+  fillBudgetInputs();
+}
 
 
-    /* ============================================================
-       工具
-       ============================================================ */
+function fillBudgetInputs() {
 
-    function money(value) {
-      return "$" + Number(value || 0).toLocaleString("zh-TW");
-    }
+  const fields = {
+    budgetIncome:
+      budget.income,
 
+    budgetNecessary:
+      budget.necessary,
 
-    function getSafeCurrentMonth() {
-      const now = new Date();
+    budgetCreditCard:
+      budget.credit_card,
 
-      const year = now.getFullYear();
+    budgetCashReserve:
+      budget.cash_reserve,
 
-      const month =
-        String(now.getMonth() + 1).padStart(2, "0");
+    budgetFreeSpending:
+      budget.free_spending,
 
-      return `${year}-${month}`;
-    }
+    budgetInvestment:
+      budget.investment,
 
+    budgetOther:
+      budget.other
+  };
 
-    function normalizeMonth(month) {
+  Object.entries(fields)
+    .forEach(([id, value]) => {
 
-      if (
-        typeof month === "string" &&
-        /^\d{4}-\d{2}$/.test(month)
-      ) {
-        return month;
+      const element =
+        document.getElementById(id);
+
+      if (element) {
+        element.value = value;
       }
-
-      return getSafeCurrentMonth();
-    }
-
-
-    function getTodayString() {
-
-      const now = new Date();
-
-      const y = now.getFullYear();
-
-      const m =
-        String(now.getMonth() + 1).padStart(2, "0");
-
-      const d =
-        String(now.getDate()).padStart(2, "0");
-
-      return `${y}-${m}-${d}`;
-    }
-
-
-    function getNextMonth(month) {
-
-      month = normalizeMonth(month);
-
-      const [year, monthNumber] =
-        month.split("-").map(Number);
-
-      const date =
-        new Date(year, monthNumber, 1);
-
-      const y =
-        date.getFullYear();
-
-      const m =
-        String(date.getMonth() + 1).padStart(2, "0");
-
-      return `${y}-${m}-01`;
-    }
-
-
-    function setMonthInput() {
-
-      const input =
-        document.getElementById("monthInput");
-
-      if (input) {
-        input.value =
-          normalizeMonth(currentMonth);
-      }
-    }
-
-
-    function showLoading(show = true) {
-
-      const el =
-        document.getElementById("loading");
-
-      if (!el) return;
-
-      el.classList.toggle("show", show);
-    }
-
-
-    function toast(message) {
-
-      const el =
-        document.getElementById("toast");
-
-      if (!el) return;
-
-      el.textContent = message;
-
-      el.classList.add("show");
-
-      clearTimeout(window.__toastTimer);
-
-      window.__toastTimer =
-        setTimeout(() => {
-          el.classList.remove("show");
-        }, 2600);
-    }
-
-
-    /* ============================================================
-       Auth
-       ============================================================ */
-
-    async function login() {
-
-      const email =
-        document.getElementById("authEmail").value.trim();
-
-      const password =
-        document.getElementById("authPassword").value;
-
-      if (!email || !password) {
-        toast("請輸入 Email 和密碼");
-        return;
-      }
-
-      showLoading(true);
-
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
-
-      showLoading(false);
-
-      if (error) {
-        console.error(error);
-        toast("登入失敗：" + error.message);
-        return;
-      }
-
-      currentUser = data.user;
-
-      await startApp();
-    }
-
-
-    async function register() {
-
-      const email =
-        document.getElementById("authEmail").value.trim();
-
-      const password =
-        document.getElementById("authPassword").value;
-
-      if (!email || !password) {
-        toast("請輸入 Email 和密碼");
-        return;
-      }
-
-      if (password.length < 6) {
-        toast("密碼至少需要 6 個字元");
-        return;
-      }
-
-      showLoading(true);
-
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-          email,
-          password
-        });
-
-      showLoading(false);
-
-      if (error) {
-        console.error(error);
-        toast("註冊失敗：" + error.message);
-        return;
-      }
-
-      if (data.session) {
-
-        currentUser = data.user;
-
-        await startApp();
-
-      } else {
-
-        toast(
-          "註冊成功！如果有收到驗證信，請先完成 Email 驗證。"
-        );
-      }
-    }
-
-
-    async function logout() {
-
-      await supabaseClient.auth.signOut();
-
-      currentUser = null;
-
-      transactions = [];
-
-      currentBudget = null;
-
-      document
-        .getElementById("appScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("authScreen")
-        .classList.remove("hidden");
-    }
-
-
-    /* ============================================================
-       App 啟動
-       ============================================================ */
-
-    async function startApp() {
-
-      if (!currentUser) return;
-
-      document
-        .getElementById("authScreen")
-        .classList.add("hidden");
-
-      document
-        .getElementById("appScreen")
-        .classList.remove("hidden");
-
-      document.getElementById("userEmail").textContent =
-        currentUser.email || "";
-
-      currentMonth =
-        getSafeCurrentMonth();
-
-      setMonthInput();
-
-      document.getElementById("txDate").value =
-        getTodayString();
-
-      await loadMonthData();
-    }
-
-
-    /* ============================================================
-       月份切換
-       ============================================================ */
-
-    function changeMonth() {
-
-      const input =
-        document.getElementById("monthInput");
-
-      let value =
-        input?.value || "";
-
-      value =
-        normalizeMonth(value);
-
-      currentMonth =
-        value;
-
-      setMonthInput();
-
-      loadMonthData();
-    }
-
-
-    function previousMonth() {
-
-      const [year, month] =
-        normalizeMonth(currentMonth)
-          .split("-")
-          .map(Number);
-
-      const date =
-        new Date(year, month - 2, 1);
-
-      currentMonth =
-        `${date.getFullYear()}-${String(
-          date.getMonth() + 1
-        ).padStart(2, "0")}`;
-
-      setMonthInput();
-
-      loadMonthData();
-    }
-
-
-    function nextMonth() {
-
-      const [year, month] =
-        normalizeMonth(currentMonth)
-          .split("-")
-          .map(Number);
-
-      const date =
-        new Date(year, month, 1);
-
-      currentMonth =
-        `${date.getFullYear()}-${String(
-          date.getMonth() + 1
-        ).padStart(2, "0")}`;
-
-      setMonthInput();
-
-      loadMonthData();
-    }
-
-
-    /* ============================================================
-       載入月份資料
-       ============================================================ */
-
-    async function loadMonthData() {
-
-      if (!currentUser) return;
-
-      showLoading(true);
-
-      try {
-
-        await loadBudget(currentMonth);
-
-        await loadTransactions(currentMonth);
-
-        renderAll();
-
-      } catch (error) {
-
-        console.error(error);
-
-        toast(
-          "讀取資料失敗：" +
-          (error.message || error)
-        );
-
-      } finally {
-
-        showLoading(false);
-      }
-    }
-
-
-    /* ============================================================
-       Budget
-       ============================================================ */
-
-    async function loadBudget(month) {
-
-      month =
-        normalizeMonth(month);
-
-      const monthDate =
-        `${month}-01`;
-
-      const { data, error } =
-        await supabaseClient
-          .from("budgets")
-          .select("*")
-          .eq("user_id", currentUser.id)
-          .eq("month", monthDate)
-          .maybeSingle();
-
-      if (error) {
-
-        console.error(
-          "Supabase loadBudget error:",
-          error
-        );
-
-        toast(
-          "讀取預算失敗：" +
-          error.message
-        );
-
-        currentBudget = {
-          ...DEFAULT_BUDGET
-        };
-
-        fillBudgetInputs();
-
-        return;
-      }
-
-      if (data) {
-
-        currentBudget = {
-          income: Number(data.income || 0),
-          necessary: Number(data.necessary || 0),
-          credit_card: Number(data.credit_card || 0),
-          cash_reserve: Number(data.cash_reserve || 0),
-          free_spending: Number(data.free_spending || 0),
-          investment: Number(data.investment || 0),
-          other: Number(data.other || 0)
-        };
-
-      } else {
-
-        currentBudget = {
-          ...DEFAULT_BUDGET
-        };
-      }
-
-      fillBudgetInputs();
-    }
-
-
-    function fillBudgetInputs() {
-
-      if (!currentBudget) return;
-
-      document.getElementById("budgetIncome").value =
-        currentBudget.income;
-
-      document.getElementById("budgetNecessary").value =
-        currentBudget.necessary;
-
-      document.getElementById("budgetCreditCard").value =
-        currentBudget.credit_card;
-
-      document.getElementById("budgetCashReserve").value =
-        currentBudget.cash_reserve;
-
-      document.getElementById("budgetFreeSpending").value =
-        currentBudget.free_spending;
-
-      document.getElementById("budgetInvestment").value =
-        currentBudget.investment;
-
-      /*
-        V2.2 修正：
-        明確載入 other 欄位。
-        手機版也可以正常輸入。
-      */
-      document.getElementById("budgetOther").value =
-        currentBudget.other;
-    }
-
-
-    async function saveBudget() {
-
-      if (!currentUser) return;
-
-      const budget = {
-
-        income:
-          Number(
-            document.getElementById("budgetIncome").value
-          ) || 0,
-
-        necessary:
-          Number(
-            document.getElementById("budgetNecessary").value
-          ) || 0,
-
-        credit_card:
-          Number(
-            document.getElementById("budgetCreditCard").value
-          ) || 0,
-
-        cash_reserve:
-          Number(
-            document.getElementById("budgetCashReserve").value
-          ) || 0,
-
-        free_spending:
-          Number(
-            document.getElementById("budgetFreeSpending").value
-          ) || 0,
-
-        investment:
-          Number(
-            document.getElementById("budgetInvestment").value
-          ) || 0,
-
-        other:
-          Number(
-            document.getElementById("budgetOther").value
-          ) || 0
-      };
-
-
-      const payload = {
-
-        user_id: currentUser.id,
-
-        month: `${currentMonth}-01`,
-
-        income: budget.income,
-
-        necessary: budget.necessary,
-
-        credit_card: budget.credit_card,
-
-        cash_reserve: budget.cash_reserve,
-
-        free_spending: budget.free_spending,
-
-        investment: budget.investment,
-
-        other: budget.other
-      };
-
-
-      showLoading(true);
-
-      const { data, error } =
-        await supabaseClient
-          .from("budgets")
-          .upsert(
-            payload,
-            {
-              onConflict:
-                "user_id,month"
-            }
-          )
-          .select()
-          .single();
-
-      showLoading(false);
-
-      if (error) {
-
-        console.error(error);
-
-        toast(
-          "儲存預算失敗：" +
-          error.message
-        );
-
-        return;
-      }
-
-      currentBudget = budget;
-
-      renderAll();
-
-      toast("本月預算已儲存 ☁️");
-    }
-
-
-    /* ============================================================
-       Transactions
-       ============================================================ */
-
-    async function loadTransactions(month) {
-
-      if (!currentUser) {
-
-        transactions = [];
-
-        return;
-      }
-
-      month =
-        normalizeMonth(month);
-
-      const start =
-        `${month}-01`;
-
-      const end =
-        getNextMonth(month);
-
-
-      if (
-        !/^\d{4}-\d{2}-\d{2}$/.test(start) ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(end)
-      ) {
-
-        console.error(
-          "Invalid date range:",
+    });
+}
+
+
+async function saveBudget() {
+
+  if (!currentUser) {
+    return;
+  }
+
+  const newBudget = {
+
+    income:
+      Number(
+        document
+          .getElementById("budgetIncome")
+          .value || 0
+      ),
+
+    necessary:
+      Number(
+        document
+          .getElementById("budgetNecessary")
+          .value || 0
+      ),
+
+    credit_card:
+      Number(
+        document
+          .getElementById("budgetCreditCard")
+          .value || 0
+      ),
+
+    cash_reserve:
+      Number(
+        document
+          .getElementById("budgetCashReserve")
+          .value || 0
+      ),
+
+    free_spending:
+      Number(
+        document
+          .getElementById("budgetFreeSpending")
+          .value || 0
+      ),
+
+    investment:
+      Number(
+        document
+          .getElementById("budgetInvestment")
+          .value || 0
+      ),
+
+    other:
+      Number(
+        document
+          .getElementById("budgetOther")
+          .value || 0
+      )
+  };
+
+  showLoading(true);
+
+  try {
+
+    const row = {
+      user_id:
+        currentUser.id,
+
+      month:
+        `${currentMonth}-01`,
+
+      ...newBudget
+    };
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("budgets")
+        .upsert(
+          row,
           {
-            month,
-            start,
-            end
+            onConflict:
+              "user_id,month"
           }
         );
 
-        toast(
-          "月份格式錯誤，已自動修正。"
-        );
-
-        month =
-          getSafeCurrentMonth();
-
-        currentMonth =
-          month;
-
-        setMonthInput();
-
-        await loadTransactions(month);
-
-        return;
-      }
-
-
-      const { data, error } =
-        await supabaseClient
-          .from("transactions")
-          .select("*")
-          .eq("user_id", currentUser.id)
-          .gte("date", start)
-          .lt("date", end)
-          .order("date", {
-            ascending: false
-          })
-          .order("created_at", {
-            ascending: false
-          });
-
-
-      if (error) {
-
-        console.error(
-          "Supabase loadTransactions error:",
-          error
-        );
-
-        toast(
-          "讀取記帳失敗：" +
-          error.message
-        );
-
-        transactions = [];
-
-        return;
-      }
-
-      transactions =
-        data || [];
+    if (error) {
+      throw error;
     }
 
+    budget =
+      newBudget;
 
-    async function addTransaction() {
+    cancelBudgetEdit();
 
-      if (!currentUser) return;
+    renderAll();
 
-      const date =
-        document.getElementById("txDate").value;
+    toast(
+      "✅ 本月預算已儲存"
+    );
 
-      const item =
-        document.getElementById("txItem").value.trim();
+  } catch (error) {
 
-      const category =
-        document.getElementById("txCategory").value;
+    console.error(error);
 
-      const payment =
-        document.getElementById("txPayment").value;
+    toast(
+      "儲存預算失敗：" +
+      error.message
+    );
 
-      const amount =
-        Number(
-          document.getElementById("txAmount").value
-        ) || 0;
+  } finally {
+
+    showLoading(false);
+  }
+}
 
 
-      if (!date) {
+function enableBudgetEdit() {
 
-        toast("請選擇日期");
+  fillBudgetInputs();
 
-        return;
+  document
+    .getElementById("budgetReadonly")
+    .classList.add("hidden");
+
+  document
+    .getElementById("budgetEdit")
+    .classList.remove("hidden");
+}
+
+
+function cancelBudgetEdit() {
+
+  fillBudgetInputs();
+
+  document
+    .getElementById("budgetEdit")
+    .classList.add("hidden");
+
+  document
+    .getElementById("budgetReadonly")
+    .classList.remove("hidden");
+}
+
+
+/* =========================================================
+   Transactions
+========================================================= */
+
+async function loadTransactions(month) {
+
+  if (!currentUser) {
+
+    transactions = [];
+
+    return;
+  }
+
+  month =
+    normalizeMonth(month);
+
+  const start =
+    `${month}-01`;
+
+  const end =
+    getNextMonth(month);
+
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(start) ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(end)
+  ) {
+
+    console.error(
+      "Invalid date range:",
+      {
+        month,
+        start,
+        end
       }
+    );
 
-      if (!item) {
+    toast(
+      "月份格式錯誤，已自動修正。"
+    );
 
-        toast("請輸入項目");
+    currentMonth =
+      getSafeCurrentMonth();
 
-        return;
-      }
+    setMonthInput();
 
-      if (amount <= 0) {
+    return loadTransactions(
+      currentMonth
+    );
+  }
 
-        toast("請輸入正確金額");
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("transactions")
+      .select("*")
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .gte(
+        "date",
+        start
+      )
+      .lt(
+        "date",
+        end
+      )
+      .order(
+        "date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
-        return;
-      }
+  if (error) {
 
+    console.error(
+      "Supabase loadTransactions error:",
+      error
+    );
 
-      const payload = {
+    throw error;
+  }
 
-        user_id:
-          currentUser.id,
-
-        date,
-
-        item,
-
-        category,
-
-        payment_method:
-          payment,
-
-        amount,
-
-        note: ""
-      };
-
-
-      showLoading(true);
-
-      const { error } =
-        await supabaseClient
-          .from("transactions")
-          .insert(payload);
-
-      showLoading(false);
-
-
-      if (error) {
-
-        console.error(error);
-
-        toast(
-          "新增記帳失敗：" +
-          error.message
-        );
-
-        return;
-      }
-
-
-      document.getElementById("txItem").value =
-        "";
-
-      document.getElementById("txAmount").value =
-        "";
+  transactions =
+    data || [];
+}
 
 
-      await loadTransactions(currentMonth);
+/* =========================================================
+   Add Transaction
+========================================================= */
 
-      renderAll();
+async function addTransaction(event) {
 
-      toast("記帳成功！");
-    }
+  event.preventDefault();
 
+  if (!currentUser) {
+    return;
+  }
 
-    /* ============================================================
-       Edit
-       ============================================================ */
+  const date =
+    document
+      .getElementById("txDate")
+      .value;
 
-    function openEditModal(id) {
+  const item =
+    document
+      .getElementById("txItem")
+      .value
+      .trim();
 
-      const tx =
-        transactions.find(
-          item => item.id === id
-        );
+  const category =
+    document
+      .getElementById("txCategory")
+      .value;
 
-      if (!tx) return;
+  const paymentMethod =
+    document
+      .getElementById("txPaymentMethod")
+      .value;
 
-
-      document.getElementById("editId").value =
-        tx.id;
-
-      document.getElementById("editDate").value =
-        tx.date;
-
-      document.getElementById("editItem").value =
-        tx.item;
-
-      document.getElementById("editCategory").value =
-        tx.category;
-
-      document.getElementById("editPayment").value =
-        tx.payment_method;
-
-      document.getElementById("editAmount").value =
-        tx.amount;
-
-      document.getElementById("editNote").value =
-        tx.note || "";
-
-
+  const amount =
+    Number(
       document
-        .getElementById("editModal")
-        .classList.add("show");
+        .getElementById("txAmount")
+        .value
+    );
+
+  const note =
+    document
+      .getElementById("txNote")
+      .value
+      .trim();
+
+  if (!date || !item || amount <= 0) {
+
+    toast(
+      "請確認日期、項目與金額"
+    );
+
+    return;
+  }
+
+  showLoading(true);
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("transactions")
+        .insert({
+          user_id:
+            currentUser.id,
+
+          date,
+
+          item,
+
+          category,
+
+          payment_method:
+            paymentMethod,
+
+          amount,
+
+          note:
+            note || null
+        });
+
+    if (error) {
+      throw error;
     }
 
+    const transactionMonth =
+      date.slice(0, 7);
 
-    function closeEditModal() {
+    resetTransactionForm();
 
-      document
-        .getElementById("editModal")
-        .classList.remove("show");
-    }
-
-
-    async function saveEditTransaction() {
-
-      const id =
-        document.getElementById("editId").value;
-
-      const date =
-        document.getElementById("editDate").value;
-
-      const item =
-        document.getElementById("editItem").value.trim();
-
-      const category =
-        document.getElementById("editCategory").value;
-
-      const payment =
-        document.getElementById("editPayment").value;
-
-      const amount =
-        Number(
-          document.getElementById("editAmount").value
-        ) || 0;
-
-      const note =
-        document.getElementById("editNote").value.trim();
-
-
-      if (!date || !item || amount <= 0) {
-
-        toast("請確認資料是否完整");
-
-        return;
-      }
-
-
-      showLoading(true);
-
-      const { error } =
-        await supabaseClient
-          .from("transactions")
-          .update({
-            date,
-            item,
-            category,
-            payment_method:
-              payment,
-            amount,
-            note
-          })
-          .eq("id", id)
-          .eq("user_id", currentUser.id);
-
-      showLoading(false);
-
-
-      if (error) {
-
-        console.error(error);
-
-        toast(
-          "修改失敗：" +
-          error.message
-        );
-
-        return;
-      }
-
-
-      closeEditModal();
-
-      await loadTransactions(currentMonth);
-
-      renderAll();
-
-      toast("修改成功！");
-    }
-
-
-    async function deleteTransaction(id) {
-
-      const ok =
-        confirm("確定要刪除這筆記帳嗎？");
-
-      if (!ok) return;
-
-
-      showLoading(true);
-
-      const { error } =
-        await supabaseClient
-          .from("transactions")
-          .delete()
-          .eq("id", id)
-          .eq("user_id", currentUser.id);
-
-      showLoading(false);
-
-
-      if (error) {
-
-        console.error(error);
-
-        toast(
-          "刪除失敗：" +
-          error.message
-        );
-
-        return;
-      }
-
-
-      await loadTransactions(currentMonth);
-
-      renderAll();
-
-      toast("已刪除");
-    }
-
-
-    /* ============================================================
-       Render
-       ============================================================ */
-
-    function renderAll() {
-
-      renderStats();
-
-      renderBudgetUsage();
-
-      renderTransactions();
-    }
-
-
-    function renderStats() {
-
-      const income =
-        Number(
-          currentBudget?.income || 0
-        );
-
-      const expense =
-        transactions.reduce(
-          (sum, tx) =>
-            sum + Number(tx.amount || 0),
-          0
-        );
-
-      const cardExpense =
-        transactions
-          .filter(
-            tx =>
-              tx.payment_method ===
-              "信用卡"
-          )
-          .reduce(
-            (sum, tx) =>
-              sum + Number(tx.amount || 0),
-            0
-          );
-
-      const remaining =
-        income - expense;
-
-
-      document.getElementById(
-        "statIncome"
-      ).textContent =
-        money(income);
-
-      document.getElementById(
-        "statExpense"
-      ).textContent =
-        money(expense);
-
-      document.getElementById(
-        "statCard"
-      ).textContent =
-        money(cardExpense);
-
-      document.getElementById(
-        "statRemaining"
-      ).textContent =
-        money(remaining);
-    }
-
-
-    function getCategoryActual(category) {
-
-      return transactions
-        .filter(
-          tx =>
-            tx.category ===
-            category
-        )
-        .reduce(
-          (sum, tx) =>
-            sum + Number(tx.amount || 0),
-          0
-        );
-    }
-
-
-    function updateBudgetProgress(
-      category,
-      actual,
-      budget
+    if (
+      transactionMonth !==
+      currentMonth
     ) {
 
-      const progress =
-        document.getElementById(
-          "progress" +
-          category
-            .split("_")
-            .map(
-              word =>
-                word.charAt(0).toUpperCase() +
-                word.slice(1)
-            )
-            .join("")
-        );
-
-      const actualEl =
-        document.getElementById(
-          "actual" +
-          category
-            .split("_")
-            .map(
-              word =>
-                word.charAt(0).toUpperCase() +
-                word.slice(1)
-            )
-            .join("")
-        );
-
-      const percentEl =
-        document.getElementById(
-          "percent" +
-          category
-            .split("_")
-            .map(
-              word =>
-                word.charAt(0).toUpperCase() +
-                word.slice(1)
-            )
-            .join("")
-        );
-
-
-      if (!progress) return;
-
-
-      actualEl.textContent =
-        money(actual);
-
-
-      if (budget <= 0) {
-
-        progress.style.width =
-          "0%";
-
-        percentEl.textContent =
-          "—";
-
-        return;
-      }
-
-
-      const percent =
-        Math.round(
-          (actual / budget) * 100
-        );
-
-      const width =
-        Math.min(percent, 100);
-
-
-      progress.style.width =
-        width + "%";
-
-      percentEl.textContent =
-        percent + "%";
-
-
-      if (percent >= 100) {
-
-        percentEl.classList.add(
-          "over-budget"
-        );
-
-      } else {
-
-        percentEl.classList.remove(
-          "over-budget"
-        );
-      }
-    }
-
-
-    function renderBudgetUsage() {
-
-      if (!currentBudget) return;
-
-
-      updateBudgetProgress(
-        "Necessary",
-        getCategoryActual("necessary"),
-        Number(
-          currentBudget.necessary || 0
-        )
+      toast(
+        `已新增，但這筆記帳屬於 ${getMonthLabel(transactionMonth)}`
       );
 
+    } else {
 
-      updateBudgetProgress(
-        "CreditCard",
-        getCategoryActual("credit_card"),
-        Number(
-          currentBudget.credit_card || 0
-        )
+      await loadTransactions(
+        currentMonth
       );
 
+      renderAll();
 
-      updateBudgetProgress(
-        "CashReserve",
-        getCategoryActual("cash_reserve"),
-        Number(
-          currentBudget.cash_reserve || 0
-        )
-      );
-
-
-      updateBudgetProgress(
-        "FreeSpending",
-        getCategoryActual("free_spending"),
-        Number(
-          currentBudget.free_spending || 0
-        )
-      );
-
-
-      updateBudgetProgress(
-        "Investment",
-        getCategoryActual("investment"),
-        Number(
-          currentBudget.investment || 0
-        )
-      );
-
-
-      /*
-        V2.2：
-        other 也完整納入預算使用率。
-      */
-
-      updateBudgetProgress(
-        "Other",
-        getCategoryActual("other"),
-        Number(
-          currentBudget.other || 0
-        )
+      toast(
+        "✅ 記帳成功"
       );
     }
 
+  } catch (error) {
 
-    /* ============================================================
-       Transaction List
-       ============================================================ */
+    console.error(error);
 
-    function categoryName(category) {
+    toast(
+      "新增記帳失敗：" +
+      error.message
+    );
 
-      const map = {
+  } finally {
 
-        necessary:
-          "必要生活費",
+    showLoading(false);
+  }
+}
 
-        credit_card:
-          "信用卡",
 
-        cash_reserve:
-          "現金／預備金",
+function resetTransactionForm() {
 
-        free_spending:
-          "自由支出",
+  const form =
+    document.getElementById(
+      "transactionForm"
+    );
 
-        investment:
-          "投資",
+  form.reset();
 
-        other:
-          "其他"
-      };
+  setDefaultTransactionDate();
+}
 
-      return (
-        map[category] ||
-        category
+
+function setDefaultTransactionDate() {
+
+  const input =
+    document.getElementById(
+      "txDate"
+    );
+
+  if (!input) {
+    return;
+  }
+
+  const now =
+    new Date();
+
+  const todayMonth =
+    `${now.getFullYear()}-` +
+    `${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+  if (
+    todayMonth ===
+    currentMonth
+  ) {
+
+    input.value =
+      `${todayMonth}-` +
+      `${String(now.getDate()).padStart(2, "0")}`;
+
+  } else {
+
+    input.value =
+      `${currentMonth}-01`;
+  }
+}
+
+
+/* =========================================================
+   Edit Transaction
+========================================================= */
+
+function openEditModal(id) {
+
+  const tx =
+    transactions.find(
+      item => item.id === id
+    );
+
+  if (!tx) {
+    return;
+  }
+
+  document
+    .getElementById("editId")
+    .value =
+    tx.id;
+
+  document
+    .getElementById("editDate")
+    .value =
+    tx.date;
+
+  document
+    .getElementById("editItem")
+    .value =
+    tx.item || "";
+
+  document
+    .getElementById("editCategory")
+    .value =
+    tx.category;
+
+  document
+    .getElementById("editPaymentMethod")
+    .value =
+    tx.payment_method;
+
+  document
+    .getElementById("editAmount")
+    .value =
+    tx.amount;
+
+  document
+    .getElementById("editNote")
+    .value =
+    tx.note || "";
+
+  document
+    .getElementById("editModal")
+    .classList.add("show");
+}
+
+
+function closeEditModal() {
+
+  document
+    .getElementById("editModal")
+    .classList.remove("show");
+}
+
+
+async function saveEditedTransaction(event) {
+
+  event.preventDefault();
+
+  const id =
+    document
+      .getElementById("editId")
+      .value;
+
+  const date =
+    document
+      .getElementById("editDate")
+      .value;
+
+  const item =
+    document
+      .getElementById("editItem")
+      .value
+      .trim();
+
+  const category =
+    document
+      .getElementById("editCategory")
+      .value;
+
+  const paymentMethod =
+    document
+      .getElementById("editPaymentMethod")
+      .value;
+
+  const amount =
+    Number(
+      document
+        .getElementById("editAmount")
+        .value
+    );
+
+  const note =
+    document
+      .getElementById("editNote")
+      .value
+      .trim();
+
+  if (!id || !date || !item || amount <= 0) {
+
+    toast(
+      "請確認資料是否完整"
+    );
+
+    return;
+  }
+
+  showLoading(true);
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("transactions")
+        .update({
+
+          date,
+
+          item,
+
+          category,
+
+          payment_method:
+            paymentMethod,
+
+          amount,
+
+          note:
+            note || null
+
+        })
+        .eq(
+          "id",
+          id
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    closeEditModal();
+
+    await loadTransactions(
+      currentMonth
+    );
+
+    renderAll();
+
+    const newMonth =
+      date.slice(0, 7);
+
+    if (
+      newMonth !==
+      currentMonth
+    ) {
+
+      toast(
+        `已修改，這筆記帳已移至 ${getMonthLabel(newMonth)}`
+      );
+
+    } else {
+
+      toast(
+        "✅ 記帳已修改"
       );
     }
 
+  } catch (error) {
 
-    function renderTransactions() {
+    console.error(error);
 
-      const list =
-        document.getElementById(
-          "transactionList"
+    toast(
+      "修改失敗：" +
+      error.message
+    );
+
+  } finally {
+
+    showLoading(false);
+  }
+}
+
+
+/* =========================================================
+   Delete
+========================================================= */
+
+async function deleteTransaction(id) {
+
+  const tx =
+    transactions.find(
+      item => item.id === id
+    );
+
+  if (!tx) {
+    return;
+  }
+
+  const confirmed =
+    confirm(
+      `確定要刪除「${tx.item}」${formatMoney(tx.amount)} 嗎？`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  showLoading(true);
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("transactions")
+        .delete()
+        .eq(
+          "id",
+          id
+        )
+        .eq(
+          "user_id",
+          currentUser.id
         );
 
-      const search =
-        (
-          document.getElementById(
-            "searchInput"
-          )?.value || ""
-        )
-          .trim()
-          .toLowerCase();
+    if (error) {
+      throw error;
+    }
 
-      const category =
-        document.getElementById(
-          "filterCategory"
-        )?.value || "";
+    transactions =
+      transactions.filter(
+        item =>
+          item.id !== id
+      );
 
-      const payment =
-        document.getElementById(
-          "filterPayment"
-        )?.value || "";
+    renderAll();
 
+    toast(
+      "🗑️ 已刪除記帳"
+    );
 
-      let filtered =
-        [...transactions];
+  } catch (error) {
 
+    console.error(error);
 
-      if (search) {
+    toast(
+      "刪除失敗：" +
+      error.message
+    );
 
-        filtered =
-          filtered.filter(tx => {
+  } finally {
 
-            const text =
-              [
-                tx.item,
-                tx.note,
-                categoryName(
-                  tx.category
-                ),
-                tx.payment_method
-              ]
-                .join(" ")
-                .toLowerCase();
-
-            return text.includes(search);
-          });
-      }
+    showLoading(false);
+  }
+}
 
 
-      if (category) {
+/* =========================================================
+   Category Mapping
+========================================================= */
 
-        filtered =
-          filtered.filter(
-            tx =>
-              tx.category ===
-              category
+const categoryMap = {
+
+  "必要生活費": {
+    key: "necessary",
+    icon: "🏠"
+  },
+
+  "信用卡": {
+    key: "credit_card",
+    icon: "💳"
+  },
+
+  "現金／預備金": {
+    key: "cash_reserve",
+    icon: "💵"
+  },
+
+  "自由支出": {
+    key: "free_spending",
+    icon: "🎮"
+  },
+
+  "投資": {
+    key: "investment",
+    icon: "📈"
+  },
+
+  "其他": {
+    key: "other",
+    icon: "📦"
+  }
+};
+
+
+/* =========================================================
+   Calculate
+========================================================= */
+
+function getCategorySpent(category) {
+
+  return transactions
+    .filter(
+      tx =>
+        tx.category === category
+    )
+    .reduce(
+      (
+        total,
+        tx
+      ) =>
+        total +
+        Number(tx.amount || 0),
+      0
+    );
+}
+
+
+function getTotalExpense() {
+
+  return transactions.reduce(
+    (
+      total,
+      tx
+    ) =>
+      total +
+      Number(tx.amount || 0),
+    0
+  );
+}
+
+
+function getCreditCardExpense() {
+
+  return transactions
+    .filter(
+      tx =>
+        tx.payment_method ===
+        "信用卡"
+    )
+    .reduce(
+      (
+        total,
+        tx
+      ) =>
+        total +
+        Number(tx.amount || 0),
+      0
+    );
+}
+
+
+function getCashExpense() {
+
+  return transactions
+    .filter(
+      tx =>
+        tx.payment_method ===
+        "現金"
+    )
+    .reduce(
+      (
+        total,
+        tx
+      ) =>
+        total +
+        Number(tx.amount || 0),
+      0
+    );
+}
+
+
+function getTotalBudget() {
+
+  return (
+    Number(budget.necessary) +
+    Number(budget.credit_card) +
+    Number(budget.cash_reserve) +
+    Number(budget.free_spending) +
+    Number(budget.investment) +
+    Number(budget.other)
+  );
+}
+
+
+/* =========================================================
+   Render All
+========================================================= */
+
+function renderAll() {
+
+  setMonthInput();
+
+  renderDashboard();
+
+  renderBudgetPage();
+
+  renderTransactions();
+
+  renderTransactionRecent();
+
+  setDefaultTransactionDate();
+}
+
+
+/* =========================================================
+   Dashboard
+========================================================= */
+
+function renderDashboard() {
+
+  const income =
+    Number(budget.income || 0);
+
+  const expense =
+    getTotalExpense();
+
+  const remaining =
+    income - expense;
+
+  document
+    .getElementById("statIncome")
+    .textContent =
+    formatMoney(income);
+
+  document
+    .getElementById("statExpense")
+    .textContent =
+    formatMoney(expense);
+
+  document
+    .getElementById("statRemaining")
+    .textContent =
+    formatMoney(remaining);
+
+  document
+    .getElementById("statCreditCard")
+    .textContent =
+    formatMoney(
+      getCreditCardExpense()
+    );
+
+  renderHomeBudget();
+
+  renderHomeRecent();
+}
+
+
+function renderHomeBudget() {
+
+  const container =
+    document.getElementById(
+      "homeBudgetList"
+    );
+
+  const categories =
+    Object.keys(categoryMap);
+
+  container.innerHTML =
+    categories.map(
+      category => {
+
+        const info =
+          categoryMap[category];
+
+        const budgetAmount =
+          Number(
+            budget[info.key] || 0
           );
-      }
 
-
-      if (payment) {
-
-        filtered =
-          filtered.filter(
-            tx =>
-              tx.payment_method ===
-              payment
+        const spent =
+          getCategorySpent(
+            category
           );
-      }
 
+        let percent = 0;
 
-      if (!filtered.length) {
+        if (budgetAmount > 0) {
+          percent =
+            Math.round(
+              spent /
+              budgetAmount *
+              100
+            );
+        }
 
-        list.innerHTML =
-          `
-          <div class="empty">
-            📭 沒有符合條件的記帳
-          </div>
-          `;
+        const width =
+          Math.min(
+            percent,
+            100
+          );
 
-        return;
-      }
+        const over =
+          spent >
+          budgetAmount &&
+          budgetAmount > 0;
 
+        return `
+          <div class="budget-row">
 
-      list.innerHTML =
-        filtered
-          .map(tx => {
+            <div class="budget-row-head">
 
-            const note =
-              tx.note
-                ? `<div class="transaction-note">${escapeHtml(tx.note)}</div>`
-                : "";
-
-            return `
-              <div class="transaction">
-
-                <div class="transaction-date">
-                  ${escapeHtml(tx.date)}
-                </div>
-
-                <div class="transaction-main">
-
-                  <div class="transaction-item">
-                    ${escapeHtml(tx.item)}
-                  </div>
-
-                  ${note}
-
-                </div>
-
-                <div class="transaction-category">
-                  ${escapeHtml(
-                    categoryName(
-                      tx.category
-                    )
-                  )}
-                </div>
-
-                <div class="transaction-payment">
-                  ${escapeHtml(
-                    tx.payment_method || ""
-                  )}
-                </div>
-
-                <div class="transaction-amount">
-                  ${money(tx.amount)}
-                </div>
-
-                <div class="transaction-actions">
-
-                  <button
-                    class="btn btn-secondary btn-small"
-                    onclick="openEditModal('${tx.id}')"
-                  >
-                    編輯
-                  </button>
-
-                  <button
-                    class="btn btn-danger btn-small"
-                    onclick="deleteTransaction('${tx.id}')"
-                  >
-                    刪除
-                  </button>
-
-                </div>
-
+              <div class="budget-name">
+                ${info.icon}
+                ${escapeHtml(category)}
               </div>
-            `;
-          })
-          .join("");
-    }
 
+              <div class="budget-number">
+                ${formatMoney(spent)}
+                /
+                ${formatMoney(budgetAmount)}
+              </div>
 
-    function escapeHtml(value) {
+            </div>
 
-      return String(value ?? "")
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-    }
+            <div class="progress">
+              <div
+                class="progress-bar ${over ? "over" : ""}"
+                style="width:${width}%"
+              ></div>
+            </div>
 
-
-    /* ============================================================
-       初始化
-       ============================================================ */
-
-    async function init() {
-
-      currentMonth =
-        getSafeCurrentMonth();
-
-      setMonthInput();
-
-      const {
-        data
-      } =
-        await supabaseClient.auth.getSession();
-
-
-      if (data?.session?.user) {
-
-        currentUser =
-          data.session.user;
-
-        await startApp();
-
-      } else {
-
-        document
-          .getElementById("authScreen")
-          .classList.remove("hidden");
-
-        document
-          .getElementById("appScreen")
-          .classList.add("hidden");
+          </div>
+        `;
       }
-    }
+    ).join("");
+}
 
 
-    supabaseClient.auth.onAuthStateChange(
-      async (event, session) => {
+function renderHomeRecent() {
 
-        if (
-          event === "SIGNED_IN" &&
-          session?.user
-        ) {
+  const container =
+    document.getElementById(
+      "homeRecentList"
+    );
 
-          currentUser =
-            session.user;
+  const list =
+    transactions.slice(0, 5);
 
-          await startApp();
-        }
+  if (!list.length) {
 
-        if (
-          event === "SIGNED_OUT"
-        ) {
+    container.innerHTML =
+      `<div class="empty">
+        📭 本月還沒有記帳
+      </div>`;
 
-          currentUser = null;
-        }
+    return;
+  }
+
+  container.innerHTML =
+    list.map(
+      tx =>
+        renderTransactionItem(
+          tx,
+          false
+        )
+    ).join("");
+}
+
+
+/* =========================================================
+   Budget Page
+========================================================= */
+
+function renderBudgetPage() {
+
+  const totalBudget =
+    getTotalBudget();
+
+  const expense =
+    getTotalExpense();
+
+  const remaining =
+    totalBudget - expense;
+
+  document
+    .getElementById("readonlyIncome")
+    .textContent =
+    formatMoney(
+      budget.income
+    );
+
+  document
+    .getElementById("readonlyBudgetTotal")
+    .textContent =
+    formatMoney(
+      totalBudget
+    );
+
+  document
+    .getElementById("readonlyExpense")
+    .textContent =
+    formatMoney(
+      expense
+    );
+
+  document
+    .getElementById("readonlyBudgetRemaining")
+    .textContent =
+    formatMoney(
+      remaining
+    );
+
+
+  const container =
+    document.getElementById(
+      "readonlyBudgetList"
+    );
+
+  container.innerHTML =
+    Object.keys(categoryMap)
+      .map(category => {
+
+        const info =
+          categoryMap[category];
+
+        const amount =
+          Number(
+            budget[info.key] || 0
+          );
+
+        const spent =
+          getCategorySpent(
+            category
+          );
+
+        const remain =
+          amount - spent;
+
+        const percent =
+          amount > 0
+            ? Math.round(
+                spent /
+                amount *
+                100
+              )
+            : 0;
+
+        const width =
+          Math.min(
+            percent,
+            100
+          );
+
+        const over =
+          spent >
+          amount &&
+          amount > 0;
+
+        return `
+          <div class="budget-row">
+
+            <div class="budget-row-head">
+
+              <div class="budget-name">
+                ${info.icon}
+                ${escapeHtml(category)}
+              </div>
+
+              <div class="budget-number">
+                ${formatMoney(spent)}
+                /
+                ${formatMoney(amount)}
+              </div>
+
+            </div>
+
+            <div class="progress">
+              <div
+                class="progress-bar ${over ? "over" : ""}"
+                style="width:${width}%"
+              ></div>
+            </div>
+
+            <div
+              style="
+                margin-top:7px;
+                font-size:12px;
+                color:${remain < 0 ? "var(--danger)" : "var(--muted)"};
+              "
+            >
+              ${remain >= 0 ? "剩餘" : "超支"}
+              ${formatMoney(Math.abs(remain))}
+            </div>
+
+          </div>
+        `;
+      })
+      .join("");
+}
+
+
+/* =========================================================
+   Transaction List
+========================================================= */
+
+function renderTransactions() {
+
+  const container =
+    document.getElementById(
+      "transactionList"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  const search =
+    (
+      document
+        .getElementById(
+          "searchInput"
+        )
+        ?.value || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const category =
+    document
+      .getElementById(
+        "filterCategory"
+      )
+      ?.value || "";
+
+  const payment =
+    document
+      .getElementById(
+        "filterPayment"
+      )
+      ?.value || "";
+
+
+  const filtered =
+    transactions.filter(
+      tx => {
+
+        const searchMatch =
+          !search ||
+          String(tx.item || "")
+            .toLowerCase()
+            .includes(search) ||
+          String(tx.note || "")
+            .toLowerCase()
+            .includes(search);
+
+        const categoryMatch =
+          !category ||
+          tx.category === category;
+
+        const paymentMatch =
+          !payment ||
+          tx.payment_method === payment;
+
+        return (
+          searchMatch &&
+          categoryMatch &&
+          paymentMatch
+        );
       }
     );
 
 
-    init();
+  const summary =
+    document.getElementById(
+      "listSummary"
+    );
 
+  if (summary) {
 
-    /* ============================================================
-       點擊 Modal 外部關閉
-       ============================================================ */
-
-    document
-      .getElementById("editModal")
-      .addEventListener(
-        "click",
-        function (event) {
-
-          if (
-            event.target === this
-          ) {
-            closeEditModal();
-          }
-
-        }
+    const total =
+      filtered.reduce(
+        (
+          sum,
+          tx
+        ) =>
+          sum +
+          Number(tx.amount || 0),
+        0
       );
-  </script>
+
+    summary.textContent =
+      `共 ${filtered.length} 筆｜合計 ${formatMoney(total)}`;
+  }
+
+
+  if (!filtered.length) {
+
+    container.innerHTML =
+      `<div class="empty">
+        📭 沒有符合條件的記帳
+      </div>`;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    filtered
+      .map(
+        tx =>
+          renderTransactionItem(
+            tx,
+            true
+          )
+      )
+      .join("");
+}
+
+
+function renderTransactionRecent() {
+
+  const container =
+    document.getElementById(
+      "transactionRecentList"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  const list =
+    transactions.slice(0, 5);
+
+  if (!list.length) {
+
+    container.innerHTML =
+      `<div class="empty">
+        📭 本月還沒有記帳
+      </div>`;
+
+    return;
+  }
+
+  container.innerHTML =
+    list
+      .map(
+        tx =>
+          renderTransactionItem(
+            tx,
+            true
+          )
+      )
+      .join("");
+}
+
+
+function renderTransactionItem(
+  tx,
+  showButtons = true
+) {
+
+  const categoryInfo =
+    categoryMap[
+      tx.category
+    ];
+
+  const icon =
+    categoryInfo?.icon ||
+    "📦";
+
+  return `
+    <div class="transaction-item">
+
+      <div class="transaction-main">
+
+        <div class="transaction-title">
+          ${escapeHtml(tx.item)}
+        </div>
+
+        <div class="transaction-meta">
+          ${escapeHtml(tx.date)}
+          ・
+          ${icon}
+          ${escapeHtml(tx.category)}
+          ・
+          ${escapeHtml(tx.payment_method)}
+          ${
+            tx.note
+              ? `・ ${escapeHtml(tx.note)}`
+              : ""
+          }
+        </div>
+
+        ${
+          showButtons
+            ? `
+              <div class="transaction-buttons">
+
+                <button
+                  class="mini-btn mini-edit"
+                  onclick="openEditModal('${tx.id}')"
+                >
+                  ✏️ 編輯
+                </button>
+
+                <button
+                  class="mini-btn mini-delete"
+                  onclick="deleteTransaction('${tx.id}')"
+                >
+                  🗑️ 刪除
+                </button>
+
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+
+      <div class="transaction-amount expense">
+        -${formatMoney(tx.amount)}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   Page Navigation
+========================================================= */
+
+function showPage(page) {
+
+  currentPage =
+    page;
+
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      element => {
+
+        element.classList.toggle(
+          "active",
+          element.id ===
+          `page-${page}`
+        );
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".nav-btn, .mobile-nav button"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.page ===
+          page
+        );
+      }
+    );
+
+
+  if (
+    page ===
+    "transaction"
+  ) {
+
+    setDefaultTransactionDate();
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* =========================================================
+   Modal click outside
+========================================================= */
+
+document
+  .getElementById("editModal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+        closeEditModal();
+      }
+    }
+  );
+
+
+/* =========================================================
+   Supabase Auth Listener
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+
+    if (
+      event ===
+      "SIGNED_OUT"
+    ) {
+
+      currentUser = null;
+
+      document
+        .getElementById("app")
+        .classList.add("hidden");
+
+      document
+        .getElementById("authPage")
+        .classList.remove("hidden");
+
+      return;
+    }
+
+    if (
+      event ===
+      "SIGNED_IN" &&
+      session?.user &&
+      !currentUser
+    ) {
+
+      currentUser =
+        session.user;
+
+      await startApp();
+    }
+  }
+);
+
+
+/* =========================================================
+   Start
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    setDefaultTransactionDate();
+
+    init();
+  }
+);
+
+</script>
 
 </body>
 </html>
