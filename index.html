@@ -2,11 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <meta name="theme-color" content="#f5f7fb" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>每月預算記帳本</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,22 +13,23 @@
     }
 
     :root {
-      --bg: #f5f7fb;
+      --bg: #f6f7f9;
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
       --border: #e5e7eb;
-      --primary: #4f46e5;
-      --primary-light: #eef2ff;
-      --success: #16a34a;
+      --primary: #111827;
+      --soft: #f3f4f6;
       --danger: #dc2626;
+      --success: #059669;
       --warning: #d97706;
-      --shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
       --radius: 18px;
     }
 
     body {
       margin: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -40,8 +37,6 @@
         "Noto Sans TC",
         "Microsoft JhengHei",
         sans-serif;
-      background: var(--bg);
-      color: var(--text);
     }
 
     button,
@@ -59,87 +54,55 @@
       display: none !important;
     }
 
-    .app {
-      min-height: 100vh;
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
     }
 
     /* =========================
-       Login
+       AUTH
     ========================= */
 
-    .auth-page {
+    #authView {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
-      background:
-        radial-gradient(circle at top right, #e0e7ff 0, transparent 35%),
-        radial-gradient(circle at bottom left, #dbeafe 0, transparent 35%),
-        var(--bg);
     }
 
     .auth-card {
-      width: 100%;
-      max-width: 430px;
+      width: min(420px, 100%);
       background: white;
       border-radius: 24px;
       padding: 32px;
-      box-shadow: 0 15px 50px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 12px 40px rgba(0,0,0,.08);
     }
 
-    .auth-logo {
-      font-size: 46px;
+    .logo {
       text-align: center;
+      font-size: 38px;
       margin-bottom: 10px;
     }
 
     .auth-title {
       text-align: center;
-      margin: 0;
-      font-size: 28px;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
     }
 
     .auth-subtitle {
       text-align: center;
       color: var(--muted);
-      margin: 8px 0 28px;
+      margin-bottom: 28px;
     }
-
-    .auth-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      background: #f3f4f6;
-      padding: 5px;
-      border-radius: 12px;
-      margin-bottom: 22px;
-    }
-
-    .auth-tab {
-      border: 0;
-      background: transparent;
-      padding: 10px;
-      border-radius: 9px;
-      color: var(--muted);
-    }
-
-    .auth-tab.active {
-      background: white;
-      color: var(--primary);
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    /* =========================
-       Forms
-    ========================= */
 
     .form-group {
       margin-bottom: 16px;
     }
 
-    .form-label {
+    .form-group label {
       display: block;
       font-size: 14px;
       font-weight: 700;
@@ -151,19 +114,18 @@
     textarea {
       width: 100%;
       border: 1px solid var(--border);
-      background: white;
-      color: var(--text);
-      border-radius: 11px;
-      padding: 12px 13px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
       outline: none;
-      transition: 0.15s;
+      transition: .2s;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      border-color: #9ca3af;
+      box-shadow: 0 0 0 3px rgba(156,163,175,.15);
     }
 
     textarea {
@@ -173,14 +135,10 @@
 
     .btn {
       border: 0;
-      border-radius: 11px;
-      padding: 11px 16px;
+      border-radius: 12px;
+      padding: 12px 16px;
       font-weight: 700;
-      transition: 0.15s;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
+      transition: .2s;
     }
 
     .btn-primary {
@@ -188,9 +146,13 @@
       color: white;
     }
 
+    .btn-primary:hover {
+      opacity: .9;
+    }
+
     .btn-secondary {
-      background: #f3f4f6;
-      color: #374151;
+      background: var(--soft);
+      color: var(--text);
     }
 
     .btn-danger {
@@ -199,182 +161,130 @@
     }
 
     .btn-success {
-      background: #dcfce7;
-      color: var(--success);
+      background: #d1fae5;
+      color: #047857;
     }
 
-    .btn-block {
+    .btn-full {
       width: 100%;
     }
 
-    .btn-large {
-      padding: 14px 18px;
-      font-size: 16px;
-    }
-
-    .message {
-      margin-top: 14px;
-      padding: 11px 13px;
-      border-radius: 10px;
+    .auth-switch {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
       font-size: 14px;
-      display: none;
     }
 
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .message.success {
-      background: #dcfce7;
-      color: #166534;
+    .auth-switch button {
+      background: none;
+      border: 0;
+      font-weight: 700;
+      color: var(--text);
     }
 
     /* =========================
-       Header
+       HEADER
     ========================= */
 
     .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--border);
     }
 
     .topbar-inner {
-      max-width: 1180px;
-      margin: auto;
-      padding: 14px 20px;
+      min-height: 68px;
       display: flex;
       align-items: center;
-      gap: 18px;
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .brand {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .month-control {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-left: auto;
     }
 
     .month-control input {
-      width: 155px;
-      padding: 8px 10px;
+      width: 145px;
+      padding: 9px 12px;
     }
 
-    .user-area {
+    /* =========================
+       LEDGER SELECTOR
+    ========================= */
+
+    .ledger-card {
+      margin-top: 22px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      gap: 15px;
     }
 
-    .user-email {
+    .ledger-label {
       color: var(--muted);
       font-size: 13px;
-      max-width: 190px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      margin-bottom: 4px;
     }
 
-    /* =========================
-       Navigation
-    ========================= */
-
-    .desktop-nav {
-      border-bottom: 1px solid var(--border);
-      background: white;
+    .ledger-name {
+      font-size: 20px;
+      font-weight: 800;
     }
 
-    .desktop-nav-inner {
-      max-width: 1180px;
-      margin: auto;
-      padding: 0 20px;
+    .ledger-actions {
       display: flex;
-      gap: 6px;
-    }
-
-    .nav-btn {
-      border: 0;
-      background: transparent;
-      padding: 14px 17px;
-      color: var(--muted);
-      font-weight: 700;
-      border-bottom: 3px solid transparent;
-    }
-
-    .nav-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .mobile-nav {
-      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     /* =========================
-       Main
+       PAGE
     ========================= */
 
-    .main {
-      max-width: 1180px;
-      margin: auto;
-      padding: 24px 20px 50px;
+    main {
+      padding-bottom: 100px;
     }
 
     .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
+      margin-top: 20px;
     }
 
     .page-title {
-      margin: 0;
-      font-size: 26px;
-    }
-
-    .page-subtitle {
-      color: var(--muted);
-      margin: 5px 0 22px;
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 18px;
     }
 
     /* =========================
-       Cards
+       STATS
     ========================= */
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin: 0 0 16px;
-    }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
-      margin-bottom: 18px;
     }
 
     .stat-card {
@@ -382,7 +292,6 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 18px;
-      box-shadow: var(--shadow);
     }
 
     .stat-label {
@@ -392,39 +301,48 @@
     }
 
     .stat-value {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 800;
     }
 
-    .stat-value.small {
-      font-size: 21px;
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 18px;
     }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      gap: 18px;
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
     }
 
     /* =========================
-       Budget
+       BUDGET
     ========================= */
 
-    .budget-list {
+    .budget-grid {
       display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
-    .budget-row {
-      padding: 14px;
+    .budget-item {
       border: 1px solid var(--border);
-      border-radius: 13px;
+      border-radius: 14px;
+      padding: 15px;
     }
 
-    .budget-row-head {
+    .budget-head {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 12px;
       margin-bottom: 9px;
     }
 
@@ -435,357 +353,325 @@
     .budget-number {
       color: var(--muted);
       font-size: 13px;
-      white-space: nowrap;
     }
 
     .progress {
-      height: 9px;
-      border-radius: 999px;
-      background: #eef0f4;
+      height: 8px;
+      background: #edf0f2;
+      border-radius: 99px;
       overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: var(--primary);
-      transition: width 0.3s;
+      background: #111827;
+      border-radius: 99px;
     }
 
-    .progress-bar.over {
-      background: var(--danger);
-    }
-
-    .budget-edit-area {
-      margin-top: 14px;
-    }
-
-    .budget-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .budget-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 9px;
-      margin-top: 18px;
-    }
-
-    .budget-readonly {
-      background: #f9fafb;
-      border-radius: 13px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    .budget-total-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-    }
-
-    .budget-total-row + .budget-total-row {
-      border-top: 1px solid var(--border);
-    }
-
-    /* =========================
-       Transaction
-    ========================= */
-
-    .transaction-form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .transaction-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 9px;
-      margin-top: 5px;
-    }
-
-    .recent-list {
-      display: grid;
-      gap: 9px;
-    }
-
-    .transaction-item {
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .transaction-main {
-      min-width: 0;
-    }
-
-    .transaction-title {
-      font-weight: 750;
-      margin-bottom: 5px;
-    }
-
-    .transaction-meta {
+    .budget-percent {
+      margin-top: 7px;
       font-size: 12px;
       color: var(--muted);
     }
 
-    .transaction-amount {
-      font-weight: 800;
+    /* =========================
+       TRANSACTION
+    ========================= */
+
+    .tx-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tx-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .tx-main {
+      min-width: 0;
+    }
+
+    .tx-item-name {
+      font-weight: 750;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .tx-meta {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .tx-right {
+      text-align: right;
       white-space: nowrap;
     }
 
-    .transaction-amount.expense {
-      color: var(--danger);
+    .tx-amount {
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .transaction-buttons {
+    .tx-actions {
       display: flex;
+      justify-content: flex-end;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 7px;
     }
 
     .mini-btn {
       border: 0;
-      padding: 6px 9px;
+      background: var(--soft);
       border-radius: 8px;
+      padding: 6px 9px;
       font-size: 12px;
-      font-weight: 700;
-    }
-
-    .mini-edit {
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-
-    .mini-delete {
-      background: #fee2e2;
-      color: var(--danger);
     }
 
     .empty {
+      padding: 30px 10px;
       text-align: center;
-      padding: 35px 15px;
       color: var(--muted);
     }
 
     /* =========================
-       Filters
+       FORM GRID
     ========================= */
 
-    .filter-grid {
+    .form-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .form-full {
+      grid-column: 1 / -1;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 180px;
       gap: 10px;
       margin-bottom: 15px;
     }
 
-    .list-summary {
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    .setting-item {
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-item:last-child {
+      border-bottom: 0;
+    }
+
+    .setting-title {
+      font-weight: 750;
+      margin-bottom: 6px;
+    }
+
+    .setting-desc {
       color: var(--muted);
       font-size: 13px;
       margin-bottom: 12px;
     }
 
     /* =========================
-       Modal
+       MEMBERS
     ========================= */
 
-    .modal-backdrop {
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .member:last-child {
+      border-bottom: 0;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .member-name {
+      font-weight: 700;
+    }
+
+    .member-role {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .bottom-nav-inner {
+      max-width: 700px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      padding: 10px 4px 9px;
+      color: #9ca3af;
+      font-size: 11px;
+    }
+
+    .nav-btn .nav-icon {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 2px;
+    }
+
+    .nav-btn.active {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-bg {
       position: fixed;
       inset: 0;
-      z-index: 100;
-      background: rgba(15, 23, 42, 0.45);
-      display: none;
+      background: rgba(0,0,0,.45);
+      z-index: 200;
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .modal-backdrop.show {
-      display: flex;
-    }
-
     .modal {
-      background: white;
-      width: 100%;
-      max-width: 580px;
-      border-radius: 20px;
-      padding: 22px;
+      width: min(500px, 100%);
       max-height: 90vh;
       overflow: auto;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
     }
 
     .modal-title {
       font-size: 20px;
       font-weight: 800;
-      margin: 0;
+      margin-bottom: 18px;
     }
 
-    .close-btn {
-      width: 36px;
-      height: 36px;
-      border: 0;
-      border-radius: 50%;
-      background: #f3f4f6;
-      font-size: 20px;
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 18px;
     }
 
     /* =========================
-       Toast
+       TOAST
     ========================= */
 
-    .toast {
+    #toast {
       position: fixed;
       left: 50%;
-      bottom: 25px;
-      transform: translate(-50%, 100px);
-      opacity: 0;
-      z-index: 200;
+      bottom: 85px;
+      transform: translateX(-50%);
       background: #111827;
       color: white;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-size: 14px;
-      transition: 0.25s;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      z-index: 500;
+      opacity: 0;
       pointer-events: none;
+      transition: .25s;
       max-width: calc(100% - 30px);
       text-align: center;
     }
 
-    .toast.show {
-      transform: translate(-50%, 0);
+    #toast.show {
       opacity: 1;
     }
 
     /* =========================
-       Loading
+       RESPONSIVE
     ========================= */
 
-    .loading {
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(4px);
-    }
-
-    .loading.show {
-      display: flex;
-    }
-
-    .loading-box {
-      background: white;
-      border-radius: 15px;
-      padding: 20px 25px;
-      box-shadow: var(--shadow);
-      font-weight: 700;
-    }
-
-    /* =========================
-       Responsive
-    ========================= */
-
-    @media (max-width: 850px) {
+    @media (max-width: 800px) {
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .dashboard-grid {
+      .budget-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 650px) {
-      body {
-        padding-bottom: 76px;
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 22px, 1100px);
       }
 
       .topbar-inner {
-        padding: 12px 14px;
-        flex-wrap: wrap;
-        gap: 9px;
+        min-height: 60px;
       }
 
       .brand {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .month-control {
-        margin-left: auto;
-      }
-
-      .month-control input {
-        width: 135px;
-      }
-
-      .user-area {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .desktop-nav {
         display: none;
       }
 
-      .mobile-nav {
-        position: fixed;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 80;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(15px);
-        border-top: 1px solid var(--border);
-        padding:
-          7px
-          7px
-          calc(7px + env(safe-area-inset-bottom));
+      .ledger-card {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
-      .mobile-nav button {
-        border: 0;
-        background: transparent;
-        color: var(--muted);
-        padding: 7px 2px;
-        font-size: 11px;
-        font-weight: 700;
-        border-radius: 10px;
+      .ledger-actions {
+        width: 100%;
       }
 
-      .mobile-nav button.active {
-        color: var(--primary);
-        background: var(--primary-light);
-      }
-
-      .main {
-        padding: 18px 13px 25px;
-      }
-
-      .page-title {
-        font-size: 23px;
+      .ledger-actions .btn {
+        flex: 1;
       }
 
       .stats-grid {
@@ -798,51 +684,35 @@
       }
 
       .stat-value {
-        font-size: 21px;
+        font-size: 20px;
       }
 
-      .card {
-        padding: 15px;
-        border-radius: 15px;
-      }
-
-      .budget-grid {
+      .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .transaction-form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .full {
+      .form-full {
         grid-column: auto;
       }
 
-      .filter-grid {
+      .filter-row {
         grid-template-columns: 1fr;
       }
 
-      .transaction-item {
-        align-items: flex-start;
+      .tx-item {
+        padding: 13px;
       }
 
-      .transaction-amount {
-        font-size: 15px;
+      .tx-amount {
+        font-size: 16px;
       }
 
-      .budget-actions,
-      .transaction-actions {
-        display: grid;
-        grid-template-columns: 1fr;
+      .card {
+        padding: 16px;
       }
 
-      .budget-actions .btn,
-      .transaction-actions .btn {
-        width: 100%;
-      }
-
-      .toast {
-        bottom: 90px;
+      .auth-card {
+        padding: 24px;
       }
     }
   </style>
@@ -851,108 +721,181 @@
 <body>
 
   <!-- =========================
-       LOGIN / REGISTER
-  ========================== -->
+       AUTH
+  ========================= -->
 
-  <div id="authPage" class="auth-page">
+  <section id="authView">
     <div class="auth-card">
-      <div class="auth-logo">💰</div>
-      <h1 class="auth-title">每月預算記帳本</h1>
-      <div class="auth-subtitle">雲端同步版 V2.3</div>
 
-      <div class="auth-tabs">
-        <button id="loginTab" class="auth-tab active" onclick="switchAuthMode('login')">
+      <div class="logo">💰</div>
+
+      <div class="auth-title">每月預算記帳本</div>
+
+      <div class="auth-subtitle">
+        個人使用，也可以和另一半一起記帳
+      </div>
+
+      <form id="authForm">
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            id="authEmail"
+            type="email"
+            autocomplete="email"
+            placeholder="your@email.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>密碼</label>
+          <input
+            id="authPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="至少 6 個字元"
+            required
+          />
+        </div>
+
+        <button
+          id="authSubmit"
+          class="btn btn-primary btn-full"
+          type="submit"
+        >
           登入
         </button>
-        <button id="registerTab" class="auth-tab" onclick="switchAuthMode('register')">
+
+      </form>
+
+      <div class="auth-switch">
+        <span id="authSwitchText">還沒有帳號？</span>
+        <button id="authSwitchBtn" type="button">
           註冊
         </button>
       </div>
 
-      <form id="authForm" onsubmit="handleAuth(event)">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input
-            id="authEmail"
-            type="email"
-            placeholder="請輸入 Email"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">密碼</label>
-          <input
-            id="authPassword"
-            type="password"
-            placeholder="至少 6 個字元"
-            minlength="6"
-            required
-          />
-        </div>
-
-        <button id="authSubmit" class="btn btn-primary btn-block btn-large">
-          登入
-        </button>
-      </form>
-
-      <div id="authMessage" class="message"></div>
     </div>
-  </div>
+  </section>
 
 
   <!-- =========================
        APP
-  ========================== -->
+  ========================= -->
 
-  <div id="app" class="app hidden">
+  <section id="appView" class="hidden">
 
-    <!-- TOP BAR -->
     <header class="topbar">
-      <div class="topbar-inner">
+      <div class="container topbar-inner">
 
         <div class="brand">
           💰 每月預算記帳本
         </div>
 
-        <div class="month-control">
-          <span>📅</span>
-          <input
-            id="monthInput"
-            type="month"
-            onchange="changeMonth()"
-          />
-        </div>
+        <div class="top-actions">
 
-        <div class="user-area">
-          <span id="userEmail" class="user-email"></span>
-          <button class="btn btn-secondary" onclick="logout()">
+          <div class="month-control">
+            <input
+              id="monthInput"
+              type="month"
+              onchange="changeMonth()"
+            />
+          </div>
+
+          <button
+            class="btn btn-secondary"
+            onclick="logout()"
+          >
             登出
           </button>
+
         </div>
 
       </div>
     </header>
 
 
-    <!-- DESKTOP NAV -->
-    <nav class="desktop-nav">
-      <div class="desktop-nav-inner">
+    <main>
+
+      <div class="container">
+
+        <!-- LEDGER -->
+        <section class="ledger-card">
+
+          <div>
+            <div class="ledger-label">
+              目前帳本
+            </div>
+
+            <div
+              id="currentLedgerName"
+              class="ledger-name"
+            >
+              我的帳本
+            </div>
+          </div>
+
+          <div class="ledger-actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="openLedgerManager()"
+            >
+              🔄 切換帳本
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              onclick="openJoin()"
+            >
+              🔑 加入共用帳本
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- PAGE CONTAINER -->
+
+        <section id="pageHome" class="page"></section>
+
+        <section id="pageAdd" class="page hidden"></section>
+
+        <section id="pageBudget" class="page hidden"></section>
+
+        <section id="pageDetail" class="page hidden"></section>
+
+        <section id="pageSettings" class="page hidden"></section>
+
+      </div>
+
+    </main>
+
+
+    <!-- BOTTOM NAV -->
+
+    <nav class="bottom-nav">
+
+      <div class="bottom-nav-inner">
 
         <button
           class="nav-btn active"
           data-page="home"
           onclick="showPage('home')"
         >
-          🏠 首頁
+          <span class="nav-icon">🏠</span>
+          首頁
         </button>
 
         <button
           class="nav-btn"
-          data-page="transaction"
-          onclick="showPage('transaction')"
+          data-page="add"
+          onclick="showPage('add')"
         >
-          ➕ 記帳
+          <span class="nav-icon">➕</span>
+          記帳
         </button>
 
         <button
@@ -960,2019 +903,87 @@
           data-page="budget"
           onclick="showPage('budget')"
         >
-          💰 預算
+          <span class="nav-icon">💰</span>
+          預算
         </button>
 
         <button
           class="nav-btn"
-          data-page="details"
-          onclick="showPage('details')"
+          data-page="detail"
+          onclick="showPage('detail')"
         >
-          📋 明細
+          <span class="nav-icon">📋</span>
+          明細
         </button>
-
-      </div>
-    </nav>
-
-
-    <!-- MAIN -->
-    <main class="main">
-
-      <!-- =========================
-           HOME
-      ========================== -->
-
-      <section id="page-home" class="page active">
-
-        <h1 class="page-title">🏠 本月概況</h1>
-        <p class="page-subtitle">
-          <span id="homeMonthText"></span> 的財務狀況
-        </p>
-
-        <div class="stats-grid">
-
-          <div class="stat-card">
-            <div class="stat-label">💵 本月收入</div>
-            <div id="statIncome" class="stat-value">
-              $0
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label">💸 本月總支出</div>
-            <div id="statExpense" class="stat-value">
-              $0
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label">💰 本月剩餘</div>
-            <div id="statRemaining" class="stat-value">
-              $0
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label">💳 信用卡支出</div>
-            <div id="statCreditCard" class="stat-value small">
-              $0
-            </div>
-          </div>
-
-        </div>
-
-
-        <div class="dashboard-grid">
-
-          <!-- Budget usage -->
-          <div class="card">
-            <h2 class="card-title">
-              📊 預算使用狀況
-            </h2>
-
-            <div id="homeBudgetList" class="budget-list"></div>
-          </div>
-
-
-          <!-- Recent transactions -->
-          <div class="card">
-            <h2 class="card-title">
-              🧾 最近記帳
-            </h2>
-
-            <div id="homeRecentList" class="recent-list"></div>
-
-            <button
-              class="btn btn-secondary btn-block"
-              style="margin-top: 14px;"
-              onclick="showPage('details')"
-            >
-              查看全部明細 →
-            </button>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           TRANSACTION
-      ========================== -->
-
-      <section id="page-transaction" class="page">
-
-        <h1 class="page-title">➕ 新增記帳</h1>
-        <p class="page-subtitle">
-          記錄這個月的每一筆支出
-        </p>
-
-        <div class="card">
-
-          <form id="transactionForm" onsubmit="addTransaction(event)">
-
-            <div class="transaction-form-grid">
-
-              <div class="form-group">
-                <label class="form-label">
-                  日期
-                </label>
-
-                <input
-                  id="txDate"
-                  type="date"
-                  required
-                />
-              </div>
-
-
-              <div class="form-group">
-                <label class="form-label">
-                  項目
-                </label>
-
-                <input
-                  id="txItem"
-                  type="text"
-                  placeholder="例如：午餐、Netflix、加油"
-                  required
-                />
-              </div>
-
-
-              <div class="form-group">
-                <label class="form-label">
-                  分類
-                </label>
-
-                <select id="txCategory" required>
-                  <option value="必要生活費">
-                    必要生活費
-                  </option>
-
-                  <option value="信用卡">
-                    信用卡
-                  </option>
-
-                  <option value="現金／預備金">
-                    現金／預備金
-                  </option>
-
-                  <option value="自由支出">
-                    自由支出
-                  </option>
-
-                  <option value="投資">
-                    投資
-                  </option>
-
-                  <option value="其他">
-                    其他
-                  </option>
-                </select>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form-label">
-                  支付方式
-                </label>
-
-                <select id="txPaymentMethod" required>
-                  <option value="信用卡">
-                    💳 信用卡
-                  </option>
-
-                  <option value="現金">
-                    💵 現金
-                  </option>
-                </select>
-              </div>
-
-
-              <div class="form-group">
-                <label class="form-label">
-                  金額
-                </label>
-
-                <input
-                  id="txAmount"
-                  type="number"
-                  min="0"
-                  step="1"
-                  placeholder="0"
-                  required
-                />
-              </div>
-
-
-              <div class="form-group">
-                <label class="form-label">
-                  備註
-                </label>
-
-                <input
-                  id="txNote"
-                  type="text"
-                  placeholder="選填"
-                />
-              </div>
-
-
-              <div class="form-group full">
-                <div class="transaction-actions">
-
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    onclick="resetTransactionForm()"
-                  >
-                    清除
-                  </button>
-
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                  >
-                    ➕ 新增這筆記帳
-                  </button>
-
-                </div>
-              </div>
-
-            </div>
-
-          </form>
-
-        </div>
-
-
-        <div class="card" style="margin-top:18px;">
-
-          <h2 class="card-title">
-            🧾 最近新增
-          </h2>
-
-          <div id="transactionRecentList"></div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           BUDGET
-      ========================== -->
-
-      <section id="page-budget" class="page">
-
-        <h1 class="page-title">💰 本月預算</h1>
-        <p class="page-subtitle">
-          這裡只管理預算，不會新增記帳
-        </p>
-
-
-        <!-- READ ONLY -->
-        <div id="budgetReadonly" class="card">
-
-          <div class="budget-readonly">
-
-            <div class="budget-total-row">
-              <span>本月收入</span>
-              <strong id="readonlyIncome">$0</strong>
-            </div>
-
-            <div class="budget-total-row">
-              <span>預算總額</span>
-              <strong id="readonlyBudgetTotal">$0</strong>
-            </div>
-
-            <div class="budget-total-row">
-              <span>已支出</span>
-              <strong id="readonlyExpense">$0</strong>
-            </div>
-
-            <div class="budget-total-row">
-              <span>預算剩餘</span>
-              <strong id="readonlyBudgetRemaining">$0</strong>
-            </div>
-
-          </div>
-
-
-          <div id="readonlyBudgetList" class="budget-list"></div>
-
-
-          <button
-            class="btn btn-primary btn-block"
-            style="margin-top:18px;"
-            onclick="enableBudgetEdit()"
-          >
-            ✏️ 編輯本月預算
-          </button>
-
-        </div>
-
-
-        <!-- EDIT -->
-        <div id="budgetEdit" class="card hidden">
-
-          <h2 class="card-title">
-            ✏️ 調整本月預算
-          </h2>
-
-          <div class="budget-grid">
-
-            <div class="form-group">
-              <label class="form-label">
-                💵 月收入
-              </label>
-
-              <input
-                id="budgetIncome"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                🏠 必要生活費
-              </label>
-
-              <input
-                id="budgetNecessary"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                💳 信用卡
-              </label>
-
-              <input
-                id="budgetCreditCard"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                💵 現金／預備金
-              </label>
-
-              <input
-                id="budgetCashReserve"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                🎮 自由支出
-              </label>
-
-              <input
-                id="budgetFreeSpending"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                📈 投資
-              </label>
-
-              <input
-                id="budgetInvestment"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-
-            <div class="form-group">
-              <label class="form-label">
-                📦 其他
-              </label>
-
-              <input
-                id="budgetOther"
-                type="number"
-                min="0"
-                step="1"
-              />
-            </div>
-
-          </div>
-
-
-          <div class="budget-actions">
-
-            <button
-              class="btn btn-secondary"
-              onclick="cancelBudgetEdit()"
-            >
-              取消
-            </button>
-
-            <button
-              class="btn btn-primary"
-              onclick="saveBudget()"
-            >
-              💾 儲存本月預算
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           DETAILS
-      ========================== -->
-
-      <section id="page-details" class="page">
-
-        <h1 class="page-title">📋 記帳明細</h1>
-        <p class="page-subtitle">
-          <span id="detailsMonthText"></span> 的全部記帳
-        </p>
-
-
-        <div class="card">
-
-          <div class="filter-grid">
-
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="🔍 搜尋項目或備註..."
-              oninput="renderTransactions()"
-            />
-
-
-            <select
-              id="filterCategory"
-              onchange="renderTransactions()"
-            >
-              <option value="">全部分類</option>
-              <option value="必要生活費">必要生活費</option>
-              <option value="信用卡">信用卡</option>
-              <option value="現金／預備金">現金／預備金</option>
-              <option value="自由支出">自由支出</option>
-              <option value="投資">投資</option>
-              <option value="其他">其他</option>
-            </select>
-
-
-            <select
-              id="filterPayment"
-              onchange="renderTransactions()"
-            >
-              <option value="">全部支付方式</option>
-              <option value="信用卡">信用卡</option>
-              <option value="現金">現金</option>
-            </select>
-
-          </div>
-
-
-          <div id="listSummary" class="list-summary">
-            共 0 筆
-          </div>
-
-
-          <div id="transactionList"></div>
-
-        </div>
-
-      </section>
-
-    </main>
-
-
-    <!-- MOBILE NAV -->
-
-    <nav class="mobile-nav">
-
-      <button
-        class="active"
-        data-page="home"
-        onclick="showPage('home')"
-      >
-        🏠<br />首頁
-      </button>
-
-      <button
-        data-page="transaction"
-        onclick="showPage('transaction')"
-      >
-        ➕<br />記帳
-      </button>
-
-      <button
-        data-page="budget"
-        onclick="showPage('budget')"
-      >
-        💰<br />預算
-      </button>
-
-      <button
-        data-page="details"
-        onclick="showPage('details')"
-      >
-        📋<br />明細
-      </button>
-
-    </nav>
-
-  </div>
-
-
-  <!-- =========================
-       EDIT MODAL
-  ========================== -->
-
-  <div id="editModal" class="modal-backdrop">
-
-    <div class="modal">
-
-      <div class="modal-head">
-
-        <h2 class="modal-title">
-          ✏️ 編輯記帳
-        </h2>
 
         <button
-          class="close-btn"
-          onclick="closeEditModal()"
+          class="nav-btn"
+          data-page="settings"
+          onclick="showPage('settings')"
         >
-          ×
+          <span class="nav-icon">⚙️</span>
+          設定
         </button>
 
       </div>
 
+    </nav>
 
-      <form onsubmit="saveEditedTransaction(event)">
-
-        <input id="editId" type="hidden" />
-
-        <div class="form-group">
-          <label class="form-label">日期</label>
-
-          <input
-            id="editDate"
-            type="date"
-            required
-          />
-        </div>
+  </section>
 
 
-        <div class="form-group">
-          <label class="form-label">項目</label>
+  <!-- MODAL -->
 
-          <input
-            id="editItem"
-            type="text"
-            required
-          />
-        </div>
-
-
-        <div class="form-group">
-          <label class="form-label">分類</label>
-
-          <select id="editCategory" required>
-            <option value="必要生活費">必要生活費</option>
-            <option value="信用卡">信用卡</option>
-            <option value="現金／預備金">現金／預備金</option>
-            <option value="自由支出">自由支出</option>
-            <option value="投資">投資</option>
-            <option value="其他">其他</option>
-          </select>
-        </div>
-
-
-        <div class="form-group">
-          <label class="form-label">支付方式</label>
-
-          <select id="editPaymentMethod" required>
-            <option value="信用卡">信用卡</option>
-            <option value="現金">現金</option>
-          </select>
-        </div>
-
-
-        <div class="form-group">
-          <label class="form-label">金額</label>
-
-          <input
-            id="editAmount"
-            type="number"
-            min="0"
-            step="1"
-            required
-          />
-        </div>
-
-
-        <div class="form-group">
-          <label class="form-label">備註</label>
-
-          <input
-            id="editNote"
-            type="text"
-          />
-        </div>
-
-
-        <div class="budget-actions">
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onclick="closeEditModal()"
-          >
-            取消
-          </button>
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            💾 儲存修改
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
+  <div id="modalRoot"></div>
 
   <!-- TOAST -->
-  <div id="toast" class="toast"></div>
 
-
-  <!-- LOADING -->
-  <div id="loading" class="loading">
-    <div class="loading-box">
-      ⏳ 處理中...
-    </div>
-  </div>
+  <div id="toast"></div>
 
 
 <script>
+
 /* =========================================================
-   Supabase
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
   "https://dxzzgcsatudrgjnbtbnl.supabase.co";
 
-const SUPABASE_ANON_KEY =
+const SUPABASE_KEY =
   "sb_publishable_m5bOwLJZRbhQls_76MoDrw_jCiF7Sbd";
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY
+    SUPABASE_KEY
   );
 
 
 /* =========================================================
-   Global State
+   STATE
 ========================================================= */
 
 let currentUser = null;
-let currentMonth = getSafeCurrentMonth();
 
-let budget = {
-  income: 36000,
-  necessary: 7000,
-  credit_card: 15000,
-  cash_reserve: 5000,
-  free_spending: 10000,
-  investment: 0,
-  other: 0
-};
+let ledgers = [];
+
+let currentLedger = null;
 
 let transactions = [];
 
+let budget = null;
+
+let currentMonth =
+  getSafeCurrentMonth();
+
 let currentPage = "home";
+
 let authMode = "login";
-let booting = false;
 
 
 /* =========================================================
-   Helpers
-========================================================= */
-
-function getSafeCurrentMonth() {
-  const now = new Date();
-
-  const year = now.getFullYear();
-
-  const month =
-    String(now.getMonth() + 1)
-      .padStart(2, "0");
-
-  return `${year}-${month}`;
-}
-
-
-function normalizeMonth(month) {
-
-  if (
-    typeof month === "string" &&
-    /^\d{4}-\d{2}$/.test(month)
-  ) {
-    return month;
-  }
-
-  return getSafeCurrentMonth();
-}
-
-
-function getNextMonth(month) {
-
-  month = normalizeMonth(month);
-
-  const [year, monthNumber] =
-    month.split("-").map(Number);
-
-  const date =
-    new Date(
-      year,
-      monthNumber,
-      1
-    );
-
-  const y =
-    date.getFullYear();
-
-  const m =
-    String(date.getMonth() + 1)
-      .padStart(2, "0");
-
-  return `${y}-${m}-01`;
-}
-
-
-function formatMoney(value) {
-
-  const number =
-    Number(value || 0);
-
-  return "$" +
-    number.toLocaleString("zh-TW");
-}
-
-
-function escapeHtml(value) {
-
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-function getMonthLabel(month) {
-
-  const [year, monthNumber] =
-    normalizeMonth(month)
-      .split("-");
-
-  return `${year} 年 ${Number(monthNumber)} 月`;
-}
-
-
-function setMonthInput() {
-
-  const input =
-    document.getElementById("monthInput");
-
-  if (input) {
-    input.value =
-      normalizeMonth(currentMonth);
-  }
-
-  const label =
-    getMonthLabel(currentMonth);
-
-  const homeText =
-    document.getElementById("homeMonthText");
-
-  const detailsText =
-    document.getElementById("detailsMonthText");
-
-  if (homeText) {
-    homeText.textContent = label;
-  }
-
-  if (detailsText) {
-    detailsText.textContent = label;
-  }
-}
-
-
-function showLoading(show = true) {
-
-  const loading =
-    document.getElementById("loading");
-
-  loading.classList.toggle(
-    "show",
-    show
-  );
-}
-
-
-function toast(message) {
-
-  const element =
-    document.getElementById("toast");
-
-  element.textContent =
-    message;
-
-  element.classList.add("show");
-
-  clearTimeout(
-    window.toastTimer
-  );
-
-  window.toastTimer =
-    setTimeout(() => {
-      element.classList.remove("show");
-    }, 2800);
-}
-
-
-/* =========================================================
-   Auth
-========================================================= */
-
-function switchAuthMode(mode) {
-
-  authMode = mode;
-
-  const loginTab =
-    document.getElementById("loginTab");
-
-  const registerTab =
-    document.getElementById("registerTab");
-
-  const submit =
-    document.getElementById("authSubmit");
-
-  if (mode === "login") {
-
-    loginTab.classList.add("active");
-    registerTab.classList.remove("active");
-
-    submit.textContent = "登入";
-
-  } else {
-
-    loginTab.classList.remove("active");
-    registerTab.classList.add("active");
-
-    submit.textContent = "建立帳號";
-  }
-
-  clearAuthMessage();
-}
-
-
-function showAuthMessage(
-  message,
-  type = "error"
-) {
-
-  const element =
-    document.getElementById("authMessage");
-
-  element.textContent =
-    message;
-
-  element.className =
-    `message show ${type}`;
-}
-
-
-function clearAuthMessage() {
-
-  const element =
-    document.getElementById("authMessage");
-
-  element.textContent = "";
-  element.className = "message";
-}
-
-
-async function handleAuth(event) {
-
-  event.preventDefault();
-
-  const email =
-    document
-      .getElementById("authEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("authPassword")
-      .value;
-
-  clearAuthMessage();
-
-  showLoading(true);
-
-  try {
-
-    if (authMode === "login") {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      currentUser =
-        data.user;
-
-      await startApp();
-
-    } else {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.signUp({
-          email,
-          password
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.session) {
-
-        currentUser =
-          data.user;
-
-        await startApp();
-
-      } else {
-
-        showAuthMessage(
-          "註冊成功！請到 Email 完成驗證後再登入。",
-          "success"
-        );
-      }
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    showAuthMessage(
-      getAuthErrorMessage(error),
-      "error"
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-function getAuthErrorMessage(error) {
-
-  const message =
-    error?.message || "";
-
-  if (
-    message
-      .toLowerCase()
-      .includes("invalid login credentials")
-  ) {
-    return "Email 或密碼錯誤，請確認帳號密碼。";
-  }
-
-  if (
-    message
-      .toLowerCase()
-      .includes("email not confirmed")
-  ) {
-    return "Email 尚未驗證，請先到信箱完成驗證。";
-  }
-
-  if (
-    message
-      .toLowerCase()
-      .includes("user already registered")
-  ) {
-    return "這個 Email 已經註冊過了，請直接登入。";
-  }
-
-  return message ||
-    "操作失敗，請稍後再試。";
-}
-
-
-async function logout() {
-
-  await supabaseClient.auth.signOut();
-
-  currentUser = null;
-  transactions = [];
-
-  document
-    .getElementById("app")
-    .classList.add("hidden");
-
-  document
-    .getElementById("authPage")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("authPassword")
-    .value = "";
-
-  toast("已登出");
-}
-
-
-/* =========================================================
-   App Start
-========================================================= */
-
-async function init() {
-
-  setMonthInput();
-
-  const {
-    data
-  } =
-    await supabaseClient.auth.getSession();
-
-  if (data?.session?.user) {
-
-    currentUser =
-      data.session.user;
-
-    await startApp();
-  }
-}
-
-
-async function startApp() {
-
-  if (!currentUser) {
-    return;
-  }
-
-  if (booting) {
-    return;
-  }
-
-  booting = true;
-
-  try {
-
-    document
-      .getElementById("authPage")
-      .classList.add("hidden");
-
-    document
-      .getElementById("app")
-      .classList.remove("hidden");
-
-    document
-      .getElementById("userEmail")
-      .textContent =
-      currentUser.email || "";
-
-    currentMonth =
-      normalizeMonth(currentMonth);
-
-    setMonthInput();
-
-    await loadMonthData();
-
-    showPage(currentPage);
-
-  } finally {
-
-    booting = false;
-  }
-}
-
-
-/* =========================================================
-   Month
-========================================================= */
-
-async function changeMonth() {
-
-  const input =
-    document.getElementById("monthInput");
-
-  let value =
-    input?.value || "";
-
-  value =
-    normalizeMonth(value);
-
-  currentMonth =
-    value;
-
-  setMonthInput();
-
-  await loadMonthData();
-}
-
-
-async function loadMonthData() {
-
-  if (!currentUser) {
-    return;
-  }
-
-  showLoading(true);
-
-  try {
-
-    await Promise.all([
-      loadBudget(currentMonth),
-      loadTransactions(currentMonth)
-    ]);
-
-    renderAll();
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "讀取資料時發生錯誤"
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-/* =========================================================
-   Budget
-========================================================= */
-
-async function loadBudget(month) {
-
-  month =
-    normalizeMonth(month);
-
-  const monthDate =
-    `${month}-01`;
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("budgets")
-      .select("*")
-      .eq("user_id", currentUser.id)
-      .eq("month", monthDate)
-      .maybeSingle();
-
-  if (error) {
-
-    console.error(
-      "Supabase loadBudget error:",
-      error
-    );
-
-    throw error;
-  }
-
-  if (data) {
-
-    budget = {
-      income:
-        Number(data.income || 0),
-
-      necessary:
-        Number(data.necessary || 0),
-
-      credit_card:
-        Number(data.credit_card || 0),
-
-      cash_reserve:
-        Number(data.cash_reserve || 0),
-
-      free_spending:
-        Number(data.free_spending || 0),
-
-      investment:
-        Number(data.investment || 0),
-
-      other:
-        Number(data.other || 0)
-    };
-
-  } else {
-
-    budget = {
-      income: 36000,
-      necessary: 7000,
-      credit_card: 15000,
-      cash_reserve: 5000,
-      free_spending: 10000,
-      investment: 0,
-      other: 0
-    };
-  }
-
-  fillBudgetInputs();
-}
-
-
-function fillBudgetInputs() {
-
-  const fields = {
-    budgetIncome:
-      budget.income,
-
-    budgetNecessary:
-      budget.necessary,
-
-    budgetCreditCard:
-      budget.credit_card,
-
-    budgetCashReserve:
-      budget.cash_reserve,
-
-    budgetFreeSpending:
-      budget.free_spending,
-
-    budgetInvestment:
-      budget.investment,
-
-    budgetOther:
-      budget.other
-  };
-
-  Object.entries(fields)
-    .forEach(([id, value]) => {
-
-      const element =
-        document.getElementById(id);
-
-      if (element) {
-        element.value = value;
-      }
-    });
-}
-
-
-async function saveBudget() {
-
-  if (!currentUser) {
-    return;
-  }
-
-  const newBudget = {
-
-    income:
-      Number(
-        document
-          .getElementById("budgetIncome")
-          .value || 0
-      ),
-
-    necessary:
-      Number(
-        document
-          .getElementById("budgetNecessary")
-          .value || 0
-      ),
-
-    credit_card:
-      Number(
-        document
-          .getElementById("budgetCreditCard")
-          .value || 0
-      ),
-
-    cash_reserve:
-      Number(
-        document
-          .getElementById("budgetCashReserve")
-          .value || 0
-      ),
-
-    free_spending:
-      Number(
-        document
-          .getElementById("budgetFreeSpending")
-          .value || 0
-      ),
-
-    investment:
-      Number(
-        document
-          .getElementById("budgetInvestment")
-          .value || 0
-      ),
-
-    other:
-      Number(
-        document
-          .getElementById("budgetOther")
-          .value || 0
-      )
-  };
-
-  showLoading(true);
-
-  try {
-
-    const row = {
-      user_id:
-        currentUser.id,
-
-      month:
-        `${currentMonth}-01`,
-
-      ...newBudget
-    };
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("budgets")
-        .upsert(
-          row,
-          {
-            onConflict:
-              "user_id,month"
-          }
-        );
-
-    if (error) {
-      throw error;
-    }
-
-    budget =
-      newBudget;
-
-    cancelBudgetEdit();
-
-    renderAll();
-
-    toast(
-      "✅ 本月預算已儲存"
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "儲存預算失敗：" +
-      error.message
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-function enableBudgetEdit() {
-
-  fillBudgetInputs();
-
-  document
-    .getElementById("budgetReadonly")
-    .classList.add("hidden");
-
-  document
-    .getElementById("budgetEdit")
-    .classList.remove("hidden");
-}
-
-
-function cancelBudgetEdit() {
-
-  fillBudgetInputs();
-
-  document
-    .getElementById("budgetEdit")
-    .classList.add("hidden");
-
-  document
-    .getElementById("budgetReadonly")
-    .classList.remove("hidden");
-}
-
-
-/* =========================================================
-   Transactions
-========================================================= */
-
-async function loadTransactions(month) {
-
-  if (!currentUser) {
-
-    transactions = [];
-
-    return;
-  }
-
-  month =
-    normalizeMonth(month);
-
-  const start =
-    `${month}-01`;
-
-  const end =
-    getNextMonth(month);
-
-  if (
-    !/^\d{4}-\d{2}-\d{2}$/.test(start) ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(end)
-  ) {
-
-    console.error(
-      "Invalid date range:",
-      {
-        month,
-        start,
-        end
-      }
-    );
-
-    toast(
-      "月份格式錯誤，已自動修正。"
-    );
-
-    currentMonth =
-      getSafeCurrentMonth();
-
-    setMonthInput();
-
-    return loadTransactions(
-      currentMonth
-    );
-  }
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("transactions")
-      .select("*")
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .gte(
-        "date",
-        start
-      )
-      .lt(
-        "date",
-        end
-      )
-      .order(
-        "date",
-        {
-          ascending: false
-        }
-      )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
-  if (error) {
-
-    console.error(
-      "Supabase loadTransactions error:",
-      error
-    );
-
-    throw error;
-  }
-
-  transactions =
-    data || [];
-}
-
-
-/* =========================================================
-   Add Transaction
-========================================================= */
-
-async function addTransaction(event) {
-
-  event.preventDefault();
-
-  if (!currentUser) {
-    return;
-  }
-
-  const date =
-    document
-      .getElementById("txDate")
-      .value;
-
-  const item =
-    document
-      .getElementById("txItem")
-      .value
-      .trim();
-
-  const category =
-    document
-      .getElementById("txCategory")
-      .value;
-
-  const paymentMethod =
-    document
-      .getElementById("txPaymentMethod")
-      .value;
-
-  const amount =
-    Number(
-      document
-        .getElementById("txAmount")
-        .value
-    );
-
-  const note =
-    document
-      .getElementById("txNote")
-      .value
-      .trim();
-
-  if (!date || !item || amount <= 0) {
-
-    toast(
-      "請確認日期、項目與金額"
-    );
-
-    return;
-  }
-
-  showLoading(true);
-
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("transactions")
-        .insert({
-          user_id:
-            currentUser.id,
-
-          date,
-
-          item,
-
-          category,
-
-          payment_method:
-            paymentMethod,
-
-          amount,
-
-          note:
-            note || null
-        });
-
-    if (error) {
-      throw error;
-    }
-
-    const transactionMonth =
-      date.slice(0, 7);
-
-    resetTransactionForm();
-
-    if (
-      transactionMonth !==
-      currentMonth
-    ) {
-
-      toast(
-        `已新增，但這筆記帳屬於 ${getMonthLabel(transactionMonth)}`
-      );
-
-    } else {
-
-      await loadTransactions(
-        currentMonth
-      );
-
-      renderAll();
-
-      toast(
-        "✅ 記帳成功"
-      );
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "新增記帳失敗：" +
-      error.message
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-function resetTransactionForm() {
-
-  const form =
-    document.getElementById(
-      "transactionForm"
-    );
-
-  form.reset();
-
-  setDefaultTransactionDate();
-}
-
-
-function setDefaultTransactionDate() {
-
-  const input =
-    document.getElementById(
-      "txDate"
-    );
-
-  if (!input) {
-    return;
-  }
-
-  const now =
-    new Date();
-
-  const todayMonth =
-    `${now.getFullYear()}-` +
-    `${String(now.getMonth() + 1).padStart(2, "0")}`;
-
-  if (
-    todayMonth ===
-    currentMonth
-  ) {
-
-    input.value =
-      `${todayMonth}-` +
-      `${String(now.getDate()).padStart(2, "0")}`;
-
-  } else {
-
-    input.value =
-      `${currentMonth}-01`;
-  }
-}
-
-
-/* =========================================================
-   Edit Transaction
-========================================================= */
-
-function openEditModal(id) {
-
-  const tx =
-    transactions.find(
-      item => item.id === id
-    );
-
-  if (!tx) {
-    return;
-  }
-
-  document
-    .getElementById("editId")
-    .value =
-    tx.id;
-
-  document
-    .getElementById("editDate")
-    .value =
-    tx.date;
-
-  document
-    .getElementById("editItem")
-    .value =
-    tx.item || "";
-
-  document
-    .getElementById("editCategory")
-    .value =
-    tx.category;
-
-  document
-    .getElementById("editPaymentMethod")
-    .value =
-    tx.payment_method;
-
-  document
-    .getElementById("editAmount")
-    .value =
-    tx.amount;
-
-  document
-    .getElementById("editNote")
-    .value =
-    tx.note || "";
-
-  document
-    .getElementById("editModal")
-    .classList.add("show");
-}
-
-
-function closeEditModal() {
-
-  document
-    .getElementById("editModal")
-    .classList.remove("show");
-}
-
-
-async function saveEditedTransaction(event) {
-
-  event.preventDefault();
-
-  const id =
-    document
-      .getElementById("editId")
-      .value;
-
-  const date =
-    document
-      .getElementById("editDate")
-      .value;
-
-  const item =
-    document
-      .getElementById("editItem")
-      .value
-      .trim();
-
-  const category =
-    document
-      .getElementById("editCategory")
-      .value;
-
-  const paymentMethod =
-    document
-      .getElementById("editPaymentMethod")
-      .value;
-
-  const amount =
-    Number(
-      document
-        .getElementById("editAmount")
-        .value
-    );
-
-  const note =
-    document
-      .getElementById("editNote")
-      .value
-      .trim();
-
-  if (!id || !date || !item || amount <= 0) {
-
-    toast(
-      "請確認資料是否完整"
-    );
-
-    return;
-  }
-
-  showLoading(true);
-
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("transactions")
-        .update({
-
-          date,
-
-          item,
-
-          category,
-
-          payment_method:
-            paymentMethod,
-
-          amount,
-
-          note:
-            note || null
-
-        })
-        .eq(
-          "id",
-          id
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-    if (error) {
-      throw error;
-    }
-
-    closeEditModal();
-
-    await loadTransactions(
-      currentMonth
-    );
-
-    renderAll();
-
-    const newMonth =
-      date.slice(0, 7);
-
-    if (
-      newMonth !==
-      currentMonth
-    ) {
-
-      toast(
-        `已修改，這筆記帳已移至 ${getMonthLabel(newMonth)}`
-      );
-
-    } else {
-
-      toast(
-        "✅ 記帳已修改"
-      );
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "修改失敗：" +
-      error.message
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-/* =========================================================
-   Delete
-========================================================= */
-
-async function deleteTransaction(id) {
-
-  const tx =
-    transactions.find(
-      item => item.id === id
-    );
-
-  if (!tx) {
-    return;
-  }
-
-  const confirmed =
-    confirm(
-      `確定要刪除「${tx.item}」${formatMoney(tx.amount)} 嗎？`
-    );
-
-  if (!confirmed) {
-    return;
-  }
-
-  showLoading(true);
-
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("transactions")
-        .delete()
-        .eq(
-          "id",
-          id
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-    if (error) {
-      throw error;
-    }
-
-    transactions =
-      transactions.filter(
-        item =>
-          item.id !== id
-      );
-
-    renderAll();
-
-    toast(
-      "🗑️ 已刪除記帳"
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "刪除失敗：" +
-      error.message
-    );
-
-  } finally {
-
-    showLoading(false);
-  }
-}
-
-
-/* =========================================================
-   Category Mapping
+   CATEGORY
 ========================================================= */
 
 const categoryMap = {
@@ -3006,710 +1017,2998 @@ const categoryMap = {
     key: "other",
     icon: "📦"
   }
+
 };
 
 
 /* =========================================================
-   Calculate
+   DEFAULT BUDGET
 ========================================================= */
 
-function getCategorySpent(category) {
+const defaultBudget = {
 
-  return transactions
-    .filter(
-      tx =>
-        tx.category === category
-    )
-    .reduce(
-      (
-        total,
-        tx
-      ) =>
-        total +
-        Number(tx.amount || 0),
-      0
-    );
-}
+  income: 36000,
 
+  necessary: 7000,
 
-function getTotalExpense() {
+  credit_card: 15000,
 
-  return transactions.reduce(
-    (
-      total,
-      tx
-    ) =>
-      total +
-      Number(tx.amount || 0),
-    0
-  );
-}
+  cash_reserve: 5000,
+
+  free_spending: 10000,
+
+  investment: 0,
+
+  other: 0
+
+};
 
 
-function getCreditCardExpense() {
+/* =========================================================
+   BASIC FUNCTIONS
+========================================================= */
 
-  return transactions
-    .filter(
-      tx =>
-        tx.payment_method ===
-        "信用卡"
-    )
-    .reduce(
-      (
-        total,
-        tx
-      ) =>
-        total +
-        Number(tx.amount || 0),
-      0
-    );
-}
+function getSafeCurrentMonth() {
 
-
-function getCashExpense() {
-
-  return transactions
-    .filter(
-      tx =>
-        tx.payment_method ===
-        "現金"
-    )
-    .reduce(
-      (
-        total,
-        tx
-      ) =>
-        total +
-        Number(tx.amount || 0),
-      0
-    );
-}
-
-
-function getTotalBudget() {
+  const now = new Date();
 
   return (
-    Number(budget.necessary) +
-    Number(budget.credit_card) +
-    Number(budget.cash_reserve) +
-    Number(budget.free_spending) +
-    Number(budget.investment) +
-    Number(budget.other)
+    now.getFullYear() +
+    "-" +
+    String(now.getMonth() + 1).padStart(2, "0")
   );
+
 }
 
 
-/* =========================================================
-   Render All
-========================================================= */
+function normalizeMonth(month) {
 
-function renderAll() {
+  if (
+    typeof month === "string" &&
+    /^\d{4}-\d{2}$/.test(month)
+  ) {
 
-  setMonthInput();
+    return month;
 
-  renderDashboard();
-
-  renderBudgetPage();
-
-  renderTransactions();
-
-  renderTransactionRecent();
-
-  setDefaultTransactionDate();
-}
-
-
-/* =========================================================
-   Dashboard
-========================================================= */
-
-function renderDashboard() {
-
-  const income =
-    Number(budget.income || 0);
-
-  const expense =
-    getTotalExpense();
-
-  const remaining =
-    income - expense;
-
-  document
-    .getElementById("statIncome")
-    .textContent =
-    formatMoney(income);
-
-  document
-    .getElementById("statExpense")
-    .textContent =
-    formatMoney(expense);
-
-  document
-    .getElementById("statRemaining")
-    .textContent =
-    formatMoney(remaining);
-
-  document
-    .getElementById("statCreditCard")
-    .textContent =
-    formatMoney(
-      getCreditCardExpense()
-    );
-
-  renderHomeBudget();
-
-  renderHomeRecent();
-}
-
-
-function renderHomeBudget() {
-
-  const container =
-    document.getElementById(
-      "homeBudgetList"
-    );
-
-  const categories =
-    Object.keys(categoryMap);
-
-  container.innerHTML =
-    categories.map(
-      category => {
-
-        const info =
-          categoryMap[category];
-
-        const budgetAmount =
-          Number(
-            budget[info.key] || 0
-          );
-
-        const spent =
-          getCategorySpent(
-            category
-          );
-
-        let percent = 0;
-
-        if (budgetAmount > 0) {
-          percent =
-            Math.round(
-              spent /
-              budgetAmount *
-              100
-            );
-        }
-
-        const width =
-          Math.min(
-            percent,
-            100
-          );
-
-        const over =
-          spent >
-          budgetAmount &&
-          budgetAmount > 0;
-
-        return `
-          <div class="budget-row">
-
-            <div class="budget-row-head">
-
-              <div class="budget-name">
-                ${info.icon}
-                ${escapeHtml(category)}
-              </div>
-
-              <div class="budget-number">
-                ${formatMoney(spent)}
-                /
-                ${formatMoney(budgetAmount)}
-              </div>
-
-            </div>
-
-            <div class="progress">
-              <div
-                class="progress-bar ${over ? "over" : ""}"
-                style="width:${width}%"
-              ></div>
-            </div>
-
-          </div>
-        `;
-      }
-    ).join("");
-}
-
-
-function renderHomeRecent() {
-
-  const container =
-    document.getElementById(
-      "homeRecentList"
-    );
-
-  const list =
-    transactions.slice(0, 5);
-
-  if (!list.length) {
-
-    container.innerHTML =
-      `<div class="empty">
-        📭 本月還沒有記帳
-      </div>`;
-
-    return;
   }
 
-  container.innerHTML =
-    list.map(
-      tx =>
-        renderTransactionItem(
-          tx,
-          false
-        )
-    ).join("");
+  return getSafeCurrentMonth();
+
 }
 
 
-/* =========================================================
-   Budget Page
-========================================================= */
+function getNextMonth(month) {
 
-function renderBudgetPage() {
+  month = normalizeMonth(month);
 
-  const totalBudget =
-    getTotalBudget();
+  const [year, monthNumber] =
+    month.split("-").map(Number);
 
-  const expense =
-    getTotalExpense();
-
-  const remaining =
-    totalBudget - expense;
-
-  document
-    .getElementById("readonlyIncome")
-    .textContent =
-    formatMoney(
-      budget.income
+  const date =
+    new Date(
+      year,
+      monthNumber,
+      1
     );
 
-  document
-    .getElementById("readonlyBudgetTotal")
-    .textContent =
-    formatMoney(
-      totalBudget
-    );
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0") +
+    "-01"
+  );
 
-  document
-    .getElementById("readonlyExpense")
-    .textContent =
-    formatMoney(
-      expense
-    );
-
-  document
-    .getElementById("readonlyBudgetRemaining")
-    .textContent =
-    formatMoney(
-      remaining
-    );
-
-
-  const container =
-    document.getElementById(
-      "readonlyBudgetList"
-    );
-
-  container.innerHTML =
-    Object.keys(categoryMap)
-      .map(category => {
-
-        const info =
-          categoryMap[category];
-
-        const amount =
-          Number(
-            budget[info.key] || 0
-          );
-
-        const spent =
-          getCategorySpent(
-            category
-          );
-
-        const remain =
-          amount - spent;
-
-        const percent =
-          amount > 0
-            ? Math.round(
-                spent /
-                amount *
-                100
-              )
-            : 0;
-
-        const width =
-          Math.min(
-            percent,
-            100
-          );
-
-        const over =
-          spent >
-          amount &&
-          amount > 0;
-
-        return `
-          <div class="budget-row">
-
-            <div class="budget-row-head">
-
-              <div class="budget-name">
-                ${info.icon}
-                ${escapeHtml(category)}
-              </div>
-
-              <div class="budget-number">
-                ${formatMoney(spent)}
-                /
-                ${formatMoney(amount)}
-              </div>
-
-            </div>
-
-            <div class="progress">
-              <div
-                class="progress-bar ${over ? "over" : ""}"
-                style="width:${width}%"
-              ></div>
-            </div>
-
-            <div
-              style="
-                margin-top:7px;
-                font-size:12px;
-                color:${remain < 0 ? "var(--danger)" : "var(--muted)"};
-              "
-            >
-              ${remain >= 0 ? "剩餘" : "超支"}
-              ${formatMoney(Math.abs(remain))}
-            </div>
-
-          </div>
-        `;
-      })
-      .join("");
 }
 
 
-/* =========================================================
-   Transaction List
-========================================================= */
+function money(value) {
 
-function renderTransactions() {
+  return Number(value || 0)
+    .toLocaleString(
+      "zh-TW"
+    );
 
-  const container =
+}
+
+
+function esc(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function toast(message) {
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+
+  el.classList.add("show");
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer =
+    setTimeout(() => {
+
+      el.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+function setMonthInput() {
+
+  const input =
     document.getElementById(
-      "transactionList"
+      "monthInput"
     );
 
-  if (!container) {
-    return;
-  }
+  if (input) {
 
-  const search =
-    (
-      document
-        .getElementById(
-          "searchInput"
-        )
-        ?.value || ""
-    )
-      .trim()
-      .toLowerCase();
-
-  const category =
-    document
-      .getElementById(
-        "filterCategory"
-      )
-      ?.value || "";
-
-  const payment =
-    document
-      .getElementById(
-        "filterPayment"
-      )
-      ?.value || "";
-
-
-  const filtered =
-    transactions.filter(
-      tx => {
-
-        const searchMatch =
-          !search ||
-          String(tx.item || "")
-            .toLowerCase()
-            .includes(search) ||
-          String(tx.note || "")
-            .toLowerCase()
-            .includes(search);
-
-        const categoryMatch =
-          !category ||
-          tx.category === category;
-
-        const paymentMatch =
-          !payment ||
-          tx.payment_method === payment;
-
-        return (
-          searchMatch &&
-          categoryMatch &&
-          paymentMatch
-        );
-      }
-    );
-
-
-  const summary =
-    document.getElementById(
-      "listSummary"
-    );
-
-  if (summary) {
-
-    const total =
-      filtered.reduce(
-        (
-          sum,
-          tx
-        ) =>
-          sum +
-          Number(tx.amount || 0),
-        0
+    input.value =
+      normalizeMonth(
+        currentMonth
       );
 
-    summary.textContent =
-      `共 ${filtered.length} 筆｜合計 ${formatMoney(total)}`;
   }
 
-
-  if (!filtered.length) {
-
-    container.innerHTML =
-      `<div class="empty">
-        📭 沒有符合條件的記帳
-      </div>`;
-
-    return;
-  }
-
-
-  container.innerHTML =
-    filtered
-      .map(
-        tx =>
-          renderTransactionItem(
-            tx,
-            true
-          )
-      )
-      .join("");
-}
-
-
-function renderTransactionRecent() {
-
-  const container =
-    document.getElementById(
-      "transactionRecentList"
-    );
-
-  if (!container) {
-    return;
-  }
-
-  const list =
-    transactions.slice(0, 5);
-
-  if (!list.length) {
-
-    container.innerHTML =
-      `<div class="empty">
-        📭 本月還沒有記帳
-      </div>`;
-
-    return;
-  }
-
-  container.innerHTML =
-    list
-      .map(
-        tx =>
-          renderTransactionItem(
-            tx,
-            true
-          )
-      )
-      .join("");
-}
-
-
-function renderTransactionItem(
-  tx,
-  showButtons = true
-) {
-
-  const categoryInfo =
-    categoryMap[
-      tx.category
-    ];
-
-  const icon =
-    categoryInfo?.icon ||
-    "📦";
-
-  return `
-    <div class="transaction-item">
-
-      <div class="transaction-main">
-
-        <div class="transaction-title">
-          ${escapeHtml(tx.item)}
-        </div>
-
-        <div class="transaction-meta">
-          ${escapeHtml(tx.date)}
-          ・
-          ${icon}
-          ${escapeHtml(tx.category)}
-          ・
-          ${escapeHtml(tx.payment_method)}
-          ${
-            tx.note
-              ? `・ ${escapeHtml(tx.note)}`
-              : ""
-          }
-        </div>
-
-        ${
-          showButtons
-            ? `
-              <div class="transaction-buttons">
-
-                <button
-                  class="mini-btn mini-edit"
-                  onclick="openEditModal('${tx.id}')"
-                >
-                  ✏️ 編輯
-                </button>
-
-                <button
-                  class="mini-btn mini-delete"
-                  onclick="deleteTransaction('${tx.id}')"
-                >
-                  🗑️ 刪除
-                </button>
-
-              </div>
-            `
-            : ""
-        }
-
-      </div>
-
-      <div class="transaction-amount expense">
-        -${formatMoney(tx.amount)}
-      </div>
-
-    </div>
-  `;
 }
 
 
 /* =========================================================
-   Page Navigation
+   AUTH
+========================================================= */
+
+function updateAuthUI() {
+
+  const submit =
+    document.getElementById(
+      "authSubmit"
+    );
+
+  const switchText =
+    document.getElementById(
+      "authSwitchText"
+    );
+
+  const switchBtn =
+    document.getElementById(
+      "authSwitchBtn"
+    );
+
+  if (authMode === "login") {
+
+    submit.textContent = "登入";
+
+    switchText.textContent =
+      "還沒有帳號？";
+
+    switchBtn.textContent =
+      "註冊";
+
+  } else {
+
+    submit.textContent = "註冊";
+
+    switchText.textContent =
+      "已經有帳號？";
+
+    switchBtn.textContent =
+      "登入";
+
+  }
+
+}
+
+
+async function handleAuth(event) {
+
+  event.preventDefault();
+
+  const email =
+    document.getElementById(
+      "authEmail"
+    ).value.trim();
+
+  const password =
+    document.getElementById(
+      "authPassword"
+    ).value;
+
+  if (!email || !password) {
+
+    toast("請輸入 Email 和密碼");
+
+    return;
+
+  }
+
+  const button =
+    document.getElementById(
+      "authSubmit"
+    );
+
+  button.disabled = true;
+
+  try {
+
+    if (authMode === "login") {
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      toast("登入成功");
+
+    } else {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signUp({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      if (
+        data.user &&
+        !data.session
+      ) {
+
+        toast(
+          "註冊成功，請確認 Email 後再登入"
+        );
+
+      } else {
+
+        toast("註冊成功");
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast(
+      error.message ||
+      "操作失敗"
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+}
+
+
+function switchAuthMode() {
+
+  authMode =
+    authMode === "login"
+      ? "register"
+      : "login";
+
+  updateAuthUI();
+
+}
+
+
+/* =========================================================
+   LEDGER
+========================================================= */
+
+async function ensurePersonalLedger() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "ensure_personal_ledger"
+    );
+
+  if (error) {
+
+    console.error(error);
+
+    throw error;
+
+  }
+
+  return data;
+
+}
+
+
+async function loadLedgers() {
+
+  const personalId =
+    await ensurePersonalLedger();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("ledgers")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+  if (error) {
+
+    throw error;
+
+  }
+
+  ledgers = data || [];
+
+  if (!currentLedger) {
+
+    currentLedger =
+      ledgers.find(
+        l => l.id === personalId
+      ) ||
+      ledgers[0];
+
+  } else {
+
+    currentLedger =
+      ledgers.find(
+        l =>
+          l.id === currentLedger.id
+      ) ||
+      ledgers[0];
+
+  }
+
+  renderLedgerHeader();
+
+}
+
+
+function renderLedgerHeader() {
+
+  const el =
+    document.getElementById(
+      "currentLedgerName"
+    );
+
+  if (!el || !currentLedger) {
+    return;
+  }
+
+  el.textContent =
+    currentLedger.type === "shared"
+      ? "💑 " + currentLedger.name
+      : "👤 " + currentLedger.name;
+
+}
+
+
+async function selectLedger(id) {
+
+  const ledger =
+    ledgers.find(
+      l => l.id === id
+    );
+
+  if (!ledger) return;
+
+  currentLedger = ledger;
+
+  renderLedgerHeader();
+
+  closeModal();
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+  toast(
+    "已切換到「" +
+    ledger.name +
+    "」"
+  );
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+async function loadMonthData() {
+
+  if (
+    !currentUser ||
+    !currentLedger
+  ) {
+
+    transactions = [];
+
+    budget = null;
+
+    return;
+
+  }
+
+  currentMonth =
+    normalizeMonth(
+      currentMonth
+    );
+
+  await Promise.all([
+    loadBudget(),
+    loadTransactions()
+  ]);
+
+}
+
+
+async function loadBudget() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("budgets")
+      .select("*")
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      )
+      .eq(
+        "month",
+        currentMonth + "-01"
+      )
+      .maybeSingle();
+
+  if (error) {
+
+    console.error(error);
+
+    toast(
+      "讀取預算失敗：" +
+      error.message
+    );
+
+    budget = {
+      ...defaultBudget
+    };
+
+    return;
+
+  }
+
+  budget =
+    data
+      ? {
+          ...defaultBudget,
+          ...data
+        }
+      : {
+          ...defaultBudget
+        };
+
+}
+
+
+async function loadTransactions() {
+
+  const start =
+    currentMonth + "-01";
+
+  const end =
+    getNextMonth(
+      currentMonth
+    );
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("transactions")
+      .select("*")
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      )
+      .gte(
+        "date",
+        start
+      )
+      .lt(
+        "date",
+        end
+      )
+      .order(
+        "date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+  if (error) {
+
+    console.error(error);
+
+    toast(
+      "讀取記帳失敗：" +
+      error.message
+    );
+
+    transactions = [];
+
+    return;
+
+  }
+
+  transactions =
+    data || [];
+
+}
+
+
+/* =========================================================
+   PAGE
 ========================================================= */
 
 function showPage(page) {
 
-  currentPage =
-    page;
+  currentPage = page;
 
   document
     .querySelectorAll(".page")
-    .forEach(
-      element => {
+    .forEach(el => {
+      el.classList.add("hidden");
+    });
 
-        element.classList.toggle(
-          "active",
-          element.id ===
-          `page-${page}`
-        );
-      }
+  const target =
+    document.getElementById(
+      "page" +
+      page.charAt(0).toUpperCase() +
+      page.slice(1)
     );
 
+  if (target) {
+
+    target.classList.remove(
+      "hidden"
+    );
+
+  }
 
   document
-    .querySelectorAll(
-      ".nav-btn, .mobile-nav button"
-    )
-    .forEach(
-      button => {
+    .querySelectorAll(".nav-btn")
+    .forEach(btn => {
 
-        button.classList.toggle(
-          "active",
-          button.dataset.page ===
-          page
-        );
-      }
-    );
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page === page
+      );
 
+    });
 
-  if (
-    page ===
-    "transaction"
-  ) {
-
-    setDefaultTransactionDate();
-  }
+  renderCurrentPage();
 
   window.scrollTo({
     top: 0,
     behavior: "smooth"
   });
+
+}
+
+
+function renderCurrentPage() {
+
+  if (!currentLedger) return;
+
+  if (currentPage === "home") {
+
+    renderHome();
+
+  }
+
+  if (currentPage === "add") {
+
+    renderAdd();
+
+  }
+
+  if (currentPage === "budget") {
+
+    renderBudget();
+
+  }
+
+  if (currentPage === "detail") {
+
+    renderDetail();
+
+  }
+
+  if (currentPage === "settings") {
+
+    renderSettings();
+
+  }
+
 }
 
 
 /* =========================================================
-   Modal click outside
+   CALC
 ========================================================= */
 
-document
-  .getElementById("editModal")
-  .addEventListener(
-    "click",
-    function(event) {
+function calc() {
 
-      if (
-        event.target ===
-        this
-      ) {
-        closeEditModal();
-      }
-    }
-  );
+  const total =
+    transactions.reduce(
+      (sum, tx) =>
+        sum + Number(tx.amount || 0),
+      0
+    );
+
+  const credit =
+    transactions
+      .filter(
+        tx =>
+          tx.payment_method ===
+          "信用卡"
+      )
+      .reduce(
+        (sum, tx) =>
+          sum + Number(tx.amount || 0),
+        0
+      );
+
+  const cash =
+    transactions
+      .filter(
+        tx =>
+          tx.payment_method ===
+          "現金"
+      )
+      .reduce(
+        (sum, tx) =>
+          sum + Number(tx.amount || 0),
+        0
+      );
+
+  const income =
+    Number(
+      budget?.income || 0
+    );
+
+  return {
+
+    total,
+
+    credit,
+
+    cash,
+
+    income,
+
+    remaining:
+      income - total
+
+  };
+
+}
+
+
+function categoryActual(key) {
+
+  return transactions
+    .filter(
+      tx =>
+        categoryMap[
+          tx.category
+        ]?.key === key
+    )
+    .reduce(
+      (sum, tx) =>
+        sum + Number(tx.amount || 0),
+      0
+    );
+
+}
 
 
 /* =========================================================
-   Supabase Auth Listener
+   HOME
 ========================================================= */
+
+function renderHome() {
+
+  const page =
+    document.getElementById(
+      "pageHome"
+    );
+
+  const c = calc();
+
+  const recent =
+    transactions.slice(
+      0,
+      5
+    );
+
+  page.innerHTML = `
+
+    <div class="page-title">
+      ${currentMonth.replace("-", " 年 ")} 月
+    </div>
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-label">
+          本月收入
+        </div>
+        <div class="stat-value">
+          $${money(c.income)}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">
+          本月總支出
+        </div>
+        <div class="stat-value">
+          $${money(c.total)}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">
+          信用卡支出
+        </div>
+        <div class="stat-value">
+          $${money(c.credit)}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">
+          剩餘
+        </div>
+        <div
+          class="stat-value"
+          style="color:${c.remaining < 0 ? "var(--danger)" : "var(--success)"}"
+        >
+          $${money(c.remaining)}
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        📊 本月預算使用狀況
+      </div>
+
+      <div class="budget-grid">
+
+        ${renderBudgetProgress(
+          "必要生活費",
+          "necessary"
+        )}
+
+        ${renderBudgetProgress(
+          "信用卡",
+          "credit_card"
+        )}
+
+        ${renderBudgetProgress(
+          "現金／預備金",
+          "cash_reserve"
+        )}
+
+        ${renderBudgetProgress(
+          "自由支出",
+          "free_spending"
+        )}
+
+        ${renderBudgetProgress(
+          "投資",
+          "investment"
+        )}
+
+        ${renderBudgetProgress(
+          "其他",
+          "other"
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        🧾 最近記帳
+      </div>
+
+      ${
+        recent.length
+          ? `
+            <div class="tx-list">
+              ${recent
+                .map(
+                  txHtml
+                )
+                .join("")}
+            </div>
+
+            <button
+              class="btn btn-secondary btn-full"
+              style="margin-top:14px"
+              onclick="showPage('detail')"
+            >
+              查看全部明細
+            </button>
+          `
+          : `
+            <div class="empty">
+              📭 本月還沒有記帳
+            </div>
+          `
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function renderBudgetProgress(
+  name,
+  key
+) {
+
+  const actual =
+    categoryActual(key);
+
+  const limit =
+    Number(
+      budget?.[key] || 0
+    );
+
+  const percent =
+    limit > 0
+      ? Math.round(
+          actual / limit * 100
+        )
+      : 0;
+
+  const width =
+    Math.min(
+      percent,
+      100
+    );
+
+  return `
+
+    <div class="budget-item">
+
+      <div class="budget-head">
+
+        <div class="budget-name">
+          ${
+            categoryMap[
+              name
+            ]?.icon || ""
+          }
+          ${name}
+        </div>
+
+        <div class="budget-number">
+          $${money(actual)}
+          /
+          $${money(limit)}
+        </div>
+
+      </div>
+
+      <div class="progress">
+
+        <div
+          class="progress-bar"
+          style="width:${width}%"
+        ></div>
+
+      </div>
+
+      <div class="budget-percent">
+
+        ${
+          limit > 0
+            ? `${percent}%`
+            : "尚未設定預算"
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ADD TRANSACTION
+========================================================= */
+
+function renderAdd() {
+
+  const page =
+    document.getElementById(
+      "pageAdd"
+    );
+
+  page.innerHTML = `
+
+    <div class="page-title">
+      ➕ 新增記帳
+    </div>
+
+    <div class="card">
+
+      <form
+        id="transactionForm"
+        onsubmit="addTransaction(event)"
+      >
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>
+              日期
+            </label>
+
+            <input
+              id="txDate"
+              type="date"
+              value="${new Date()
+                .toISOString()
+                .slice(0,10)}"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              項目
+            </label>
+
+            <input
+              id="txItem"
+              type="text"
+              placeholder="例如：晚餐、電影"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              分類
+            </label>
+
+            <select
+              id="txCategory"
+              required
+            >
+
+              ${Object.keys(
+                categoryMap
+              )
+                .map(
+                  name =>
+                    `<option value="${name}">
+                      ${
+                        categoryMap[
+                          name
+                        ].icon
+                      }
+                      ${name}
+                    </option>`
+                )
+                .join("")}
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              付款方式
+            </label>
+
+            <select
+              id="txPayment"
+              required
+            >
+
+              <option value="信用卡">
+                💳 信用卡
+              </option>
+
+              <option value="現金">
+                💵 現金
+              </option>
+
+              <option value="其他">
+                其他
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              金額
+            </label>
+
+            <input
+              id="txAmount"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="0"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group form-full">
+
+            <label>
+              備註
+            </label>
+
+            <textarea
+              id="txNote"
+              placeholder="可以不填"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary btn-full"
+          type="submit"
+        >
+          💾 儲存記帳
+        </button>
+
+      </form>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ADD
+========================================================= */
+
+async function addTransaction(event) {
+
+  event.preventDefault();
+
+  if (!currentLedger) {
+
+    toast("請先選擇帳本");
+
+    return;
+
+  }
+
+  const date =
+    document.getElementById(
+      "txDate"
+    ).value;
+
+  const item =
+    document.getElementById(
+      "txItem"
+    ).value.trim();
+
+  const category =
+    document.getElementById(
+      "txCategory"
+    ).value;
+
+  const payment =
+    document.getElementById(
+      "txPayment"
+    ).value;
+
+  const amount =
+    Number(
+      document.getElementById(
+        "txAmount"
+      ).value
+    );
+
+  const note =
+    document.getElementById(
+      "txNote"
+    ).value.trim();
+
+  if (
+    !date ||
+    !item ||
+    !category ||
+    !payment ||
+    !amount
+  ) {
+
+    toast(
+      "請把必要欄位填寫完整"
+    );
+
+    return;
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("transactions")
+      .insert({
+
+        user_id:
+          currentUser.id,
+
+        ledger_id:
+          currentLedger.id,
+
+        date,
+
+        item,
+
+        category,
+
+        payment_method:
+          payment,
+
+        amount,
+
+        note:
+          note || null
+
+      });
+
+  if (error) {
+
+    console.error(error);
+
+    toast(
+      "新增失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  toast("記帳成功 🎉");
+
+  await loadMonthData();
+
+  showPage("home");
+
+}
+
+
+/* =========================================================
+   TRANSACTION HTML
+========================================================= */
+
+function txHtml(tx) {
+
+  const isShared =
+    currentLedger?.type ===
+    "shared";
+
+  const recorder =
+    isShared
+      ? (
+          tx.user_id ===
+          currentUser.id
+            ? "我"
+            : "另一半"
+        )
+      : "";
+
+  return `
+
+    <div class="tx-item">
+
+      <div class="tx-main">
+
+        <div class="tx-item-name">
+          ${
+            categoryMap[
+              tx.category
+            ]?.icon || "🧾"
+          }
+          ${esc(tx.item)}
+        </div>
+
+        <div class="tx-meta">
+
+          ${esc(tx.date)}
+          ·
+          ${esc(tx.category)}
+          ·
+          ${esc(tx.payment_method)}
+
+          ${
+            recorder
+              ? ` · ${recorder}`
+              : ""
+          }
+
+          ${
+            tx.note
+              ? `<br>📝 ${esc(tx.note)}`
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="tx-right">
+
+        <div class="tx-amount">
+          $${money(tx.amount)}
+        </div>
+
+        <div class="tx-actions">
+
+          <button
+            class="mini-btn"
+            onclick="editTransaction('${tx.id}')"
+          >
+            編輯
+          </button>
+
+          <button
+            class="mini-btn"
+            onclick="deleteTransaction('${tx.id}')"
+          >
+            刪除
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   EDIT TRANSACTION
+========================================================= */
+
+function editTransaction(id) {
+
+  const tx =
+    transactions.find(
+      t => t.id === id
+    );
+
+  if (!tx) return;
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          ✏️ 編輯記帳
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            日期
+          </label>
+
+          <input
+            id="editDate"
+            type="date"
+            value="${esc(tx.date)}"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            項目
+          </label>
+
+          <input
+            id="editItem"
+            value="${esc(tx.item)}"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            分類
+          </label>
+
+          <select
+            id="editCategory"
+          >
+
+            ${Object.keys(
+              categoryMap
+            )
+              .map(
+                name =>
+                  `<option
+                    value="${name}"
+                    ${
+                      tx.category === name
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    ${
+                      categoryMap[
+                        name
+                      ].icon
+                    }
+                    ${name}
+                  </option>`
+              )
+              .join("")}
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            付款方式
+          </label>
+
+          <select
+            id="editPayment"
+          >
+
+            ${[
+              "信用卡",
+              "現金",
+              "其他"
+            ]
+              .map(
+                name =>
+                  `<option
+                    value="${name}"
+                    ${
+                      tx.payment_method ===
+                      name
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    ${name}
+                  </option>`
+              )
+              .join("")}
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            金額
+          </label>
+
+          <input
+            id="editAmount"
+            type="number"
+            min="0"
+            value="${Number(tx.amount)}"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            備註
+          </label>
+
+          <textarea
+            id="editNote"
+          >${esc(tx.note || "")}</textarea>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-secondary"
+            onclick="closeModal()"
+          >
+            取消
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="saveTransactionEdit('${tx.id}')"
+          >
+            儲存
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+async function saveTransactionEdit(id) {
+
+  const updates = {
+
+    date:
+      document.getElementById(
+        "editDate"
+      ).value,
+
+    item:
+      document.getElementById(
+        "editItem"
+      ).value.trim(),
+
+    category:
+      document.getElementById(
+        "editCategory"
+      ).value,
+
+    payment_method:
+      document.getElementById(
+        "editPayment"
+      ).value,
+
+    amount:
+      Number(
+        document.getElementById(
+          "editAmount"
+        ).value
+      ),
+
+    note:
+      document.getElementById(
+        "editNote"
+      ).value.trim() ||
+      null
+
+  };
+
+  if (
+    !updates.date ||
+    !updates.item ||
+    !updates.amount
+  ) {
+
+    toast("資料不完整");
+
+    return;
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("transactions")
+      .update(updates)
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      );
+
+  if (error) {
+
+    toast(
+      "修改失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+  toast("修改成功");
+
+}
+
+
+async function deleteTransaction(id) {
+
+  if (
+    !confirm(
+      "確定要刪除這筆記帳嗎？"
+    )
+  ) {
+
+    return;
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("transactions")
+      .delete()
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      );
+
+  if (error) {
+
+    toast(
+      "刪除失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+  toast("已刪除");
+
+}
+
+
+/* =========================================================
+   BUDGET
+========================================================= */
+
+function renderBudget() {
+
+  const page =
+    document.getElementById(
+      "pageBudget"
+    );
+
+  page.innerHTML = `
+
+    <div class="page-title">
+      💰 ${currentLedger.type === "shared" ? "共同預算" : "本月預算"}
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        ${currentMonth.replace("-", " 年 ")} 月
+      </div>
+
+
+      <div class="budget-grid">
+
+        ${budgetInput(
+          "月收入",
+          "income"
+        )}
+
+        ${budgetInput(
+          "必要生活費",
+          "necessary"
+        )}
+
+        ${budgetInput(
+          "信用卡",
+          "credit_card"
+        )}
+
+        ${budgetInput(
+          "現金／預備金",
+          "cash_reserve"
+        )}
+
+        ${budgetInput(
+          "自由支出",
+          "free_spending"
+        )}
+
+        ${budgetInput(
+          "投資",
+          "investment"
+        )}
+
+        ${budgetInput(
+          "其他",
+          "other"
+        )}
+
+      </div>
+
+
+      <button
+        class="btn btn-primary btn-full"
+        style="margin-top:18px"
+        onclick="saveBudget()"
+      >
+        💾 儲存本月預算
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function budgetInput(
+  name,
+  key
+) {
+
+  return `
+
+    <div class="budget-item">
+
+      <div class="budget-head">
+
+        <div class="budget-name">
+          ${name}
+        </div>
+
+      </div>
+
+      <input
+        id="budget_${key}"
+        type="number"
+        min="0"
+        step="1"
+        value="${Number(
+          budget?.[key] || 0
+        )}"
+      />
+
+    </div>
+
+  `;
+
+}
+
+
+async function saveBudget() {
+
+  const payload = {
+
+    ledger_id:
+      currentLedger.id,
+
+    user_id:
+      currentUser.id,
+
+    month:
+      currentMonth + "-01",
+
+    income:
+      Number(
+        document.getElementById(
+          "budget_income"
+        ).value
+      ),
+
+    necessary:
+      Number(
+        document.getElementById(
+          "budget_necessary"
+        ).value
+      ),
+
+    credit_card:
+      Number(
+        document.getElementById(
+          "budget_credit_card"
+        ).value
+      ),
+
+    cash_reserve:
+      Number(
+        document.getElementById(
+          "budget_cash_reserve"
+        ).value
+      ),
+
+    free_spending:
+      Number(
+        document.getElementById(
+          "budget_free_spending"
+        ).value
+      ),
+
+    investment:
+      Number(
+        document.getElementById(
+          "budget_investment"
+        ).value
+      ),
+
+    other:
+      Number(
+        document.getElementById(
+          "budget_other"
+        ).value
+      )
+
+  };
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("budgets")
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "ledger_id,month"
+        }
+      );
+
+  if (error) {
+
+    console.error(error);
+
+    toast(
+      "儲存預算失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  await loadBudget();
+
+  renderCurrentPage();
+
+  toast("預算已儲存 💾");
+
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+function renderDetail() {
+
+  const page =
+    document.getElementById(
+      "pageDetail"
+    );
+
+  page.innerHTML = `
+
+    <div class="page-title">
+      📋 ${currentMonth.replace("-", " 年 ")} 月明細
+    </div>
+
+
+    <div class="card">
+
+      <div class="filter-row">
+
+        <input
+          id="searchInput"
+          placeholder="🔎 搜尋項目、備註..."
+          oninput="filterTransactions()"
+        />
+
+        <select
+          id="filterCategory"
+          onchange="filterTransactions()"
+        >
+
+          <option value="">
+            全部分類
+          </option>
+
+          ${Object.keys(
+            categoryMap
+          )
+            .map(
+              name =>
+                `<option value="${name}">
+                  ${name}
+                </option>`
+            )
+            .join("")}
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="detailList"
+        class="tx-list"
+      >
+
+        ${transactions
+          .map(txHtml)
+          .join("")}
+
+      </div>
+
+    </div>
+
+  `;
+
+  if (!transactions.length) {
+
+    document.getElementById(
+      "detailList"
+    ).innerHTML = `
+
+      <div class="empty">
+        📭 本月沒有符合條件的記帳
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+function filterTransactions() {
+
+  const keyword =
+    (
+      document.getElementById(
+        "searchInput"
+      )?.value || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const category =
+    document.getElementById(
+      "filterCategory"
+    )?.value || "";
+
+  const list =
+    transactions.filter(
+      tx => {
+
+        const text =
+          (
+            tx.item +
+            " " +
+            (tx.note || "")
+          ).toLowerCase();
+
+        return (
+          (!keyword ||
+            text.includes(keyword)) &&
+          (!category ||
+            tx.category === category)
+        );
+
+      }
+    );
+
+  const el =
+    document.getElementById(
+      "detailList"
+    );
+
+  if (!el) return;
+
+  el.innerHTML =
+    list.length
+      ? list.map(txHtml).join("")
+      : `
+        <div class="empty">
+          📭 沒有符合條件的記帳
+        </div>
+      `;
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function renderSettings() {
+
+  const page =
+    document.getElementById(
+      "pageSettings"
+    );
+
+  page.innerHTML = `
+
+    <div class="page-title">
+      ⚙️ 設定
+    </div>
+
+
+    <div class="card">
+
+      <div class="setting-item">
+
+        <div class="setting-title">
+          👤 我的帳號
+        </div>
+
+        <div class="setting-desc">
+          ${esc(currentUser.email)}
+        </div>
+
+      </div>
+
+
+      <div class="setting-item">
+
+        <div class="setting-title">
+          📚 目前帳本
+        </div>
+
+        <div class="setting-desc">
+          ${
+            currentLedger.type ===
+            "shared"
+              ? "💑 情侶共用帳本"
+              : "👤 個人帳本"
+          }
+        </div>
+
+      </div>
+
+
+      ${
+        currentLedger.type ===
+        "shared"
+          ? `
+
+            <div class="setting-item">
+
+              <div class="setting-title">
+                👥 共用成員
+              </div>
+
+              <div class="setting-desc">
+                查看目前有哪些人可以使用這個帳本
+              </div>
+
+              <button
+                class="btn btn-secondary"
+                onclick="openMembers()"
+              >
+                查看成員
+              </button>
+
+            </div>
+
+
+            <div class="setting-item">
+
+              <div class="setting-title">
+                🔑 邀請另一半
+              </div>
+
+              <div class="setting-desc">
+                產生邀請碼，另一半登入自己的帳號後即可加入。
+              </div>
+
+              <button
+                class="btn btn-success"
+                onclick="createInvite()"
+              >
+                產生邀請碼
+              </button>
+
+            </div>
+
+          `
+          : ""
+      }
+
+
+      <div class="setting-item">
+
+        <div class="setting-title">
+          💑 情侶共用帳本
+        </div>
+
+        <div class="setting-desc">
+          建立一個新的共用帳本，可以和另一半一起記帳。
+        </div>
+
+        <button
+          class="btn btn-primary"
+          onclick="openCreateShared()"
+        >
+          建立共用帳本
+        </button>
+
+      </div>
+
+
+      <div class="setting-item">
+
+        <div class="setting-title">
+          🔑 加入共用帳本
+        </div>
+
+        <div class="setting-desc">
+          如果另一半已經建立共用帳本，可以使用邀請碼加入。
+        </div>
+
+        <button
+          class="btn btn-secondary"
+          onclick="openJoin()"
+        >
+          輸入邀請碼
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   CREATE SHARED
+========================================================= */
+
+function openCreateShared() {
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          💑 建立情侶共用帳本
+        </div>
+
+        <div class="form-group">
+
+          <label>
+            帳本名稱
+          </label>
+
+          <input
+            id="sharedName"
+            value="情侶共用帳本"
+          />
+
+        </div>
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-secondary"
+            onclick="closeModal()"
+          >
+            取消
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="doCreateShared()"
+          >
+            建立
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+async function doCreateShared() {
+
+  const name =
+    document.getElementById(
+      "sharedName"
+    ).value.trim() ||
+    "情侶共用帳本";
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "create_shared_ledger",
+      {
+        p_name: name
+      }
+    );
+
+  if (error) {
+
+    toast(
+      "建立失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  currentLedger = null;
+
+  await loadLedgers();
+
+  currentLedger =
+    ledgers.find(
+      l => l.id === data
+    ) || currentLedger;
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+  toast(
+    "共用帳本建立成功 💑"
+  );
+
+}
+
+
+/* =========================================================
+   INVITE
+========================================================= */
+
+async function createInvite() {
+
+  if (
+    currentLedger.type !==
+    "shared"
+  ) {
+
+    toast(
+      "請先切換到共用帳本"
+    );
+
+    return;
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "create_ledger_invite",
+      {
+        p_ledger_id:
+          currentLedger.id
+      }
+    );
+
+  if (error) {
+
+    toast(
+      "產生邀請碼失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          🔑 邀請另一半
+        </div>
+
+        <div
+          style="
+            text-align:center;
+            padding:20px 0;
+          "
+        >
+
+          <div
+            style="
+              color:var(--muted);
+              font-size:13px;
+              margin-bottom:8px;
+            "
+          >
+            邀請碼
+          </div>
+
+          <div
+            style="
+              font-size:32px;
+              font-weight:900;
+              letter-spacing:5px;
+            "
+          >
+            ${esc(data)}
+          </div>
+
+          <div
+            style="
+              margin-top:12px;
+              color:var(--muted);
+              font-size:13px;
+            "
+          >
+            有效期限 7 天
+          </div>
+
+        </div>
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-secondary"
+            onclick="copyText('${esc(data)}')"
+          >
+            📋 複製
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="closeModal()"
+          >
+            完成
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   JOIN
+========================================================= */
+
+function openJoin() {
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          🔑 加入共用帳本
+        </div>
+
+        <div class="form-group">
+
+          <label>
+            邀請碼
+          </label>
+
+          <input
+            id="inviteCode"
+            maxlength="8"
+            placeholder="例如 ABCD1234"
+            style="
+              text-transform:uppercase;
+              letter-spacing:3px;
+            "
+          />
+
+        </div>
+
+        <div
+          style="
+            color:var(--muted);
+            font-size:13px;
+          "
+        >
+          請輸入另一半提供的 8 碼邀請碼。
+        </div>
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-secondary"
+            onclick="closeModal()"
+          >
+            取消
+          </button>
+
+          <button
+            class="btn btn-primary"
+            onclick="doJoin()"
+          >
+            加入
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+async function doJoin() {
+
+  const code =
+    document.getElementById(
+      "inviteCode"
+    ).value.trim();
+
+  if (!code) {
+
+    toast("請輸入邀請碼");
+
+    return;
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "join_ledger_by_code",
+      {
+        p_code: code
+      }
+    );
+
+  if (error) {
+
+    toast(
+      error.message ||
+      "加入失敗"
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  currentLedger = null;
+
+  await loadLedgers();
+
+  currentLedger =
+    ledgers.find(
+      l => l.id === data
+    ) || currentLedger;
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+  toast(
+    "成功加入共用帳本 💑"
+  );
+
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+async function openMembers() {
+
+  if (
+    !currentLedger ||
+    currentLedger.type !==
+      "shared"
+  ) {
+
+    return;
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("ledger_members")
+      .select("*")
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      )
+      .order(
+        "joined_at",
+        {
+          ascending: true
+        }
+      );
+
+  if (error) {
+
+    toast(
+      "讀取成員失敗：" +
+      error.message
+    );
+
+    return;
+
+  }
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          👥 共用帳本成員
+        </div>
+
+        ${
+          data?.length
+            ? data
+                .map(
+                  member => `
+
+                    <div class="member">
+
+                      <div class="avatar">
+                        ${
+                          member.user_id ===
+                          currentUser.id
+                            ? "我"
+                            : "💑"
+                        }
+                      </div>
+
+                      <div>
+
+                        <div class="member-name">
+                          ${
+                            member.user_id ===
+                            currentUser.id
+                              ? "我"
+                              : "另一半"
+                          }
+                        </div>
+
+                        <div class="member-role">
+                          ${
+                            member.role ===
+                            "owner"
+                              ? "帳本擁有者"
+                              : "共同成員"
+                          }
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  `
+                )
+                .join("")
+            : `
+              <div class="empty">
+                目前沒有其他成員
+              </div>
+            `
+        }
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="closeModal()"
+          >
+            完成
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   LEDGER MANAGER
+========================================================= */
+
+function openLedgerManager() {
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = `
+
+    <div
+      class="modal-bg"
+      onclick="closeModal(event)"
+    >
+
+      <div
+        class="modal"
+        onclick="event.stopPropagation()"
+      >
+
+        <div class="modal-title">
+          🔄 切換帳本
+        </div>
+
+        ${
+          ledgers
+            .map(
+              ledger => `
+
+                <button
+                  class="btn ${
+                    currentLedger.id ===
+                    ledger.id
+                      ? "btn-primary"
+                      : "btn-secondary"
+                  } btn-full"
+                  style="margin-bottom:10px;text-align:left"
+                  onclick="selectLedger('${ledger.id}')"
+                >
+
+                  ${
+                    ledger.type ===
+                    "shared"
+                      ? "💑"
+                      : "👤"
+                  }
+
+                  ${esc(
+                    ledger.name
+                  )}
+
+                  ${
+                    currentLedger.id ===
+                    ledger.id
+                      ? " ✓"
+                      : ""
+                  }
+
+                </button>
+
+              `
+            )
+            .join("")
+        }
+
+
+        <div
+          style="
+            margin-top:8px;
+            color:var(--muted);
+            font-size:13px;
+          "
+        >
+          也可以在「設定」建立新的共用帳本。
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="closeModal()"
+          >
+            完成
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+async function copyText(text) {
+
+  try {
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+    toast(
+      "已複製到剪貼簿 📋"
+    );
+
+  } catch {
+
+    toast(
+      "複製失敗，請手動複製"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function closeModal(event) {
+
+  if (
+    event &&
+    event.target !==
+      event.currentTarget
+  ) {
+
+    return;
+
+  }
+
+  document.getElementById(
+    "modalRoot"
+  ).innerHTML = "";
+
+}
+
+
+/* =========================================================
+   MONTH
+========================================================= */
+
+async function changeMonth() {
+
+  const input =
+    document.getElementById(
+      "monthInput"
+    );
+
+  let value =
+    input?.value || "";
+
+  value =
+    normalizeMonth(
+      value
+    );
+
+  currentMonth =
+    value;
+
+  setMonthInput();
+
+  await loadMonthData();
+
+  renderCurrentPage();
+
+}
+
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+async function boot() {
+
+  setMonthInput();
+
+  updateAuthUI();
+
+  const {
+    data
+  } =
+    await supabaseClient.auth.getSession();
+
+  if (
+    data?.session?.user
+  ) {
+
+    currentUser =
+      data.session.user;
+
+    await enterApp();
+
+  } else {
+
+    showAuth();
+
+  }
+
+}
+
+
+async function enterApp() {
+
+  document
+    .getElementById(
+      "authView"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "appView"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+  try {
+
+    await loadLedgers();
+
+    currentMonth =
+      normalizeMonth(
+        currentMonth
+      );
+
+    setMonthInput();
+
+    await loadMonthData();
+
+    showPage(
+      currentPage
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast(
+      "載入失敗：" +
+      error.message
+    );
+
+  }
+
+}
+
+
+function showAuth() {
+
+  document
+    .getElementById(
+      "appView"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "authView"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   AUTH EVENTS
+========================================================= */
+
+document
+  .getElementById(
+    "authForm"
+  )
+  .addEventListener(
+    "submit",
+    handleAuth
+  );
+
+
+document
+  .getElementById(
+    "authSwitchBtn"
+  )
+  .addEventListener(
+    "click",
+    switchAuthMode
+  );
+
 
 supabaseClient.auth.onAuthStateChange(
   async (
@@ -3718,52 +4017,41 @@ supabaseClient.auth.onAuthStateChange(
   ) => {
 
     if (
-      event ===
-      "SIGNED_OUT"
-    ) {
-
-      currentUser = null;
-
-      document
-        .getElementById("app")
-        .classList.add("hidden");
-
-      document
-        .getElementById("authPage")
-        .classList.remove("hidden");
-
-      return;
-    }
-
-    if (
-      event ===
-      "SIGNED_IN" &&
-      session?.user &&
-      !currentUser
+      session?.user
     ) {
 
       currentUser =
         session.user;
 
-      await startApp();
+      await enterApp();
+
+    } else {
+
+      currentUser =
+        null;
+
+      currentLedger =
+        null;
+
+      ledgers = [];
+
+      transactions = [];
+
+      budget = null;
+
+      showAuth();
+
     }
+
   }
 );
 
 
 /* =========================================================
-   Start
+   START
 ========================================================= */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    setDefaultTransactionDate();
-
-    init();
-  }
-);
+boot();
 
 </script>
 
