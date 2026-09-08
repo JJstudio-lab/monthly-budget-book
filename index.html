@@ -172,17 +172,12 @@
       color: var(--danger);
     }
 
-    .btn-success {
-      background: #dcfce7;
-      color: #166534;
-    }
-
     .btn-full {
       width: 100%;
     }
 
     /* =========================
-       App
+       App / Topbar
     ========================= */
 
     #app {
@@ -371,7 +366,7 @@
     }
 
     /* =========================
-       Budget list
+       Budget
     ========================= */
 
     .budget-list {
@@ -423,8 +418,68 @@
       background: var(--danger);
     }
 
+    .budget-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-value {
+      font-size: 22px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    .budget-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .budget-field {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fafafa;
+    }
+
+    .budget-field-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      gap: 10px;
+    }
+
+    .budget-field-name {
+      font-weight: 700;
+    }
+
+    .budget-field-icon {
+      font-size: 20px;
+    }
+
+    .budget-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
     /* =========================
-       Recent
+       Recent / Transactions
     ========================= */
 
     .recent-list,
@@ -506,71 +561,7 @@
     }
 
     /* =========================
-       Budget page
-    ========================= */
-
-    .budget-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .summary-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 18px;
-    }
-
-    .summary-label {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .summary-value {
-      font-size: 22px;
-      font-weight: 800;
-      margin-top: 6px;
-    }
-
-    .budget-edit-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .budget-field {
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fafafa;
-    }
-
-    .budget-field-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 9px;
-      gap: 10px;
-    }
-
-    .budget-field-name {
-      font-weight: 700;
-    }
-
-    .budget-field-icon {
-      font-size: 20px;
-    }
-
-    .budget-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    /* =========================
-       Transaction form
+       Transaction Form
     ========================= */
 
     .form-grid {
@@ -650,7 +641,7 @@
     }
 
     /* =========================
-       Ledger modal
+       Ledger Modal
     ========================= */
 
     .modal-overlay {
@@ -812,20 +803,6 @@
       font-size: 12px;
     }
 
-    .ledger-two-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    /* =========================
-       Edit modal
-    ========================= */
-
-    .edit-modal .modal {
-      max-width: 500px;
-    }
-
     /* =========================
        Toast / Loading
     ========================= */
@@ -880,6 +857,7 @@
     ========================= */
 
     @media (max-width: 950px) {
+
       .user-info {
         display: none;
       }
@@ -899,9 +877,11 @@
       .topbar-spacer {
         display: none;
       }
+
     }
 
     @media (max-width: 650px) {
+
       .topbar-inner {
         min-height: auto;
         padding: 11px 14px;
@@ -1022,9 +1002,6 @@
         font-weight: 800;
       }
 
-      .ledger-two-buttons {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
@@ -1032,7 +1009,7 @@
 <body>
 
   <!-- =========================
-       登入
+       Auth
   ========================== -->
 
   <section id="auth-page">
@@ -1041,13 +1018,16 @@
 
       <div class="auth-logo">💰</div>
 
-      <h1 class="auth-title">每月預算記帳本</h1>
+      <h1 class="auth-title">
+        每月預算記帳本
+      </h1>
 
       <p class="auth-subtitle">
         管理每個月的收入、支出與預算
       </p>
 
       <div class="auth-tabs">
+
         <button
           id="loginTab"
           class="auth-tab active"
@@ -1063,26 +1043,37 @@
         >
           註冊
         </button>
+
       </div>
 
       <div class="form-group">
-        <label class="form-label">Email</label>
+
+        <label class="form-label">
+          Email
+        </label>
+
         <input
           id="authEmail"
           class="form-input"
           type="email"
           placeholder="you@example.com"
         />
+
       </div>
 
       <div class="form-group">
-        <label class="form-label">密碼</label>
+
+        <label class="form-label">
+          密碼
+        </label>
+
         <input
           id="authPassword"
           class="form-input"
           type="password"
           placeholder="至少 6 個字元"
         />
+
       </div>
 
       <button
@@ -1103,8 +1094,6 @@
   ========================== -->
 
   <div id="app" class="hidden">
-
-    <!-- Topbar -->
 
     <header class="topbar">
 
@@ -1148,8 +1137,6 @@
     </header>
 
 
-    <!-- Desktop nav -->
-
     <nav class="desktop-nav">
 
       <button
@@ -1187,13 +1174,10 @@
     </nav>
 
 
-    <!-- Main -->
-
     <main class="main">
 
-
       <!-- =========================
-           HOME
+           Home
       ========================== -->
 
       <section
@@ -1206,7 +1190,8 @@
         </h1>
 
         <p class="page-subtitle">
-          <span id="homeMonthText"></span> 的財務狀況
+          <span id="homeMonthText"></span>
+          的財務狀況
         </p>
 
 
@@ -1284,9 +1269,6 @@
 
         <div class="dashboard-grid">
 
-
-          <!-- Budget -->
-
           <div class="card">
 
             <h2 class="card-title">
@@ -1300,8 +1282,6 @@
 
           </div>
 
-
-          <!-- Recent -->
 
           <div class="card">
 
@@ -1329,7 +1309,7 @@
 
 
       <!-- =========================
-           ADD
+           Add
       ========================== -->
 
       <section
@@ -1511,7 +1491,7 @@
 
 
       <!-- =========================
-           BUDGET
+           Budget
       ========================== -->
 
       <section
@@ -1582,9 +1562,7 @@
 
         <div class="card">
 
-          <div
-            id="budgetView"
-          >
+          <div id="budgetView">
 
             <div
               id="budgetViewGrid"
@@ -1636,10 +1614,6 @@
                   <div class="budget-field-name">
                     🏠 必要生活費
                   </div>
-
-                  <div class="budget-field-icon">
-                    🏠
-                  </div>
                 </div>
 
                 <input
@@ -1657,10 +1631,6 @@
                 <div class="budget-field-top">
                   <div class="budget-field-name">
                     💳 信用卡
-                  </div>
-
-                  <div class="budget-field-icon">
-                    💳
                   </div>
                 </div>
 
@@ -1680,10 +1650,6 @@
                   <div class="budget-field-name">
                     💵 現金／預備金
                   </div>
-
-                  <div class="budget-field-icon">
-                    💵
-                  </div>
                 </div>
 
                 <input
@@ -1701,10 +1667,6 @@
                 <div class="budget-field-top">
                   <div class="budget-field-name">
                     🎮 自由支出
-                  </div>
-
-                  <div class="budget-field-icon">
-                    🎮
                   </div>
                 </div>
 
@@ -1724,10 +1686,6 @@
                   <div class="budget-field-name">
                     📈 投資
                   </div>
-
-                  <div class="budget-field-icon">
-                    📈
-                  </div>
                 </div>
 
                 <input
@@ -1745,10 +1703,6 @@
                 <div class="budget-field-top">
                   <div class="budget-field-name">
                     📦 其他
-                  </div>
-
-                  <div class="budget-field-icon">
-                    📦
                   </div>
                 </div>
 
@@ -1790,7 +1744,7 @@
 
 
       <!-- =========================
-           DETAILS
+           Details
       ========================== -->
 
       <section
@@ -1818,6 +1772,7 @@
               placeholder="🔎 搜尋備註..."
               oninput="renderTransactions()"
             />
+
 
             <select
               id="filterCategory"
@@ -1891,7 +1846,7 @@
     </main>
 
 
-    <!-- Mobile nav -->
+    <!-- Mobile -->
 
     <nav class="mobile-nav">
 
@@ -1900,7 +1855,8 @@
         class="mobile-nav-btn active"
         onclick="showPage('home')"
       >
-        🏠<br />首頁
+        🏠<br />
+        首頁
       </button>
 
       <button
@@ -1908,7 +1864,8 @@
         class="mobile-nav-btn"
         onclick="showPage('add')"
       >
-        ➕<br />記帳
+        ➕<br />
+        記帳
       </button>
 
       <button
@@ -1916,7 +1873,8 @@
         class="mobile-nav-btn"
         onclick="showPage('budget')"
       >
-        💰<br />預算
+        💰<br />
+        預算
       </button>
 
       <button
@@ -1924,7 +1882,8 @@
         class="mobile-nav-btn"
         onclick="showPage('details')"
       >
-        📋<br />明細
+        📋<br />
+        明細
       </button>
 
     </nav>
@@ -2005,7 +1964,6 @@
             id="inviteCodeInput"
             class="form-input"
             type="text"
-            maxlength="20"
             placeholder="輸入對方給你的邀請碼"
           />
 
@@ -2042,12 +2000,12 @@
 
 
   <!-- =========================
-       Edit Transaction Modal
+       Edit Modal
   ========================== -->
 
   <div
     id="editModal"
-    class="modal-overlay edit-modal"
+    class="modal-overlay"
     onclick="handleEditOverlayClick(event)"
   >
 
@@ -2232,12 +2190,8 @@
   </div>
 
 
-  <!-- Toast -->
-
   <div id="toast"></div>
 
-
-  <!-- Loading -->
 
   <div id="loading">
 
@@ -2249,6 +2203,7 @@
 
 
 <script>
+
 /* =========================================================
    Supabase
 ========================================================= */
@@ -2267,7 +2222,7 @@ const supabaseClient =
 
 
 /* =========================================================
-   Global State
+   State
 ========================================================= */
 
 let currentUser = null;
@@ -2280,7 +2235,8 @@ let transactions = [];
 
 let budget = null;
 
-let currentMonth = getSafeCurrentMonth();
+let currentMonth =
+  getSafeCurrentMonth();
 
 let currentPage = "home";
 
@@ -2290,13 +2246,21 @@ let transactionType = "expense";
 
 
 const DEFAULT_BUDGET = {
+
   income: 36000,
+
   necessary: 7000,
+
   credit_card: 15000,
+
   cash_reserve: 5000,
+
   free_spending: 10000,
+
   investment: 0,
+
   other: 0
+
 };
 
 
@@ -2336,19 +2300,23 @@ const categoryMap = {
 
 
 /* =========================================================
-   Utility
+   Date Helpers
 ========================================================= */
 
 function getSafeCurrentMonth() {
 
   const now = new Date();
 
-  const year = now.getFullYear();
+  const year =
+    now.getFullYear();
 
   const month =
-    String(now.getMonth() + 1).padStart(2, "0");
+    String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
 
   return `${year}-${month}`;
+
 }
 
 
@@ -2358,69 +2326,153 @@ function normalizeMonth(month) {
     typeof month === "string" &&
     /^\d{4}-\d{2}$/.test(month)
   ) {
+
     return month;
+
   }
 
   return getSafeCurrentMonth();
+
+}
+
+
+/*
+  UI 使用 YYYY-MM
+  Supabase budgets.month 使用 YYYY-MM-01
+*/
+
+function monthToDate(month) {
+
+  return `${normalizeMonth(month)}-01`;
+
 }
 
 
 function getNextMonth(month) {
 
-  month = normalizeMonth(month);
+  month =
+    normalizeMonth(month);
 
-  const [year, monthNumber] =
-    month.split("-").map(Number);
+  const [
+    year,
+    monthNumber
+  ] =
+    month
+      .split("-")
+      .map(Number);
 
   const date =
-    new Date(year, monthNumber, 1);
+    new Date(
+      year,
+      monthNumber,
+      1
+    );
 
   return `${date.getFullYear()}-${String(
     date.getMonth() + 1
   ).padStart(2, "0")}`;
+
 }
 
 
+function getMonthDateRange(month) {
+
+  month =
+    normalizeMonth(month);
+
+  return {
+
+    start:
+      `${month}-01`,
+
+    end:
+      `${getNextMonth(month)}-01`
+
+  };
+
+}
+
+
+/* =========================================================
+   General Helpers
+========================================================= */
+
 function formatMoney(value) {
 
-  const number = Number(value || 0);
+  return (
+    "$" +
+    Number(
+      value || 0
+    ).toLocaleString("zh-TW")
+  );
 
-  return "$" + number.toLocaleString("zh-TW");
 }
 
 
 function escapeHtml(value) {
 
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
 
 
 function getMonthLabel(month) {
 
-  month = normalizeMonth(month);
+  month =
+    normalizeMonth(month);
 
-  const [year, monthNumber] =
+  const [
+    year,
+    monthNumber
+  ] =
     month.split("-");
 
-  return `${year} 年 ${Number(monthNumber)} 月`;
+  return `${year} 年 ${Number(
+    monthNumber
+  )} 月`;
+
 }
 
 
 function setMonthInput() {
 
   currentMonth =
-    normalizeMonth(currentMonth);
+    normalizeMonth(
+      currentMonth
+    );
 
-  const picker =
-    document.getElementById("monthPicker");
+  const input =
+    document.getElementById(
+      "monthPicker"
+    );
 
-  if (picker) {
-    picker.value = currentMonth;
+  if (input) {
+
+    input.value =
+      currentMonth;
+
   }
 
 }
@@ -2428,15 +2480,14 @@ function setMonthInput() {
 
 function showLoading(show = true) {
 
-  const loading =
-    document.getElementById("loading");
+  document
+    .getElementById("loading")
+    ?.classList
+    .toggle(
+      "active",
+      show
+    );
 
-  if (!loading) return;
-
-  loading.classList.toggle(
-    "active",
-    show
-  );
 }
 
 
@@ -2445,22 +2496,35 @@ let toastTimer = null;
 function toast(message) {
 
   const el =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
   if (!el) return;
 
-  el.textContent = message;
+  el.textContent =
+    message;
 
-  el.classList.add("show");
+  el.classList.add(
+    "show"
+  );
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
   toastTimer =
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      el.classList.remove("show");
+        el.classList.remove(
+          "show"
+        );
 
-    }, 2500);
+      },
+      2500
+    );
+
 }
 
 
@@ -2473,29 +2537,46 @@ function setAuthMode(mode) {
   authMode = mode;
 
   const loginTab =
-    document.getElementById("loginTab");
+    document.getElementById(
+      "loginTab"
+    );
 
   const registerTab =
-    document.getElementById("registerTab");
+    document.getElementById(
+      "registerTab"
+    );
 
   const submitBtn =
-    document.getElementById("authSubmitBtn");
+    document.getElementById(
+      "authSubmitBtn"
+    );
+
 
   if (mode === "login") {
 
-    loginTab.classList.add("active");
+    loginTab.classList.add(
+      "active"
+    );
 
-    registerTab.classList.remove("active");
+    registerTab.classList.remove(
+      "active"
+    );
 
-    submitBtn.textContent = "登入";
+    submitBtn.textContent =
+      "登入";
 
   } else {
 
-    loginTab.classList.remove("active");
+    loginTab.classList.remove(
+      "active"
+    );
 
-    registerTab.classList.add("active");
+    registerTab.classList.add(
+      "active"
+    );
 
-    submitBtn.textContent = "建立帳號";
+    submitBtn.textContent =
+      "建立帳號";
 
   }
 
@@ -2505,55 +2586,85 @@ function setAuthMode(mode) {
 async function submitAuth() {
 
   const email =
-    document.getElementById("authEmail")
+    document
+      .getElementById(
+        "authEmail"
+      )
       .value
       .trim();
 
   const password =
-    document.getElementById("authPassword")
-      .value;
+    document.getElementById(
+      "authPassword"
+    ).value;
+
 
   if (!email || !password) {
 
-    toast("請輸入 Email 和密碼");
+    toast(
+      "請輸入 Email 和密碼"
+    );
 
     return;
 
   }
+
 
   if (password.length < 6) {
 
-    toast("密碼至少需要 6 個字元");
+    toast(
+      "密碼至少需要 6 個字元"
+    );
 
     return;
 
   }
 
+
   showLoading(true);
+
 
   try {
 
-    if (authMode === "login") {
+    if (
+      authMode === "login"
+    ) {
 
-      const { error } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
+      const {
+        error
+      } =
+        await supabaseClient
+          .auth
+          .signInWithPassword({
+
+            email,
+            password
+
+          });
 
       if (error) throw error;
 
-      toast("登入成功");
+      toast(
+        "登入成功"
+      );
 
     } else {
 
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-          email,
-          password
-        });
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .signUp({
+
+            email,
+            password
+
+          });
 
       if (error) throw error;
+
 
       if (
         data?.user &&
@@ -2566,7 +2677,9 @@ async function submitAuth() {
 
       } else {
 
-        toast("註冊成功");
+        toast(
+          "註冊成功"
+        );
 
       }
 
@@ -2574,11 +2687,16 @@ async function submitAuth() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "操作失敗：" +
-      (error.message || "請稍後再試")
+      (
+        error.message ||
+        "請稍後再試"
+      )
     );
 
   } finally {
@@ -2592,7 +2710,9 @@ async function submitAuth() {
 
 async function logout() {
 
-  await supabaseClient.auth.signOut();
+  await supabaseClient
+    .auth
+    .signOut();
 
 }
 
@@ -2603,18 +2723,28 @@ async function logout() {
 
 async function init() {
 
+  currentMonth =
+    normalizeMonth(
+      currentMonth
+    );
+
   setMonthInput();
+
 
   const {
     data: {
       session
     }
   } =
-    await supabaseClient.auth.getSession();
+    await supabaseClient
+      .auth
+      .getSession();
+
 
   if (session?.user) {
 
-    currentUser = session.user;
+    currentUser =
+      session.user;
 
     await startApp();
 
@@ -2630,32 +2760,57 @@ async function startApp() {
   try {
 
     document
-      .getElementById("auth-page")
-      .classList.add("hidden");
+      .getElementById(
+        "auth-page"
+      )
+      .classList
+      .add("hidden");
 
     document
-      .getElementById("app")
-      .classList.remove("hidden");
+      .getElementById(
+        "app"
+      )
+      .classList
+      .remove("hidden");
 
-    document
-      .getElementById("userEmail")
-      .textContent =
+
+    document.getElementById(
+      "userEmail"
+    ).textContent =
       currentUser.email || "";
 
+
     currentMonth =
-      normalizeMonth(currentMonth);
+      normalizeMonth(
+        currentMonth
+      );
 
     setMonthInput();
+
 
     await ensurePersonalLedger();
 
     await loadLedgers();
 
-    if (!currentLedger && ledgers.length) {
 
-      currentLedger = ledgers[0];
+    if (
+      !currentLedger &&
+      ledgers.length
+    ) {
+
+      const personal =
+        ledgers.find(
+          ledger =>
+            ledger.type ===
+            "personal"
+        );
+
+      currentLedger =
+        personal ||
+        ledgers[0];
 
     }
+
 
     updateLedgerButton();
 
@@ -2663,13 +2818,20 @@ async function startApp() {
 
     showPage("home");
 
+
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "startApp error:",
+      error
+    );
 
     toast(
       "啟動失敗：" +
-      (error.message || "請重新整理")
+      (
+        error.message ||
+        "請重新整理"
+      )
     );
 
   } finally {
@@ -2691,14 +2853,14 @@ async function ensurePersonalLedger() {
     data,
     error
   } =
-    await supabaseClient.rpc(
-      "ensure_personal_ledger"
-    );
+    await supabaseClient
+      .rpc(
+        "ensure_personal_ledger"
+      );
 
   if (error) {
 
     console.error(
-      "ensure_personal_ledger:",
       error
     );
 
@@ -2718,24 +2880,32 @@ async function loadLedgers() {
     error
   } =
     await supabaseClient
-      .from("ledger_members")
-      .select("ledger_id, role")
+      .from(
+        "ledger_members"
+      )
+      .select(
+        "ledger_id, role"
+      )
       .eq(
         "user_id",
         currentUser.id
       );
 
-  if (error) {
 
-    console.error(error);
+  if (error) {
 
     throw error;
 
   }
 
+
   const ids =
     (members || [])
-      .map(item => item.ledger_id);
+      .map(
+        item =>
+          item.ledger_id
+      );
+
 
   if (!ids.length) {
 
@@ -2747,17 +2917,22 @@ async function loadLedgers() {
 
   }
 
+
   const {
-    data: ledgerRows,
+    data: rows,
     error: ledgerError
   } =
     await supabaseClient
       .from("ledgers")
       .select("*")
       .in("id", ids)
-      .order("created_at", {
-        ascending: true
-      });
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
 
   if (ledgerError) {
 
@@ -2765,35 +2940,47 @@ async function loadLedgers() {
 
   }
 
+
   ledgers =
-    (ledgerRows || []).map(ledger => {
+    (rows || [])
+      .map(
+        ledger => {
 
-      const member =
-        (members || []).find(
-          item =>
-            item.ledger_id === ledger.id
-        );
+          const member =
+            (members || [])
+              .find(
+                item =>
+                  item.ledger_id ===
+                  ledger.id
+              );
 
-      return {
-        ...ledger,
-        role:
-          member?.role || "member"
-      };
+          return {
 
-    });
+            ...ledger,
+
+            role:
+              member?.role ||
+              "member"
+
+          };
+
+        }
+      );
 
 
   if (currentLedger) {
 
-    const exists =
+    const found =
       ledgers.find(
         ledger =>
-          ledger.id === currentLedger.id
+          ledger.id ===
+          currentLedger.id
       );
 
-    if (exists) {
+    if (found) {
 
-      currentLedger = exists;
+      currentLedger =
+        found;
 
     }
 
@@ -2802,27 +2989,22 @@ async function loadLedgers() {
 }
 
 
-async function switchLedger(ledgerId) {
+async function switchLedger(
+  ledgerId
+) {
 
   const ledger =
     ledgers.find(
-      item => item.id === ledgerId
+      item =>
+        item.id === ledgerId
     );
+
 
   if (!ledger) return;
 
-  if (
-    currentLedger &&
-    currentLedger.id === ledger.id
-  ) {
 
-    closeLedgerModal();
-
-    return;
-
-  }
-
-  currentLedger = ledger;
+  currentLedger =
+    ledger;
 
   updateLedgerButton();
 
@@ -2830,11 +3012,14 @@ async function switchLedger(ledgerId) {
 
   showLoading(true);
 
+
   try {
 
     await loadData();
 
-    showPage(currentPage);
+    showPage(
+      currentPage
+    );
 
     toast(
       `已切換到「${ledger.name}」`
@@ -2842,11 +3027,16 @@ async function switchLedger(ledgerId) {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "切換帳本失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -2867,6 +3057,7 @@ function updateLedgerButton() {
 
   if (!button) return;
 
+
   if (!currentLedger) {
 
     button.textContent =
@@ -2876,10 +3067,13 @@ function updateLedgerButton() {
 
   }
 
+
   const icon =
-    currentLedger.type === "shared"
+    currentLedger.type ===
+    "shared"
       ? "💑"
       : "👤";
+
 
   button.textContent =
     `${icon} ${currentLedger.name} ▾`;
@@ -2892,8 +3086,11 @@ function openLedgerModal() {
   renderLedgerModal();
 
   document
-    .getElementById("ledgerModal")
-    .classList.add("active");
+    .getElementById(
+      "ledgerModal"
+    )
+    .classList
+    .add("active");
 
 }
 
@@ -2901,16 +3098,22 @@ function openLedgerModal() {
 function closeLedgerModal() {
 
   document
-    .getElementById("ledgerModal")
-    .classList.remove("active");
+    .getElementById(
+      "ledgerModal"
+    )
+    .classList
+    .remove("active");
 
 }
 
 
-function handleLedgerOverlayClick(event) {
+function handleLedgerOverlayClick(
+  event
+) {
 
   if (
-    event.target.id === "ledgerModal"
+    event.target.id ===
+    "ledgerModal"
   ) {
 
     closeLedgerModal();
@@ -2929,67 +3132,84 @@ function renderLedgerModal() {
 
   if (!list) return;
 
+
   if (!ledgers.length) {
 
     list.innerHTML =
-      `<div class="empty-state">
-        尚未找到帳本
-      </div>`;
+      `
+        <div class="empty-state">
+          尚未找到帳本
+        </div>
+      `;
 
   } else {
 
     list.innerHTML =
-      ledgers.map(ledger => {
+      ledgers
+        .map(
+          ledger => {
 
-        const icon =
-          ledger.type === "shared"
-            ? "💑"
-            : "👤";
+            const icon =
+              ledger.type ===
+              "shared"
+                ? "💑"
+                : "👤";
 
-        const typeText =
-          ledger.type === "shared"
-            ? "共用帳本"
-            : "個人帳本";
+            const typeText =
+              ledger.type ===
+              "shared"
+                ? "共用帳本"
+                : "個人帳本";
 
-        const current =
-          currentLedger?.id === ledger.id;
+            const current =
+              currentLedger?.id ===
+              ledger.id;
 
-        return `
-          <button
-            class="ledger-option ${
-              current ? "current" : ""
-            }"
-            onclick="switchLedger('${ledger.id}')"
-          >
 
-            <div class="ledger-icon">
-              ${icon}
-            </div>
+            return `
+              <button
+                class="ledger-option ${
+                  current
+                    ? "current"
+                    : ""
+                }"
+                onclick="switchLedger('${ledger.id}')"
+              >
 
-            <div class="ledger-option-main">
+                <div class="ledger-icon">
+                  ${icon}
+                </div>
 
-              <div class="ledger-option-name">
-                ${escapeHtml(ledger.name)}
-              </div>
+                <div class="ledger-option-main">
 
-              <div class="ledger-option-type">
-                ${typeText}
-              </div>
+                  <div class="ledger-option-name">
+                    ${escapeHtml(
+                      ledger.name
+                    )}
+                  </div>
 
-            </div>
+                  <div class="ledger-option-type">
+                    ${typeText}
+                  </div>
 
-            ${
-              current
-                ? `<div class="current-badge">
-                    使用中
-                  </div>`
-                : ""
-            }
+                </div>
 
-          </button>
-        `;
+                ${
+                  current
+                    ? `
+                      <div class="current-badge">
+                        使用中
+                      </div>
+                    `
+                    : ""
+                }
 
-      }).join("");
+              </button>
+            `;
+
+          }
+        )
+        .join("");
 
   }
 
@@ -2999,18 +3219,15 @@ function renderLedgerModal() {
       "currentLedgerTools"
     );
 
-  const info =
-    document.getElementById(
-      "currentLedgerInfo"
-    );
 
   if (
     currentLedger &&
-    tools &&
-    info
+    tools
   ) {
 
-    tools.classList.remove("hidden");
+    tools.classList.remove(
+      "hidden"
+    );
 
     renderCurrentLedgerTools();
 
@@ -3026,16 +3243,21 @@ async function createSharedLedger() {
       "sharedLedgerName"
     );
 
+
   let name =
     input.value.trim();
 
+
   if (!name) {
 
-    name = "情侶共用帳本";
+    name =
+      "情侶共用帳本";
 
   }
 
+
   showLoading(true);
+
 
   try {
 
@@ -3043,27 +3265,35 @@ async function createSharedLedger() {
       data,
       error
     } =
-      await supabaseClient.rpc(
-        "create_shared_ledger",
-        {
-          p_name: name
-        }
-      );
+      await supabaseClient
+        .rpc(
+          "create_shared_ledger",
+          {
+            p_name: name
+          }
+        );
+
 
     if (error) throw error;
 
+
     await loadLedgers();
+
 
     const created =
       ledgers.find(
-        ledger => ledger.id === data
+        ledger =>
+          ledger.id === data
       );
+
 
     if (created) {
 
-      currentLedger = created;
+      currentLedger =
+        created;
 
     }
+
 
     updateLedgerButton();
 
@@ -3073,85 +3303,23 @@ async function createSharedLedger() {
 
     renderLedgerModal();
 
-    toast("共用帳本建立成功");
+    toast(
+      "共用帳本建立成功 🎉"
+    );
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "建立失敗：" +
-      (error.message || "")
-    );
-
-  } finally {
-
-    showLoading(false);
-
-  }
-
-}
-
-
-async function createInviteCode() {
-
-  if (!currentLedger) {
-
-    toast("請先選擇帳本");
-
-    return;
-
-  }
-
-  if (
-    currentLedger.type !== "shared"
-  ) {
-
-    toast("個人帳本不需要邀請碼");
-
-    return;
-
-  }
-
-  if (
-    currentLedger.role !== "owner"
-  ) {
-
-    toast("只有帳本擁有者可以產生邀請碼");
-
-    return;
-
-  }
-
-  showLoading(true);
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.rpc(
-        "create_ledger_invite",
-        {
-          p_ledger_id:
-            currentLedger.id
-        }
-      );
-
-    if (error) throw error;
-
-    renderCurrentLedgerTools(data);
-
-    toast("邀請碼已產生");
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast(
-      "產生邀請碼失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -3170,18 +3338,24 @@ async function joinSharedLedger() {
       "inviteCodeInput"
     );
 
+
   const code =
     input.value.trim();
 
+
   if (!code) {
 
-    toast("請輸入邀請碼");
+    toast(
+      "請輸入邀請碼"
+    );
 
     return;
 
   }
 
+
   showLoading(true);
+
 
   try {
 
@@ -3189,27 +3363,35 @@ async function joinSharedLedger() {
       data,
       error
     } =
-      await supabaseClient.rpc(
-        "join_ledger_by_code",
-        {
-          p_code: code
-        }
-      );
+      await supabaseClient
+        .rpc(
+          "join_ledger_by_code",
+          {
+            p_code: code
+          }
+        );
+
 
     if (error) throw error;
 
+
     await loadLedgers();
+
 
     const joined =
       ledgers.find(
-        ledger => ledger.id === data
+        ledger =>
+          ledger.id === data
       );
+
 
     if (joined) {
 
-      currentLedger = joined;
+      currentLedger =
+        joined;
 
     }
+
 
     updateLedgerButton();
 
@@ -3219,15 +3401,118 @@ async function joinSharedLedger() {
 
     renderLedgerModal();
 
-    toast("成功加入共用帳本 🎉");
+    toast(
+      "成功加入共用帳本 🎉"
+    );
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "加入失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
+    );
+
+  } finally {
+
+    showLoading(false);
+
+  }
+
+}
+
+
+async function createInviteCode() {
+
+  if (!currentLedger) {
+
+    toast(
+      "請先選擇帳本"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    currentLedger.type !==
+    "shared"
+  ) {
+
+    toast(
+      "個人帳本不需要邀請碼"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    currentLedger.role !==
+    "owner"
+  ) {
+
+    toast(
+      "只有帳本擁有者可以產生邀請碼"
+    );
+
+    return;
+
+  }
+
+
+  showLoading(true);
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "create_ledger_invite",
+          {
+            p_ledger_id:
+              currentLedger.id
+          }
+        );
+
+
+    if (error) throw error;
+
+
+    renderCurrentLedgerTools(
+      data
+    );
+
+    toast(
+      "邀請碼已產生"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    toast(
+      "產生邀請碼失敗：" +
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -3248,18 +3533,26 @@ async function renderCurrentLedgerTools(
       "currentLedgerInfo"
     );
 
-  if (!info || !currentLedger) return;
+
+  if (
+    !info ||
+    !currentLedger
+  ) {
+
+    return;
+
+  }
 
 
   if (
-    currentLedger.type === "personal"
+    currentLedger.type ===
+    "personal"
   ) {
 
     info.innerHTML = `
       <div class="invite-box">
-        <div>
-          👤 這是你的個人帳本。
-        </div>
+
+        👤 這是你的個人帳本。
 
         <div
           style="
@@ -3270,6 +3563,7 @@ async function renderCurrentLedgerTools(
         >
           個人帳本資料只會顯示在你的帳號中。
         </div>
+
       </div>
     `;
 
@@ -3280,90 +3574,93 @@ async function renderCurrentLedgerTools(
 
   let members = [];
 
-  try {
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("ledger_members")
-        .select(
-          "user_id, role, joined_at"
-        )
-        .eq(
-          "ledger_id",
-          currentLedger.id
-        )
-        .order("joined_at", {
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "ledger_members"
+      )
+      .select(
+        "user_id, role, joined_at"
+      )
+      .eq(
+        "ledger_id",
+        currentLedger.id
+      )
+      .order(
+        "joined_at",
+        {
           ascending: true
-        });
+        }
+      );
 
-    if (!error) {
 
-      members = data || [];
+  if (!error) {
 
-    }
-
-  } catch (error) {
-
-    console.error(error);
+    members =
+      data || [];
 
   }
 
 
   const memberHtml =
-    members.length
-      ? members.map(
-          (member, index) => {
+    members
+      .map(
+        (member, index) => {
 
-            const isMe =
-              member.user_id ===
-              currentUser.id;
+          const isMe =
+            member.user_id ===
+            currentUser.id;
 
-            const name =
-              isMe
-                ? "我"
-                : `另一半${
-                    index > 1
-                      ? " " + index
-                      : ""
-                  }`;
+          const name =
+            isMe
+              ? "我"
+              : (
+                  index === 1
+                    ? "另一半"
+                    : `成員 ${index + 1}`
+                );
 
-            const role =
-              member.role === "owner"
-                ? "擁有者"
-                : "成員";
+          const role =
+            member.role ===
+            "owner"
+              ? "擁有者"
+              : "成員";
 
-            return `
-              <div class="member-item">
 
-                <div class="member-avatar">
-                  ${isMe ? "🙋" : "👤"}
-                </div>
+          return `
+            <div class="member-item">
 
-                <div class="member-name">
-                  ${name}
-                </div>
-
-                <div class="member-role">
-                  ${role}
-                </div>
-
+              <div class="member-avatar">
+                ${
+                  isMe
+                    ? "🙋"
+                    : "👤"
+                }
               </div>
-            `;
 
-          }
-        ).join("")
-      : `
-        <div class="empty-state">
-          尚無成員資料
-        </div>
-      `;
+              <div class="member-name">
+                ${name}
+              </div>
+
+              <div class="member-role">
+                ${role}
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
 
 
-  const ownerButtons =
-    currentLedger.role === "owner"
+  const ownerSection =
+    currentLedger.role ===
+    "owner"
       ? `
         <button
           class="btn btn-primary btn-full"
@@ -3427,15 +3724,22 @@ async function renderCurrentLedgerTools(
     </div>
 
     <div class="member-list">
-      ${memberHtml}
+
+      ${
+        memberHtml ||
+        `
+          <div class="empty-state">
+            尚無成員資料
+          </div>
+        `
+      }
+
     </div>
 
     <div
-      style="
-        margin-top:16px;
-      "
+      style="margin-top:16px;"
     >
-      ${ownerButtons}
+      ${ownerSection}
     </div>
 
   `;
@@ -3450,31 +3754,39 @@ function copyInviteCode() {
       "latestInviteCode"
     );
 
+
   if (!el) return;
+
 
   const code =
     el.textContent.trim();
 
+
   if (
-    navigator.clipboard &&
-    navigator.clipboard.writeText
+    navigator.clipboard
   ) {
 
     navigator.clipboard
       .writeText(code)
-      .then(() => {
+      .then(
+        () => {
 
-        toast("邀請碼已複製");
+          toast(
+            "邀請碼已複製"
+          );
 
-      })
-      .catch(() => {
+        }
+      )
+      .catch(
+        () => {
 
-        prompt(
-          "請複製邀請碼",
-          code
-        );
+          prompt(
+            "請複製邀請碼",
+            code
+          );
 
-      });
+        }
+      );
 
   } else {
 
@@ -3489,65 +3801,74 @@ function copyInviteCode() {
 
 
 /* =========================================================
-   Month
+   Month Change
 ========================================================= */
 
-async function changeMonth(month) {
+async function changeMonth(
+  month
+) {
 
   currentMonth =
-    normalizeMonth(month);
+    normalizeMonth(
+      month
+    );
 
   setMonthInput();
 
-  await loadData();
 
-  renderAll();
-
-}
+  showLoading(true);
 
 
-function getMonthDateRange(month) {
+  try {
 
-  month =
-    normalizeMonth(month);
+    await loadData();
 
-  const start =
-    `${month}-01`;
+    renderAll();
 
-  const next =
-    getNextMonth(month);
+  } catch (error) {
 
-  const end =
-    `${next}-01`;
+    console.error(
+      error
+    );
 
-  return {
-    start,
-    end
-  };
+    toast(
+      "切換月份失敗：" +
+      (
+        error.message ||
+        ""
+      )
+    );
+
+  } finally {
+
+    showLoading(false);
+
+  }
 
 }
 
 
 /* =========================================================
-   Load Data
+   Data
 ========================================================= */
 
 async function loadData() {
 
-  if (!currentUser) return;
-
-  if (!currentLedger) {
-
-    console.warn(
-      "尚未選擇帳本，略過資料讀取"
-    );
+  if (
+    !currentUser ||
+    !currentLedger
+  ) {
 
     return;
 
   }
 
+
   currentMonth =
-    normalizeMonth(currentMonth);
+    normalizeMonth(
+      currentMonth
+    );
+
 
   const {
     start,
@@ -3559,8 +3880,14 @@ async function loadData() {
 
 
   await Promise.all([
+
     loadBudget(),
-    loadTransactions(start, end)
+
+    loadTransactions(
+      start,
+      end
+    )
+
   ]);
 
 
@@ -3572,6 +3899,19 @@ async function loadData() {
 async function loadBudget() {
 
   if (!currentLedger) return;
+
+
+  /*
+    重要修正：
+    budgets.month 是 PostgreSQL date
+    所以查詢時必須使用 YYYY-MM-01
+  */
+
+  const monthDate =
+    monthToDate(
+      currentMonth
+    );
+
 
   const {
     data,
@@ -3586,9 +3926,10 @@ async function loadBudget() {
       )
       .eq(
         "month",
-        currentMonth
+        monthDate
       )
       .maybeSingle();
+
 
   if (error) {
 
@@ -3605,14 +3946,19 @@ async function loadBudget() {
   if (data) {
 
     budget = {
+
       ...DEFAULT_BUDGET,
+
       ...data
+
     };
 
   } else {
 
     budget = {
+
       ...DEFAULT_BUDGET
+
     };
 
   }
@@ -3627,12 +3973,15 @@ async function loadTransactions(
 
   if (!currentLedger) return;
 
+
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("transactions")
+      .from(
+        "transactions"
+      )
       .select("*")
       .eq(
         "ledger_id",
@@ -3659,6 +4008,7 @@ async function loadTransactions(
         }
       );
 
+
   if (error) {
 
     console.error(
@@ -3670,6 +4020,7 @@ async function loadTransactions(
 
   }
 
+
   transactions =
     data || [];
 
@@ -3677,19 +4028,27 @@ async function loadTransactions(
 
 
 /* =========================================================
-   Budget
+   Budget Save
 ========================================================= */
 
 async function saveBudget() {
 
   if (!currentLedger) {
 
-    toast("請先選擇帳本");
+    toast(
+      "請先選擇帳本"
+    );
 
     return;
 
   }
 
+
+  /*
+    重要修正：
+    month 欄位是 date
+    必須送 YYYY-MM-01
+  */
 
   const row = {
 
@@ -3700,7 +4059,9 @@ async function saveBudget() {
       currentLedger.id,
 
     month:
-      currentMonth,
+      monthToDate(
+        currentMonth
+      ),
 
     income:
       Number(
@@ -3756,6 +4117,7 @@ async function saveBudget() {
 
   showLoading(true);
 
+
   try {
 
     const {
@@ -3774,26 +4136,40 @@ async function saveBudget() {
         .select()
         .single();
 
+
     if (error) throw error;
 
+
     budget = {
+
       ...DEFAULT_BUDGET,
+
       ...data
+
     };
+
 
     cancelBudgetEdit();
 
     renderAll();
 
-    toast("預算已儲存");
+    toast(
+      "預算已儲存"
+    );
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "儲存預算失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -3814,6 +4190,7 @@ function startBudgetEdit() {
     };
 
   }
+
 
   document.getElementById(
     "budget_income"
@@ -3852,12 +4229,19 @@ function startBudgetEdit() {
 
 
   document
-    .getElementById("budgetView")
-    .classList.add("hidden");
+    .getElementById(
+      "budgetView"
+    )
+    .classList
+    .add("hidden");
+
 
   document
-    .getElementById("budgetEdit")
-    .classList.remove("hidden");
+    .getElementById(
+      "budgetEdit"
+    )
+    .classList
+    .remove("hidden");
 
 }
 
@@ -3865,43 +4249,55 @@ function startBudgetEdit() {
 function cancelBudgetEdit() {
 
   document
-    .getElementById("budgetView")
-    .classList.remove("hidden");
+    .getElementById(
+      "budgetView"
+    )
+    .classList
+    .remove("hidden");
+
 
   document
-    .getElementById("budgetEdit")
-    .classList.add("hidden");
+    .getElementById(
+      "budgetEdit"
+    )
+    .classList
+    .add("hidden");
 
 }
 
 
 /* =========================================================
-   Transaction
+   Transactions
 ========================================================= */
 
-function setTransactionType(type) {
+function setTransactionType(
+  type
+) {
 
-  transactionType = type;
+  transactionType =
+    type;
 
-  const expenseBtn =
-    document.getElementById(
+
+  document
+    .getElementById(
       "expenseTypeBtn"
+    )
+    .classList
+    .toggle(
+      "active",
+      type === "expense"
     );
 
-  const incomeBtn =
-    document.getElementById(
+
+  document
+    .getElementById(
       "incomeTypeBtn"
+    )
+    .classList
+    .toggle(
+      "active",
+      type === "income"
     );
-
-  expenseBtn.classList.toggle(
-    "active",
-    type === "expense"
-  );
-
-  incomeBtn.classList.toggle(
-    "active",
-    type === "income"
-  );
 
 }
 
@@ -3913,35 +4309,35 @@ function setDefaultTransactionDate() {
       "txDate"
     );
 
+
   if (!input) return;
+
 
   const today =
     new Date();
 
-  const todayString =
-    today.toISOString()
-      .slice(0, 10);
 
-  const currentMonthPrefix =
+  const todayString =
+    today
+      .toISOString()
+      .slice(
+        0,
+        10
+      );
+
+
+  const month =
     normalizeMonth(
       currentMonth
     );
 
-  if (
+
+  input.value =
     todayString.startsWith(
-      currentMonthPrefix
+      month
     )
-  ) {
-
-    input.value =
-      todayString;
-
-  } else {
-
-    input.value =
-      `${currentMonthPrefix}-01`;
-
-  }
+      ? todayString
+      : `${month}-01`;
 
 }
 
@@ -3950,15 +4346,20 @@ async function addTransaction() {
 
   if (!currentUser) {
 
-    toast("請先登入");
+    toast(
+      "請先登入"
+    );
 
     return;
 
   }
 
+
   if (!currentLedger) {
 
-    toast("請先選擇帳本");
+    toast(
+      "請先選擇帳本"
+    );
 
     return;
 
@@ -3970,6 +4371,7 @@ async function addTransaction() {
       "txDate"
     ).value;
 
+
   const amount =
     Number(
       document.getElementById(
@@ -3977,37 +4379,49 @@ async function addTransaction() {
       ).value
     );
 
+
   const category =
     document.getElementById(
       "txCategory"
     ).value;
+
 
   const paymentMethod =
     document.getElementById(
       "txPaymentMethod"
     ).value;
 
+
   const note =
-    document.getElementById(
-      "txNote"
-    ).value
+    document
+      .getElementById(
+        "txNote"
+      )
+      .value
       .trim();
 
 
   if (!date) {
 
-    toast("請選擇日期");
+    toast(
+      "請選擇日期"
+    );
 
     return;
 
   }
 
+
   if (
-    !Number.isFinite(amount) ||
+    !Number.isFinite(
+      amount
+    ) ||
     amount <= 0
   ) {
 
-    toast("請輸入正確金額");
+    toast(
+      "請輸入正確金額"
+    );
 
     return;
 
@@ -4042,18 +4456,23 @@ async function addTransaction() {
 
   showLoading(true);
 
+
   try {
 
     const {
       error
     } =
       await supabaseClient
-        .from("transactions")
-        .insert(row);
+        .from(
+          "transactions"
+        )
+        .insert(
+          row
+        );
+
 
     if (error) throw error;
 
-    toast("記帳成功 🎉");
 
     resetTransactionForm();
 
@@ -4061,13 +4480,23 @@ async function addTransaction() {
 
     showPage("home");
 
+    toast(
+      "記帳成功 🎉"
+    );
+
+
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "記帳失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -4085,13 +4514,17 @@ function resetTransactionForm() {
     "txAmount"
   ).value = "";
 
+
   document.getElementById(
     "txNote"
   ).value = "";
 
+
   setDefaultTransactionDate();
 
-  setTransactionType("expense");
+  setTransactionType(
+    "expense"
+  );
 
 }
 
@@ -4104,12 +4537,16 @@ function openEditModal(id) {
 
   const tx =
     transactions.find(
-      item => item.id === id
+      item =>
+        item.id === id
     );
+
 
   if (!tx) {
 
-    toast("找不到這筆記帳");
+    toast(
+      "找不到這筆記帳"
+    );
 
     return;
 
@@ -4121,30 +4558,37 @@ function openEditModal(id) {
   ).value =
     tx.id;
 
+
   document.getElementById(
     "editDate"
   ).value =
     tx.date || "";
+
 
   document.getElementById(
     "editAmount"
   ).value =
     tx.amount || 0;
 
+
   document.getElementById(
     "editType"
   ).value =
     tx.type || "expense";
+
 
   document.getElementById(
     "editCategory"
   ).value =
     tx.category || "other";
 
+
   document.getElementById(
     "editPaymentMethod"
   ).value =
-    tx.payment_method || "cash";
+    tx.payment_method ||
+    "cash";
+
 
   document.getElementById(
     "editNote"
@@ -4156,7 +4600,8 @@ function openEditModal(id) {
     .getElementById(
       "editModal"
     )
-    .classList.add("active");
+    .classList
+    .add("active");
 
 }
 
@@ -4167,12 +4612,15 @@ function closeEditModal() {
     .getElementById(
       "editModal"
     )
-    .classList.remove("active");
+    .classList
+    .remove("active");
 
 }
 
 
-function handleEditOverlayClick(event) {
+function handleEditOverlayClick(
+  event
+) {
 
   if (
     event.target.id ===
@@ -4190,7 +4638,9 @@ async function saveEditedTransaction() {
 
   if (!currentLedger) {
 
-    toast("請先選擇帳本");
+    toast(
+      "請先選擇帳本"
+    );
 
     return;
 
@@ -4202,10 +4652,12 @@ async function saveEditedTransaction() {
       "editId"
     ).value;
 
+
   const date =
     document.getElementById(
       "editDate"
     ).value;
+
 
   const amount =
     Number(
@@ -4214,42 +4666,55 @@ async function saveEditedTransaction() {
       ).value
     );
 
+
   const type =
     document.getElementById(
       "editType"
     ).value;
+
 
   const category =
     document.getElementById(
       "editCategory"
     ).value;
 
+
   const paymentMethod =
     document.getElementById(
       "editPaymentMethod"
     ).value;
 
+
   const note =
-    document.getElementById(
-      "editNote"
-    ).value
+    document
+      .getElementById(
+        "editNote"
+      )
+      .value
       .trim();
 
 
   if (!date) {
 
-    toast("請選擇日期");
+    toast(
+      "請選擇日期"
+    );
 
     return;
 
   }
 
+
   if (
-    !Number.isFinite(amount) ||
+    !Number.isFinite(
+      amount
+    ) ||
     amount <= 0
   ) {
 
-    toast("請輸入正確金額");
+    toast(
+      "請輸入正確金額"
+    );
 
     return;
 
@@ -4258,21 +4723,29 @@ async function saveEditedTransaction() {
 
   showLoading(true);
 
+
   try {
 
     const {
       error
     } =
       await supabaseClient
-        .from("transactions")
+        .from(
+          "transactions"
+        )
         .update({
 
           date,
+
           amount,
+
           type,
+
           category,
+
           payment_method:
             paymentMethod,
+
           note:
             note || null
 
@@ -4286,21 +4759,31 @@ async function saveEditedTransaction() {
           currentLedger.id
         );
 
+
     if (error) throw error;
+
 
     closeEditModal();
 
     await loadData();
 
-    toast("已更新");
+    toast(
+      "已更新"
+    );
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "更新失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -4312,11 +4795,15 @@ async function saveEditedTransaction() {
 }
 
 
-async function deleteTransaction(id) {
+async function deleteTransaction(
+  id
+) {
 
   if (!currentLedger) {
 
-    toast("請先選擇帳本");
+    toast(
+      "請先選擇帳本"
+    );
 
     return;
 
@@ -4325,23 +4812,29 @@ async function deleteTransaction(id) {
 
   const tx =
     transactions.find(
-      item => item.id === id
+      item =>
+        item.id === id
     );
+
 
   if (!tx) return;
 
 
-  const confirmed =
-    confirm(
-      `確定要刪除這筆 ${
-        formatMoney(tx.amount)
-      } 的記帳嗎？`
-    );
+  if (
+    !confirm(
+      `確定要刪除這筆 ${formatMoney(
+        tx.amount
+      )} 的記帳嗎？`
+    )
+  ) {
 
-  if (!confirmed) return;
+    return;
+
+  }
 
 
   showLoading(true);
+
 
   try {
 
@@ -4349,7 +4842,9 @@ async function deleteTransaction(id) {
       error
     } =
       await supabaseClient
-        .from("transactions")
+        .from(
+          "transactions"
+        )
         .delete()
         .eq(
           "id",
@@ -4360,19 +4855,29 @@ async function deleteTransaction(id) {
           currentLedger.id
         );
 
+
     if (error) throw error;
+
 
     await loadData();
 
-    toast("已刪除");
+    toast(
+      "已刪除"
+    );
+
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     toast(
       "刪除失敗：" +
-      (error.message || "")
+      (
+        error.message ||
+        ""
+      )
     );
 
   } finally {
@@ -4397,39 +4902,52 @@ function calculateTotals() {
   let creditCard = 0;
 
 
-  transactions.forEach(tx => {
+  transactions.forEach(
+    tx => {
 
-    const amount =
-      Number(tx.amount || 0);
+      const amount =
+        Number(
+          tx.amount || 0
+        );
 
-    if (tx.type === "income") {
-
-      income += amount;
-
-    } else {
-
-      expense += amount;
 
       if (
-        tx.payment_method ===
-        "credit_card"
+        tx.type ===
+        "income"
       ) {
 
-        creditCard += amount;
+        income += amount;
+
+      } else {
+
+        expense += amount;
+
+
+        if (
+          tx.payment_method ===
+          "credit_card"
+        ) {
+
+          creditCard +=
+            amount;
+
+        }
 
       }
 
     }
-
-  });
+  );
 
 
   return {
 
     income,
+
     expense,
+
     remaining:
       income - expense,
+
     creditCard
 
   };
@@ -4444,8 +4962,10 @@ function getCategoryExpense(
   return transactions
     .filter(
       tx =>
-        tx.type === "expense" &&
-        tx.category === category
+        tx.type ===
+          "expense" &&
+        tx.category ===
+          category
     )
     .reduce(
       (
@@ -4466,13 +4986,21 @@ function getBudgetTotal() {
 
   if (!budget) return 0;
 
+
   return [
+
     "necessary",
+
     "credit_card",
+
     "cash_reserve",
+
     "free_spending",
+
     "investment",
+
     "other"
+
   ].reduce(
     (
       total,
@@ -4489,7 +5017,7 @@ function getBudgetTotal() {
 
 
 /* =========================================================
-   Render All
+   Render
 ========================================================= */
 
 function renderAll() {
@@ -4513,38 +5041,36 @@ function updateMonthTexts() {
     );
 
 
-  const home =
-    document.getElementById(
-      "homeMonthText"
-    );
+  const ids = [
 
-  const add =
-    document.getElementById(
-      "addMonthText"
-    );
+    "homeMonthText",
 
-  const budgetText =
-    document.getElementById(
-      "budgetMonthText"
-    );
+    "addMonthText",
 
-  const details =
-    document.getElementById(
-      "detailsMonthText"
-    );
+    "budgetMonthText",
+
+    "detailsMonthText"
+
+  ];
 
 
-  if (home)
-    home.textContent = label;
+  ids.forEach(
+    id => {
 
-  if (add)
-    add.textContent = label;
+      const el =
+        document.getElementById(
+          id
+        );
 
-  if (budgetText)
-    budgetText.textContent = label;
+      if (el) {
 
-  if (details)
-    details.textContent = label;
+        el.textContent =
+          label;
+
+      }
+
+    }
+  );
 
 }
 
@@ -4605,15 +5131,18 @@ function renderHomeBudget() {
       "homeBudgetList"
     );
 
+
   if (!container) return;
 
 
   if (!budget) {
 
     container.innerHTML =
-      `<div class="empty-state">
-        尚未設定預算
-      </div>`;
+      `
+        <div class="empty-state">
+          尚未設定預算
+        </div>
+      `;
 
     return;
 
@@ -4621,107 +5150,128 @@ function renderHomeBudget() {
 
 
   const categories = [
+
     "necessary",
+
     "credit_card",
+
     "cash_reserve",
+
     "free_spending",
+
     "investment",
+
     "other"
+
   ];
 
 
   container.innerHTML =
-    categories.map(
-      key => {
+    categories
+      .map(
+        key => {
 
-        const item =
-          categoryMap[key];
-
-        const planned =
-          Number(
-            budget[key] || 0
-          );
-
-        const actual =
-          getCategoryExpense(
-            key
-          );
+          const item =
+            categoryMap[key];
 
 
-        let percent = 0;
-
-        if (planned > 0) {
-
-          percent =
-            Math.round(
-              actual /
-              planned *
-              100
+          const planned =
+            Number(
+              budget[key] || 0
             );
 
-        }
+
+          const actual =
+            getCategoryExpense(
+              key
+            );
 
 
-        const width =
-          planned > 0
-            ? Math.min(
-                percent,
-                100
-              )
-            : 0;
+          const percent =
+            planned > 0
+              ? Math.round(
+                  actual /
+                  planned *
+                  100
+                )
+              : 0;
 
 
-        let progressClass = "";
-
-        if (percent >= 100) {
-
-          progressClass =
-            "danger";
-
-        } else if (percent >= 80) {
-
-          progressClass =
-            "warning";
-
-        }
+          const width =
+            planned > 0
+              ? Math.min(
+                  percent,
+                  100
+                )
+              : 0;
 
 
-        return `
-          <div class="budget-item">
+          let progressClass =
+            "";
 
-            <div class="budget-head">
 
-              <div class="budget-name">
-                ${item.icon}
-                ${item.name}
+          if (
+            percent >= 100
+          ) {
+
+            progressClass =
+              "danger";
+
+          } else if (
+            percent >= 80
+          ) {
+
+            progressClass =
+              "warning";
+
+          }
+
+
+          return `
+
+            <div class="budget-item">
+
+              <div class="budget-head">
+
+                <div class="budget-name">
+                  ${item.icon}
+                  ${item.name}
+                </div>
+
+                <div class="budget-number">
+
+                  ${
+                    planned > 0
+                      ? `${formatMoney(
+                          actual
+                        )} / ${formatMoney(
+                          planned
+                        )}`
+                      : `${formatMoney(
+                          actual
+                        )} / —`
+                  }
+
+                </div>
+
               </div>
 
-              <div class="budget-number">
+              <div class="progress">
 
-                ${
-                  planned > 0
-                    ? `${formatMoney(actual)} / ${formatMoney(planned)}`
-                    : `${formatMoney(actual)} / —`
-                }
+                <div
+                  class="progress-bar ${progressClass}"
+                  style="width:${width}%"
+                ></div>
 
               </div>
 
             </div>
 
-            <div class="progress">
+          `;
 
-              <div
-                class="progress-bar ${progressClass}"
-                style="width:${width}%"
-              ></div>
-
-            </div>
-
-          </div>
-        `;
-
-      }
-    ).join("");
+        }
+      )
+      .join("");
 
 }
 
@@ -4732,6 +5282,7 @@ function renderHomeRecent() {
     document.getElementById(
       "homeRecentList"
     );
+
 
   if (!container) return;
 
@@ -4746,9 +5297,11 @@ function renderHomeRecent() {
   if (!recent.length) {
 
     container.innerHTML =
-      `<div class="empty-state">
-        這個月還沒有記帳
-      </div>`;
+      `
+        <div class="empty-state">
+          這個月還沒有記帳
+        </div>
+      `;
 
     return;
 
@@ -4756,13 +5309,15 @@ function renderHomeRecent() {
 
 
   container.innerHTML =
-    recent.map(
-      tx =>
-        renderTransactionItem(
-          tx,
-          true
-        )
-    ).join("");
+    recent
+      .map(
+        tx =>
+          renderTransactionItem(
+            tx,
+            true
+          )
+      )
+      .join("");
 
 }
 
@@ -4781,11 +5336,14 @@ function renderBudgetPage() {
       budget.income || 0
     );
 
+
   const total =
     getBudgetTotal();
 
+
   const totals =
     calculateTotals();
+
 
   const remaining =
     total -
@@ -4795,17 +5353,25 @@ function renderBudgetPage() {
   document.getElementById(
     "budgetIncomeSummary"
   ).textContent =
-    formatMoney(income);
+    formatMoney(
+      income
+    );
+
 
   document.getElementById(
     "budgetTotalSummary"
   ).textContent =
-    formatMoney(total);
+    formatMoney(
+      total
+    );
+
 
   document.getElementById(
     "budgetRemainingSummary"
   ).textContent =
-    formatMoney(remaining);
+    formatMoney(
+      remaining
+    );
 
 
   const container =
@@ -4813,142 +5379,321 @@ function renderBudgetPage() {
       "budgetViewGrid"
     );
 
+
   if (!container) return;
 
 
   const categories = [
-    {
-      key: "necessary",
-      icon: "🏠",
-      name: "必要生活費"
-    },
-    {
-      key: "credit_card",
-      icon: "💳",
-      name: "信用卡"
-    },
-    {
-      key: "cash_reserve",
-      icon: "💵",
-      name: "現金／預備金"
-    },
-    {
-      key: "free_spending",
-      icon: "🎮",
-      name: "自由支出"
-    },
-    {
-      key: "investment",
-      icon: "📈",
-      name: "投資"
-    },
-    {
-      key: "other",
-      icon: "📦",
-      name: "其他"
-    }
+
+    [
+      "necessary",
+      "🏠",
+      "必要生活費"
+    ],
+
+    [
+      "credit_card",
+      "💳",
+      "信用卡"
+    ],
+
+    [
+      "cash_reserve",
+      "💵",
+      "現金／預備金"
+    ],
+
+    [
+      "free_spending",
+      "🎮",
+      "自由支出"
+    ],
+
+    [
+      "investment",
+      "📈",
+      "投資"
+    ],
+
+    [
+      "other",
+      "📦",
+      "其他"
+    ]
+
   ];
 
 
   container.innerHTML =
-    categories.map(
-      item => {
+    categories
+      .map(
+        ([key, icon, name]) => {
 
-        const planned =
-          Number(
-            budget[item.key] || 0
-          );
-
-        const actual =
-          getCategoryExpense(
-            item.key
-          );
-
-        const remaining =
-          planned -
-          actual;
+          const planned =
+            Number(
+              budget[key] || 0
+            );
 
 
-        return `
-          <div class="budget-field">
+          const actual =
+            getCategoryExpense(
+              key
+            );
 
-            <div class="budget-field-top">
 
-              <div class="budget-field-name">
-                ${item.icon}
-                ${item.name}
+          const left =
+            planned -
+            actual;
+
+
+          return `
+
+            <div class="budget-field">
+
+              <div class="budget-field-top">
+
+                <div class="budget-field-name">
+                  ${icon}
+                  ${name}
+                </div>
+
+              </div>
+
+              <div
+                style="
+                  font-size:13px;
+                  color:var(--muted);
+                  margin-bottom:5px;
+                "
+              >
+                預算
+              </div>
+
+              <div
+                style="
+                  font-size:21px;
+                  font-weight:800;
+                  margin-bottom:12px;
+                "
+              >
+                ${formatMoney(
+                  planned
+                )}
+              </div>
+
+              <div
+                style="
+                  display:flex;
+                  justify-content:space-between;
+                  gap:10px;
+                  font-size:13px;
+                "
+              >
+
+                <span>
+                  已使用 ${formatMoney(
+                    actual
+                  )}
+                </span>
+
+                <span
+                  style="
+                    color:${
+                      left < 0
+                        ? "var(--danger)"
+                        : "var(--success)"
+                    };
+                    font-weight:700;
+                  "
+                >
+
+                  ${
+                    left >= 0
+                      ? `剩 ${formatMoney(
+                          left
+                        )}`
+                      : `超支 ${formatMoney(
+                          Math.abs(
+                            left
+                          )
+                        )}`
+                  }
+
+                </span>
+
               </div>
 
             </div>
 
-            <div
-              style="
-                font-size:13px;
-                color:var(--muted);
-                margin-bottom:5px;
-              "
-            >
-              預算
-            </div>
+          `;
 
-            <div
-              style="
-                font-size:21px;
-                font-weight:800;
-                margin-bottom:12px;
-              "
-            >
-              ${formatMoney(planned)}
-            </div>
-
-            <div
-              style="
-                display:flex;
-                justify-content:space-between;
-                gap:10px;
-                font-size:13px;
-              "
-            >
-
-              <span>
-                已使用 ${formatMoney(actual)}
-              </span>
-
-              <span
-                style="
-                  color:${
-                    remaining < 0
-                      ? "var(--danger)"
-                      : "var(--success)"
-                  };
-                  font-weight:700;
-                "
-              >
-                ${
-                  remaining >= 0
-                    ? `剩 ${formatMoney(remaining)}`
-                    : `超支 ${formatMoney(
-                        Math.abs(
-                          remaining
-                        )
-                      )}`
-                }
-              </span>
-
-            </div>
-
-          </div>
-        `;
-
-      }
-    ).join("");
+        }
+      )
+      .join("");
 
 }
 
 
 /* =========================================================
-   Transaction List
+   Transaction Rendering
 ========================================================= */
+
+function getRecorderLabel(
+  tx
+) {
+
+  if (
+    !currentLedger ||
+    currentLedger.type !==
+      "shared"
+  ) {
+
+    return "";
+
+  }
+
+
+  return tx.user_id ===
+    currentUser.id
+      ? "我"
+      : "另一半";
+
+}
+
+
+function renderTransactionItem(
+  tx,
+  compact = false
+) {
+
+  const category =
+    categoryMap[
+      tx.category
+    ] || {
+
+      name: "其他",
+
+      icon: "📦"
+
+    };
+
+
+  const income =
+    tx.type ===
+    "income";
+
+
+  const recorder =
+    getRecorderLabel(
+      tx
+    );
+
+
+  const payment =
+    tx.payment_method ===
+    "credit_card"
+      ? "信用卡"
+      : "現金";
+
+
+  return `
+
+    <div class="${
+      compact
+        ? "recent-item"
+        : "transaction-item"
+    }">
+
+      <div class="item-icon">
+        ${category.icon}
+      </div>
+
+      <div class="item-main">
+
+        <div class="item-title">
+
+          ${escapeHtml(
+            tx.note ||
+            category.name
+          )}
+
+        </div>
+
+        <div class="item-meta">
+
+          ${escapeHtml(
+            tx.date || ""
+          )}
+
+          ·
+
+          ${category.name}
+
+          ·
+
+          ${payment}
+
+          ${
+            recorder
+              ? ` · ${recorder}`
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+      <div
+        class="item-amount ${
+          income
+            ? "income"
+            : "expense"
+        }"
+      >
+
+        ${
+          income
+            ? "+"
+            : "-"
+        }${formatMoney(
+          tx.amount
+        )}
+
+      </div>
+
+
+      ${
+        compact
+          ? ""
+          : `
+
+            <div class="transaction-actions">
+
+              <button
+                class="small-btn edit-btn"
+                onclick="openEditModal('${tx.id}')"
+              >
+                ✏️
+              </button>
+
+              <button
+                class="small-btn delete-btn"
+                onclick="deleteTransaction('${tx.id}')"
+              >
+                🗑️
+              </button>
+
+            </div>
+
+          `
+      }
+
+    </div>
+
+  `;
+
+}
+
 
 function renderTransactions() {
 
@@ -4956,6 +5701,7 @@ function renderTransactions() {
     document.getElementById(
       "transactionList"
     );
+
 
   if (!container) return;
 
@@ -4989,34 +5735,43 @@ function renderTransactions() {
         const note =
           (
             tx.note || ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
+
 
         if (
           search &&
-          !note.includes(search)
+          !note.includes(
+            search
+          )
         ) {
 
           return false;
 
         }
+
 
         if (
           category &&
-          tx.category !== category
+          tx.category !==
+            category
         ) {
 
           return false;
 
         }
+
 
         if (
           type &&
-          tx.type !== type
+          tx.type !==
+            type
         ) {
 
           return false;
 
         }
+
 
         return true;
 
@@ -5027,9 +5782,11 @@ function renderTransactions() {
   if (!filtered.length) {
 
     container.innerHTML =
-      `<div class="empty-state">
-        沒有符合條件的記帳
-      </div>`;
+      `
+        <div class="empty-state">
+          沒有符合條件的記帳
+        </div>
+      `;
 
     return;
 
@@ -5037,208 +5794,62 @@ function renderTransactions() {
 
 
   container.innerHTML =
-    filtered.map(
-      tx =>
-        renderTransactionItem(
-          tx,
-          false
-        )
-    ).join("");
-
-}
-
-
-function getRecorderLabel(tx) {
-
-  if (!currentLedger) return "";
-
-  if (
-    currentLedger.type !== "shared"
-  ) {
-
-    return "";
-
-  }
-
-  if (
-    tx.user_id ===
-    currentUser.id
-  ) {
-
-    return "我";
-
-  }
-
-  return "另一半";
-
-}
-
-
-function renderTransactionItem(
-  tx,
-  compact = false
-) {
-
-  const category =
-    categoryMap[
-      tx.category
-    ] || {
-      name: "其他",
-      icon: "📦"
-    };
-
-
-  const isIncome =
-    tx.type === "income";
-
-
-  const recorder =
-    getRecorderLabel(tx);
-
-
-  const paymentText =
-    tx.payment_method ===
-    "credit_card"
-      ? "信用卡"
-      : "現金";
-
-
-  return `
-    <div class="${
-      compact
-        ? "recent-item"
-        : "transaction-item"
-    }">
-
-      <div class="item-icon">
-        ${category.icon}
-      </div>
-
-      <div class="item-main">
-
-        <div class="item-title">
-
-          ${
-            escapeHtml(
-              tx.note ||
-              category.name
-            )
-          }
-
-        </div>
-
-        <div class="item-meta">
-
-          ${escapeHtml(
-            tx.date || ""
-          )}
-
-          ·
-
-          ${category.name}
-
-          ·
-
-          ${paymentText}
-
-          ${
-            recorder
-              ? ` · ${recorder}`
-              : ""
-          }
-
-        </div>
-
-      </div>
-
-      <div
-        class="item-amount ${
-          isIncome
-            ? "income"
-            : "expense"
-        }"
-      >
-
-        ${
-          isIncome
-            ? "+"
-            : "-"
-        }${formatMoney(
-          tx.amount
-        )}
-
-      </div>
-
-      ${
-        !compact
-          ? `
-            <div class="transaction-actions">
-
-              <button
-                class="small-btn edit-btn"
-                onclick="openEditModal('${tx.id}')"
-              >
-                ✏️
-              </button>
-
-              <button
-                class="small-btn delete-btn"
-                onclick="deleteTransaction('${tx.id}')"
-              >
-                🗑️
-              </button>
-
-            </div>
-          `
-          : ""
-      }
-
-    </div>
-  `;
+    filtered
+      .map(
+        tx =>
+          renderTransactionItem(
+            tx,
+            false
+          )
+      )
+      .join("");
 
 }
 
 
 /* =========================================================
-   Page Navigation
+   Navigation
 ========================================================= */
 
-function showPage(page) {
+function showPage(
+  page
+) {
 
-  currentPage = page;
+  currentPage =
+    page;
 
 
   document
-    .querySelectorAll(".page")
+    .querySelectorAll(
+      ".page"
+    )
     .forEach(
       element =>
-        element.classList.remove(
-          "active"
-        )
+        element.classList
+          .remove(
+            "active"
+          )
     );
-
-
-  const pageElement =
-    document.getElementById(
-      `page-${page}`
-    );
-
-  if (pageElement) {
-
-    pageElement.classList.add(
-      "active"
-    );
-
-  }
 
 
   document
-    .querySelectorAll(".nav-btn")
+    .getElementById(
+      `page-${page}`
+    )
+    ?.classList
+    .add("active");
+
+
+  document
+    .querySelectorAll(
+      ".nav-btn"
+    )
     .forEach(
       button =>
-        button.classList.remove(
-          "active"
-        )
+        button.classList
+          .remove(
+            "active"
+          )
     );
 
 
@@ -5248,55 +5859,50 @@ function showPage(page) {
     )
     .forEach(
       button =>
-        button.classList.remove(
-          "active"
-        )
+        button.classList
+          .remove(
+            "active"
+          )
     );
 
 
-  const desktopNav =
-    document.getElementById(
+  document
+    .getElementById(
       `nav-${page}`
-    );
-
-  if (desktopNav) {
-
-    desktopNav.classList.add(
-      "active"
-    );
-
-  }
+    )
+    ?.classList
+    .add("active");
 
 
-  const mobileNav =
-    document.getElementById(
+  document
+    .getElementById(
       `mobile-nav-${page}`
-    );
-
-  if (mobileNav) {
-
-    mobileNav.classList.add(
-      "active"
-    );
-
-  }
+    )
+    ?.classList
+    .add("active");
 
 
-  if (page === "add") {
+  if (
+    page === "add"
+  ) {
 
     setDefaultTransactionDate();
 
   }
 
 
-  if (page === "budget") {
+  if (
+    page === "budget"
+  ) {
 
     renderBudgetPage();
 
   }
 
 
-  if (page === "details") {
+  if (
+    page === "details"
+  ) {
 
     renderTransactions();
 
@@ -5306,7 +5912,7 @@ function showPage(page) {
 
 
 /* =========================================================
-   Auth State Listener
+   Auth Listener
 ========================================================= */
 
 supabaseClient.auth.onAuthStateChange(
@@ -5317,35 +5923,51 @@ supabaseClient.auth.onAuthStateChange(
 
     if (session?.user) {
 
+      /*
+        避免登入狀態更新時遺失目前月份
+      */
+
       currentUser =
         session.user;
+
+      currentMonth =
+        normalizeMonth(
+          currentMonth
+        );
+
 
       await startApp();
 
     } else {
 
-      currentUser = null;
+      currentUser =
+        null;
 
       ledgers = [];
 
-      currentLedger = null;
+      currentLedger =
+        null;
 
       transactions = [];
 
-      budget = null;
+      budget =
+        null;
 
 
       document
-        .getElementById("app")
-        .classList.add(
-          "hidden"
-        );
+        .getElementById(
+          "app"
+        )
+        .classList
+        .add("hidden");
+
 
       document
-        .getElementById("auth-page")
-        .classList.remove(
-          "hidden"
-        );
+        .getElementById(
+          "auth-page"
+        )
+        .classList
+        .remove("hidden");
 
     }
 
