@@ -1,4 +1,4 @@
-```html
+對不起，請用這版本的程式碼去修改。
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -35,11 +35,6 @@
 
     button {
       cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
 
     .hidden {
@@ -650,7 +645,6 @@
     ========================= */
 
     @media (max-width: 800px) {
-
       .grid-4 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -658,11 +652,9 @@
       .filter-row {
         grid-template-columns: 1fr 1fr;
       }
-
     }
 
     @media (max-width: 600px) {
-
       header {
         padding: 12px 15px;
       }
@@ -710,11 +702,9 @@
       .ledger-actions {
         width: 100%;
       }
-
     }
 
     @media (max-width: 420px) {
-
       .grid-2,
       .grid-3,
       .grid-4 {
@@ -737,7 +727,6 @@
       .transaction-actions {
         justify-content: flex-start;
       }
-
     }
   </style>
 </head>
@@ -752,10 +741,7 @@
 
     <div class="auth-card">
 
-      <div class="auth-title">
-        💰 每月預算記帳
-      </div>
-
+      <div class="auth-title">💰 每月預算記帳</div>
       <div class="auth-subtitle">
         簡單記錄每個月的收入、支出與預算
       </div>
@@ -763,33 +749,23 @@
       <form id="authForm">
 
         <div class="form-group">
-
-          <label for="authEmail">
-            Email
-          </label>
-
+          <label for="authEmail">Email</label>
           <input
             id="authEmail"
             type="email"
             autocomplete="email"
             required
           />
-
         </div>
 
         <div class="form-group">
-
-          <label for="authPassword">
-            密碼
-          </label>
-
+          <label for="authPassword">密碼</label>
           <input
             id="authPassword"
             type="password"
             autocomplete="current-password"
             required
           />
-
         </div>
 
         <button
@@ -804,18 +780,10 @@
       </form>
 
       <div class="auth-switch">
-
-        <span id="authSwitchText">
-          還沒有帳號？
-        </span>
-
-        <button
-          id="authSwitchBtn"
-          type="button"
-        >
+        <span id="authSwitchText">還沒有帳號？</span>
+        <button id="authSwitchBtn" type="button">
           註冊
         </button>
-
       </div>
 
     </div>
@@ -840,7 +808,7 @@
         <div class="header-right">
 
           <span class="version">
-            V3.1.4
+            V3.1.3
           </span>
 
           <button
@@ -1201,7 +1169,6 @@
 
 
             <button
-              id="addTransactionBtn"
               class="btn btn-primary"
               type="submit"
               style="width:100%;"
@@ -1811,7 +1778,6 @@
         </button>
 
         <button
-          id="saveEditBtn"
           class="btn btn-primary"
           onclick="saveEditedTransaction()"
         >
@@ -1844,7 +1810,8 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_m5bOwLJZRbhQls_76MoDrw_jCiF7Sbd";
 
-const { createClient } = supabase;
+const { createClient } =
+  supabase;
 
 const db =
   createClient(
@@ -1858,24 +1825,29 @@ const db =
 ========================================================= */
 
 let currentUser = null;
+
 let ledgers = [];
+
 let currentLedger = null;
+
 let transactions = [];
+
 let budget = {};
+
 let currentMonth = "";
+
 let currentPage = "home";
+
 let authMode = "login";
+
 let transactionType = "expense";
+
 let editTransactionType = "expense";
-let appStarted = false;
 
 
 /* =========================================================
    Constants
 ========================================================= */
-
-const APP_VERSION = "V3.1.4";
-
 
 const DEFAULT_BUDGET = {
   income: 36000,
@@ -1936,45 +1908,18 @@ const PAYMENT_METHODS = [
    Utility
 ========================================================= */
 
-/*
-  使用「本機日期」，
-  避免 toISOString() 在台灣時區造成日期提前／延後一天。
-*/
-
-function getLocalDateString() {
-
-  const now = new Date();
-
-  const year =
-    now.getFullYear();
-
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
-
-  const day =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
-
 function getSafeCurrentMonth() {
 
   const now = new Date();
 
-  const year =
+  const y =
     now.getFullYear();
 
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+  const m =
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
 
-  return `${year}-${month}`;
+  return `${y}-${m}`;
 }
 
 
@@ -1984,23 +1929,7 @@ function normalizeMonth(month) {
     typeof month !== "string" ||
     !/^\d{4}-\d{2}$/.test(month)
   ) {
-
     return getSafeCurrentMonth();
-
-  }
-
-  const [year, monthNumber] =
-    month
-      .split("-")
-      .map(Number);
-
-  if (
-    monthNumber < 1 ||
-    monthNumber > 12
-  ) {
-
-    return getSafeCurrentMonth();
-
   }
 
   return month;
@@ -2010,7 +1939,6 @@ function normalizeMonth(month) {
 function monthToDate(month) {
 
   return `${normalizeMonth(month)}-01`;
-
 }
 
 
@@ -2032,9 +1960,8 @@ function getNextMonth(month) {
     date.getFullYear();
 
   const m =
-    String(
-      date.getMonth() + 1
-    ).padStart(2, "0");
+    String(date.getMonth() + 1)
+      .padStart(2, "0");
 
   return `${y}-${m}`;
 }
@@ -2046,11 +1973,8 @@ function getMonthDateRange(month) {
     normalizeMonth(month);
 
   return {
-    start:
-      `${safeMonth}-01`,
-
-    end:
-      `${getNextMonth(safeMonth)}-01`
+    start: `${safeMonth}-01`,
+    end: `${getNextMonth(safeMonth)}-01`
   };
 
 }
@@ -2058,14 +1982,7 @@ function getMonthDateRange(month) {
 
 function formatMoney(value) {
 
-  const number =
-    Number(value || 0);
-
-  if (!Number.isFinite(number)) {
-    return "0";
-  }
-
-  return number
+  return Number(value || 0)
     .toLocaleString("zh-TW");
 }
 
@@ -2084,18 +2001,12 @@ function escapeHtml(value) {
 function showToast(message) {
 
   const toast =
-    document.getElementById(
-      "toast"
-    );
-
-  if (!toast) return;
+    document.getElementById("toast");
 
   toast.textContent =
     message;
 
-  toast.classList.remove(
-    "hidden"
-  );
+  toast.classList.remove("hidden");
 
   clearTimeout(
     showToast.timer
@@ -2104,38 +2015,9 @@ function showToast(message) {
   showToast.timer =
     setTimeout(() => {
 
-      toast.classList.add(
-        "hidden"
-      );
+      toast.classList.add("hidden");
 
-    }, 2800);
-
-}
-
-
-/*
-  將 Supabase 錯誤轉成比較容易閱讀的訊息。
-*/
-
-function getErrorMessage(error) {
-
-  if (!error) {
-    return "未知錯誤";
-  }
-
-  if (error.message) {
-    return error.message;
-  }
-
-  if (error.details) {
-    return error.details;
-  }
-
-  if (error.hint) {
-    return error.hint;
-  }
-
-  return String(error);
+    }, 2500);
 
 }
 
@@ -2147,7 +2029,7 @@ function getErrorMessage(error) {
 function getTransactionType(tx) {
 
   const amount =
-    Number(tx?.amount || 0);
+    Number(tx.amount || 0);
 
   return amount >= 0
     ? "income"
@@ -2180,9 +2062,7 @@ function setAuthMode(mode) {
       "authSwitchBtn"
     );
 
-  if (
-    mode === "login"
-  ) {
+  if (mode === "login") {
 
     submit.textContent =
       "登入";
@@ -2215,57 +2095,34 @@ async function submitAuth(event) {
 
   const email =
     document
-      .getElementById(
-        "authEmail"
-      )
+      .getElementById("authEmail")
       .value
       .trim();
 
   const password =
     document
-      .getElementById(
-        "authPassword"
-      )
+      .getElementById("authPassword")
       .value;
 
   if (!email || !password) {
 
-    showToast(
-      "請輸入 Email 與密碼"
-    );
+    showToast("請輸入 Email 與密碼");
 
     return;
-
   }
-
-
-  if (password.length < 6) {
-
-    showToast(
-      "密碼至少需要 6 個字元"
-    );
-
-    return;
-
-  }
-
 
   const submit =
     document.getElementById(
       "authSubmit"
     );
 
-  submit.disabled =
-    true;
-
+  submit.disabled = true;
 
   try {
 
     let result;
 
-    if (
-      authMode === "login"
-    ) {
+    if (authMode === "login") {
 
       result =
         await db.auth.signInWithPassword({
@@ -2283,30 +2140,19 @@ async function submitAuth(event) {
 
     }
 
-
     if (result.error) {
       throw result.error;
     }
 
+    if (authMode === "login") {
 
-    if (
-      authMode === "login"
-    ) {
-
-      showToast(
-        "登入成功"
-      );
+      showToast("登入成功");
 
     } else {
 
-      if (
-        result.data &&
-        result.data.session
-      ) {
+      if (result.data.session) {
 
-        showToast(
-          "註冊成功"
-        );
+        showToast("註冊成功");
 
       } else {
 
@@ -2320,20 +2166,16 @@ async function submitAuth(event) {
 
   } catch (error) {
 
-    console.error(
-      "submitAuth",
-      error
-    );
+    console.error(error);
 
     showToast(
       "操作失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   } finally {
 
-    submit.disabled =
-      false;
+    submit.disabled = false;
 
   }
 
@@ -2342,23 +2184,7 @@ async function submitAuth(event) {
 
 async function logout() {
 
-  try {
-
-    await db.auth.signOut();
-
-  } catch (error) {
-
-    console.error(
-      "logout",
-      error
-    );
-
-    showToast(
-      "登出失敗：" +
-      getErrorMessage(error)
-    );
-
-  }
+  await db.auth.signOut();
 
 }
 
@@ -2369,11 +2195,6 @@ async function logout() {
 
 async function ensurePersonalLedger() {
 
-  if (!currentUser) {
-    return null;
-  }
-
-
   const {
     data,
     error
@@ -2381,7 +2202,6 @@ async function ensurePersonalLedger() {
     await db.rpc(
       "ensure_personal_ledger"
     );
-
 
   if (error) {
 
@@ -2391,9 +2211,7 @@ async function ensurePersonalLedger() {
     );
 
     return null;
-
   }
-
 
   return data;
 
@@ -2405,7 +2223,6 @@ async function loadLedgers() {
   try {
 
     await ensurePersonalLedger();
-
 
     const {
       data: memberships,
@@ -2419,7 +2236,6 @@ async function loadLedgers() {
           currentUser.id
         );
 
-
     if (memberError) {
       throw memberError;
     }
@@ -2431,37 +2247,26 @@ async function loadLedgers() {
     ) {
 
       ledgers = [];
+
       currentLedger = null;
 
-      renderLedgerSelect();
-      renderCurrentLedgerTools();
-
       return;
-
     }
 
 
     const ledgerIds =
       memberships
-        .map(
-          item =>
-            item.ledger_id
-        )
+        .map(item => item.ledger_id)
         .filter(Boolean);
 
 
-    if (
-      ledgerIds.length === 0
-    ) {
+    if (ledgerIds.length === 0) {
 
       ledgers = [];
+
       currentLedger = null;
 
-      renderLedgerSelect();
-      renderCurrentLedgerTools();
-
       return;
-
     }
 
 
@@ -2477,7 +2282,6 @@ async function loadLedgers() {
           ledgerIds
         );
 
-
     if (ledgerError) {
       throw ledgerError;
     }
@@ -2490,8 +2294,7 @@ async function loadLedgers() {
     if (!currentLedger) {
 
       currentLedger =
-        ledgers[0] ||
-        null;
+        ledgers[0] || null;
 
     } else {
 
@@ -2508,18 +2311,16 @@ async function loadLedgers() {
 
 
     renderLedgerSelect();
+
     renderCurrentLedgerTools();
 
   } catch (error) {
 
-    console.error(
-      "loadLedgers",
-      error
-    );
+    console.error(error);
 
     showToast(
       "載入帳本失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -2536,9 +2337,7 @@ function renderLedgerSelect() {
 
   if (!select) return;
 
-  select.innerHTML =
-    "";
-
+  select.innerHTML = "";
 
   ledgers.forEach(
     ledger => {
@@ -2555,7 +2354,6 @@ function renderLedgerSelect() {
         ledger.name ||
         "未命名帳本";
 
-
       if (
         currentLedger &&
         ledger.id ===
@@ -2566,7 +2364,6 @@ function renderLedgerSelect() {
           true;
 
       }
-
 
       select.appendChild(
         option
@@ -2590,14 +2387,6 @@ function renderCurrentLedgerTools() {
       "currentLedgerCode"
     );
 
-  if (
-    !nameEl ||
-    !codeEl
-  ) {
-    return;
-  }
-
-
   if (!currentLedger) {
 
     nameEl.textContent =
@@ -2607,7 +2396,6 @@ function renderCurrentLedgerTools() {
       "";
 
     return;
-
   }
 
 
@@ -2633,22 +2421,15 @@ function renderCurrentLedgerTools() {
 }
 
 
-async function switchLedger(
-  ledgerId
-) {
+async function switchLedger(ledgerId) {
 
   const ledger =
     ledgers.find(
       item =>
-        String(item.id) ===
-        String(ledgerId)
+        item.id === ledgerId
     );
 
-
-  if (!ledger) {
-    return;
-  }
-
+  if (!ledger) return;
 
   currentLedger =
     ledger;
@@ -2661,10 +2442,7 @@ async function switchLedger(
 
   showToast(
     "已切換至：" +
-    (
-      ledger.name ||
-      "未命名帳本"
-    )
+    (ledger.name || "未命名帳本")
   );
 
 }
@@ -2675,12 +2453,8 @@ function openLedgerModal() {
   renderLedgerSelect();
 
   document
-    .getElementById(
-      "ledgerModal"
-    )
-    .classList.remove(
-      "hidden"
-    );
+    .getElementById("ledgerModal")
+    .classList.remove("hidden");
 
 }
 
@@ -2688,12 +2462,8 @@ function openLedgerModal() {
 function closeLedgerModal() {
 
   document
-    .getElementById(
-      "ledgerModal"
-    )
-    .classList.add(
-      "hidden"
-    );
+    .getElementById("ledgerModal")
+    .classList.add("hidden");
 
 }
 
@@ -2708,7 +2478,6 @@ async function createSharedLedger() {
   const name =
     input.value.trim();
 
-
   if (!name) {
 
     showToast(
@@ -2716,7 +2485,6 @@ async function createSharedLedger() {
     );
 
     return;
-
   }
 
 
@@ -2733,18 +2501,13 @@ async function createSharedLedger() {
         }
       );
 
-
     if (error) {
       throw error;
     }
 
-
-    input.value =
-      "";
-
+    input.value = "";
 
     await loadLedgers();
-
 
     if (data) {
 
@@ -2753,14 +2516,11 @@ async function createSharedLedger() {
           ? data
           : data.id;
 
-
       const newLedger =
         ledgers.find(
           item =>
-            String(item.id) ===
-            String(newId)
+            item.id === newId
         );
-
 
       if (newLedger) {
 
@@ -2768,6 +2528,7 @@ async function createSharedLedger() {
           newLedger;
 
         renderLedgerSelect();
+
         renderCurrentLedgerTools();
 
         await loadData();
@@ -2776,21 +2537,17 @@ async function createSharedLedger() {
 
     }
 
-
     showToast(
       "共享帳本建立成功"
     );
 
   } catch (error) {
 
-    console.error(
-      "createSharedLedger",
-      error
-    );
+    console.error(error);
 
     showToast(
       "建立失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -2808,7 +2565,6 @@ async function joinSharedLedger() {
   const code =
     input.value.trim();
 
-
   if (!code) {
 
     showToast(
@@ -2816,7 +2572,6 @@ async function joinSharedLedger() {
     );
 
     return;
-
   }
 
 
@@ -2833,49 +2588,13 @@ async function joinSharedLedger() {
         }
       );
 
-
     if (error) {
       throw error;
     }
 
-
-    input.value =
-      "";
-
+    input.value = "";
 
     await loadLedgers();
-
-
-    if (data) {
-
-      const joinedId =
-        typeof data === "string"
-          ? data
-          : data.id;
-
-
-      const joinedLedger =
-        ledgers.find(
-          item =>
-            String(item.id) ===
-            String(joinedId)
-        );
-
-
-      if (joinedLedger) {
-
-        currentLedger =
-          joinedLedger;
-
-        renderLedgerSelect();
-        renderCurrentLedgerTools();
-
-        await loadData();
-
-      }
-
-    }
-
 
     showToast(
       "加入共享帳本成功"
@@ -2883,14 +2602,11 @@ async function joinSharedLedger() {
 
   } catch (error) {
 
-    console.error(
-      "joinSharedLedger",
-      error
-    );
+    console.error(error);
 
     showToast(
       "加入失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -2907,20 +2623,6 @@ async function createInviteCode() {
     );
 
     return;
-
-  }
-
-
-  if (
-    currentLedger.is_personal
-  ) {
-
-    showToast(
-      "個人帳本不需要邀請碼"
-    );
-
-    return;
-
   }
 
 
@@ -2938,22 +2640,16 @@ async function createInviteCode() {
         }
       );
 
-
     if (error) {
       throw error;
     }
 
 
-    let code =
-      "";
+    let code = "";
 
+    if (typeof data === "string") {
 
-    if (
-      typeof data === "string"
-    ) {
-
-      code =
-        data;
+      code = data;
 
     } else if (data) {
 
@@ -2968,17 +2664,16 @@ async function createInviteCode() {
 
     if (!code) {
 
+      showToast(
+        "邀請碼建立成功，但沒有取得邀請碼"
+      );
+
       console.log(
         "create_ledger_invite result:",
         data
       );
 
-      showToast(
-        "邀請碼建立成功，但沒有取得邀請碼"
-      );
-
       return;
-
     }
 
 
@@ -2987,19 +2682,14 @@ async function createInviteCode() {
         "inviteCodeInput"
       );
 
-
     input.value =
       code;
-
 
     document
       .getElementById(
         "inviteCodeArea"
       )
-      .classList.remove(
-        "hidden"
-      );
-
+      .classList.remove("hidden");
 
     showToast(
       "邀請碼已產生"
@@ -3007,14 +2697,11 @@ async function createInviteCode() {
 
   } catch (error) {
 
-    console.error(
-      "createInviteCode",
-      error
-    );
+    console.error(error);
 
     showToast(
       "產生邀請碼失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -3029,11 +2716,7 @@ async function copyInviteCode() {
       "inviteCodeInput"
     );
 
-
-  if (!input.value) {
-    return;
-  }
-
+  if (!input.value) return;
 
   try {
 
@@ -3049,9 +2732,7 @@ async function copyInviteCode() {
 
     input.select();
 
-    document.execCommand(
-      "copy"
-    );
+    document.execCommand("copy");
 
     showToast(
       "邀請碼已複製"
@@ -3076,12 +2757,6 @@ async function loadData() {
   }
 
 
-  currentMonth =
-    normalizeMonth(
-      currentMonth
-    );
-
-
   try {
 
     await Promise.all([
@@ -3089,19 +2764,15 @@ async function loadData() {
       loadTransactions()
     ]);
 
-
     renderDashboard();
 
   } catch (error) {
 
-    console.error(
-      "loadData",
-      error
-    );
+    console.error(error);
 
     showToast(
       "資料載入失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -3129,9 +2800,7 @@ async function loadBudget() {
       )
       .eq(
         "month",
-        monthToDate(
-          currentMonth
-        )
+        monthToDate(currentMonth)
       )
       .maybeSingle();
 
@@ -3144,14 +2813,12 @@ async function loadBudget() {
     );
 
     throw error;
-
   }
 
 
   if (data) {
 
     budget = {
-
       income:
         Number(
           data.income ??
@@ -3193,7 +2860,6 @@ async function loadBudget() {
           data.other ??
           DEFAULT_BUDGET.other
         )
-
     };
 
   }
@@ -3260,6 +2926,7 @@ async function loadTransactions() {
 function calculateTotals() {
 
   let income = 0;
+
   let expense = 0;
 
 
@@ -3267,17 +2934,7 @@ function calculateTotals() {
     tx => {
 
       const amount =
-        Number(
-          tx.amount || 0
-        );
-
-
-      if (
-        !Number.isFinite(amount)
-      ) {
-        return;
-      }
-
+        Number(tx.amount || 0);
 
       if (amount >= 0) {
 
@@ -3308,47 +2965,26 @@ function renderDashboard() {
     calculateTotals();
 
 
-  const incomeEl =
-    document.getElementById(
+  document
+    .getElementById(
       "summaryIncome"
-    );
-
-  const expenseEl =
-    document.getElementById(
-      "summaryExpense"
-    );
-
-  const remainingEl =
-    document.getElementById(
-      "summaryRemaining"
-    );
-
-  const freeEl =
-    document.getElementById(
-      "summaryFree"
-    );
-
-
-  if (incomeEl) {
-
-    incomeEl.textContent =
+    )
+    .textContent =
       "$" +
       formatMoney(
         totals.income
       );
 
-  }
 
-
-  if (expenseEl) {
-
-    expenseEl.textContent =
+  document
+    .getElementById(
+      "summaryExpense"
+    )
+    .textContent =
       "$" +
       formatMoney(
         totals.expense
       );
-
-  }
 
 
   const remaining =
@@ -3358,15 +2994,15 @@ function renderDashboard() {
     totals.expense;
 
 
-  if (remainingEl) {
-
-    remainingEl.textContent =
+  document
+    .getElementById(
+      "summaryRemaining"
+    )
+    .textContent =
       "$" +
       formatMoney(
         remaining
       );
-
-  }
 
 
   const freeBudget =
@@ -3374,54 +3010,47 @@ function renderDashboard() {
       budget.free_spending || 0
     );
 
-
   const freeSpent =
     getCategoryExpense(
       "free_spending"
     );
 
 
-  if (freeEl) {
-
-    freeEl.textContent =
+  document
+    .getElementById(
+      "summaryFree"
+    )
+    .textContent =
       "$" +
       formatMoney(
         freeBudget -
         freeSpent
       );
 
-  }
-
 
   renderBudgetProgress();
+
   renderBudgetSummary();
+
   renderTransactions();
 
 }
 
 
-function getCategoryExpense(
-  category
-) {
+function getCategoryExpense(category) {
 
   return transactions
     .filter(
       tx =>
         getTransactionType(tx) ===
         "expense" &&
-        tx.category ===
-        category
+        tx.category === category
     )
     .reduce(
-      (
-        sum,
-        tx
-      ) =>
+      (sum, tx) =>
         sum +
         Math.abs(
-          Number(
-            tx.amount || 0
-          )
+          Number(tx.amount || 0)
         ),
       0
     );
@@ -3440,10 +3069,6 @@ function renderBudgetProgress() {
       "budgetProgress"
     );
 
-
-  if (!container) return;
-
-
   const categories =
     Object.keys(
       categoryMap
@@ -3452,80 +3077,70 @@ function renderBudgetProgress() {
 
   container.innerHTML =
     categories
-      .map(
-        category => {
+      .map(category => {
 
-          const info =
-            categoryMap[
-              category
-            ];
+        const info =
+          categoryMap[
+            category
+          ];
 
+        const budgetValue =
+          Number(
+            budget[category] || 0
+          );
 
-          const budgetValue =
-            Number(
-              budget[category] ||
-              0
-            );
+        const spent =
+          getCategoryExpense(
+            category
+          );
 
+        const percentage =
+          budgetValue > 0
+            ? Math.min(
+                (spent /
+                  budgetValue) *
+                  100,
+                100
+              )
+            : 0;
 
-          const spent =
-            getCategoryExpense(
-              category
-            );
-
-
-          const percentage =
-            budgetValue > 0
-              ? Math.min(
-                  (
-                    spent /
-                    budgetValue
-                  ) * 100,
-                  100
-                )
-              : 0;
-
-
-          const over =
-            spent >
-              budgetValue &&
-            budgetValue > 0;
+        const over =
+          spent >
+          budgetValue &&
+          budgetValue > 0;
 
 
-          return `
+        return `
+          <div class="budget-row">
 
-            <div class="budget-row">
+            <div class="budget-head">
 
-              <div class="budget-head">
+              <span>
+                ${info.icon}
+                ${escapeHtml(info.name)}
+              </span>
 
-                <span>
-                  ${info.icon}
-                  ${escapeHtml(info.name)}
-                </span>
-
-                <span>
-                  $${formatMoney(spent)}
-                  /
-                  $${formatMoney(budgetValue)}
-                </span>
-
-              </div>
-
-              <div class="progress">
-
-                <div
-                  class="progress-bar ${over ? "budget-over" : ""}"
-                  style="width:${percentage}%"
-                ></div>
-
-              </div>
+              <span>
+                $${formatMoney(spent)}
+                /
+                $${formatMoney(budgetValue)}
+              </span>
 
             </div>
 
-          `;
+            <div class="progress">
 
-        }
-      )
+              <div
+                class="progress-bar ${over ? "budget-over" : ""}"
+                style="width:${percentage}%"
+              ></div>
+
+            </div>
+
+          </div>
+        `;
+
+      })
       .join("");
 
 }
@@ -3538,10 +3153,6 @@ function renderBudgetSummary() {
       "budgetSummary"
     );
 
-
-  if (!container) return;
-
-
   const categories =
     Object.keys(
       categoryMap
@@ -3550,65 +3161,57 @@ function renderBudgetSummary() {
 
   container.innerHTML =
     categories
-      .map(
-        category => {
+      .map(category => {
 
-          const info =
-            categoryMap[
-              category
-            ];
+        const info =
+          categoryMap[
+            category
+          ];
 
+        const budgetValue =
+          Number(
+            budget[category] || 0
+          );
 
-          const budgetValue =
-            Number(
-              budget[category] ||
-              0
-            );
+        const spent =
+          getCategoryExpense(
+            category
+          );
 
-
-          const spent =
-            getCategoryExpense(
-              category
-            );
-
-
-          const remaining =
-            budgetValue -
-            spent;
+        const remaining =
+          budgetValue -
+          spent;
 
 
-          return `
+        return `
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              gap:10px;
+              padding:11px 0;
+              border-bottom:1px solid #f3f4f6;
+            "
+          >
 
-            <div
-              style="
-                display:flex;
-                justify-content:space-between;
-                gap:10px;
-                padding:11px 0;
-                border-bottom:1px solid #f3f4f6;
-              "
-            >
-
-              <div>
-                ${info.icon}
-                ${escapeHtml(info.name)}
-              </div>
-
-              <div>
-                預算 $${formatMoney(budgetValue)}
-                ／
-                剩餘
-                <strong>
-                  $${formatMoney(remaining)}
-                </strong>
-              </div>
-
+            <div>
+              ${info.icon}
+              ${escapeHtml(info.name)}
             </div>
 
-          `;
+            <div>
+              預算 $${formatMoney(budgetValue)}
+              ／
+              剩餘
+              <strong>
+                $${formatMoney(remaining)}
+              </strong>
+            </div>
 
-        }
-      )
+          </div>
+        `;
+
+      })
       .join("");
 
 }
@@ -3620,90 +3223,40 @@ function renderBudgetSummary() {
 
 function populateBudgetForm() {
 
-  const fields = {
+  document.getElementById(
+    "budgetIncome"
+  ).value =
+    budget.income || 0;
 
-    budgetIncome:
-      budget.income,
+  document.getElementById(
+    "budgetNecessary"
+  ).value =
+    budget.necessary || 0;
 
-    budgetNecessary:
-      budget.necessary,
+  document.getElementById(
+    "budgetCreditCard"
+  ).value =
+    budget.credit_card || 0;
 
-    budgetCreditCard:
-      budget.credit_card,
+  document.getElementById(
+    "budgetCashReserve"
+  ).value =
+    budget.cash_reserve || 0;
 
-    budgetCashReserve:
-      budget.cash_reserve,
+  document.getElementById(
+    "budgetFreeSpending"
+  ).value =
+    budget.free_spending || 0;
 
-    budgetFreeSpending:
-      budget.free_spending,
+  document.getElementById(
+    "budgetInvestment"
+  ).value =
+    budget.investment || 0;
 
-    budgetInvestment:
-      budget.investment,
-
-    budgetOther:
-      budget.other
-
-  };
-
-
-  Object.entries(fields)
-    .forEach(
-      (
-        [id, value]
-      ) => {
-
-        const el =
-          document.getElementById(
-            id
-          );
-
-        if (el) {
-
-          el.value =
-            Number(
-              value || 0
-            );
-
-        }
-
-      }
-    );
-
-}
-
-
-function getNumberInput(
-  id
-) {
-
-  const element =
-    document.getElementById(
-      id
-    );
-
-
-  if (!element) {
-    return 0;
-  }
-
-
-  const value =
-    Number(
-      element.value || 0
-    );
-
-
-  if (
-    !Number.isFinite(value) ||
-    value < 0
-  ) {
-
-    return 0;
-
-  }
-
-
-  return value;
+  document.getElementById(
+    "budgetOther"
+  ).value =
+    budget.other || 0;
 
 }
 
@@ -3713,17 +3266,13 @@ async function saveBudget(event) {
   event.preventDefault();
 
 
-  if (
-    !currentUser ||
-    !currentLedger
-  ) {
+  if (!currentLedger) {
 
     showToast(
-      "請先登入並選擇帳本"
+      "請先選擇帳本"
     );
 
     return;
-
   }
 
 
@@ -3741,38 +3290,52 @@ async function saveBudget(event) {
       ),
 
     income:
-      getNumberInput(
-        "budgetIncome"
+      Number(
+        document.getElementById(
+          "budgetIncome"
+        ).value || 0
       ),
 
     necessary:
-      getNumberInput(
-        "budgetNecessary"
+      Number(
+        document.getElementById(
+          "budgetNecessary"
+        ).value || 0
       ),
 
     credit_card:
-      getNumberInput(
-        "budgetCreditCard"
+      Number(
+        document.getElementById(
+          "budgetCreditCard"
+        ).value || 0
       ),
 
     cash_reserve:
-      getNumberInput(
-        "budgetCashReserve"
+      Number(
+        document.getElementById(
+          "budgetCashReserve"
+        ).value || 0
       ),
 
     free_spending:
-      getNumberInput(
-        "budgetFreeSpending"
+      Number(
+        document.getElementById(
+          "budgetFreeSpending"
+        ).value || 0
       ),
 
     investment:
-      getNumberInput(
-        "budgetInvestment"
+      Number(
+        document.getElementById(
+          "budgetInvestment"
+        ).value || 0
       ),
 
     other:
-      getNumberInput(
-        "budgetOther"
+      Number(
+        document.getElementById(
+          "budgetOther"
+        ).value || 0
       )
 
   };
@@ -3793,7 +3356,6 @@ async function saveBudget(event) {
           }
         );
 
-
     if (error) {
       throw error;
     }
@@ -3806,21 +3368,17 @@ async function saveBudget(event) {
 
     renderDashboard();
 
-
     showToast(
       "本月預算已儲存"
     );
 
   } catch (error) {
 
-    console.error(
-      "saveBudget",
-      error
-    );
+    console.error(error);
 
     showToast(
       "儲存預算失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -3847,55 +3405,42 @@ function renderCategoryOptions() {
   ];
 
 
-  selects.forEach(
-    select => {
+  selects.forEach(select => {
 
-      if (!select) {
-        return;
-      }
+    if (!select) return;
 
+    select.innerHTML = "";
 
-      select.innerHTML =
-        "";
+    Object.entries(
+      categoryMap
+    ).forEach(
+      ([key, info]) => {
 
-
-      Object.entries(
-        categoryMap
-      ).forEach(
-        (
-          [key, info]
-        ) => {
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          option.value =
-            key;
-
-
-          option.textContent =
-            `${info.icon} ${info.name}`;
-
-
-          select.appendChild(
-            option
+        const option =
+          document.createElement(
+            "option"
           );
 
-        }
-      );
+        option.value =
+          key;
 
-    }
-  );
+        option.textContent =
+          `${info.icon} ${info.name}`;
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+  });
 
 
   const filter =
     document.getElementById(
       "categoryFilter"
     );
-
 
   if (filter) {
 
@@ -3905,27 +3450,21 @@ function renderCategoryOptions() {
       </option>
     `;
 
-
     Object.entries(
       categoryMap
     ).forEach(
-      (
-        [key, info]
-      ) => {
+      ([key, info]) => {
 
         const option =
           document.createElement(
             "option"
           );
 
-
         option.value =
           key;
 
-
         option.textContent =
           `${info.icon} ${info.name}`;
-
 
         filter.appendChild(
           option
@@ -3941,16 +3480,16 @@ function renderCategoryOptions() {
 
 function renderIncomeCategories() {
 
+  /*
+    收入沒有獨立預算分類。
+    為了符合 transactions.category NOT NULL，
+    收入統一使用 income。
+  */
+
   const select =
     document.getElementById(
       "transactionCategory"
     );
-
-
-  if (!select) {
-    return;
-  }
-
 
   if (
     transactionType ===
@@ -3976,9 +3515,7 @@ function renderIncomeCategories() {
    Add Transaction
 ========================================================= */
 
-function setTransactionType(
-  type
-) {
+function setTransactionType(type) {
 
   transactionType =
     type;
@@ -3993,14 +3530,6 @@ function setTransactionType(
     document.getElementById(
       "incomeTypeBtn"
     );
-
-
-  if (
-    !expenseBtn ||
-    !incomeBtn
-  ) {
-    return;
-  }
 
 
   expenseBtn.className =
@@ -4026,99 +3555,50 @@ function setTransactionType(
 }
 
 
-/*
-  這是這次修正的核心。
-
-  不使用：
-      note || null
-
-  直接當成 item。
-
-  而是保證：
-      item 永遠有字串內容。
-
-  同時保證：
-      category
-      payment_method
-      amount
-      date
-  都不會以 null / undefined 送進資料庫。
-*/
-
-async function addTransaction(
-  event
-) {
+async function addTransaction(event) {
 
   event.preventDefault();
 
 
   if (
-    !currentUser
-  ) {
-
-    showToast(
-      "登入狀態已失效，請重新登入"
-    );
-
-    return;
-
-  }
-
-
-  if (
+    !currentUser ||
     !currentLedger
   ) {
 
     showToast(
-      "請先選擇帳本"
+      "請先登入並選擇帳本"
     );
 
     return;
-
   }
 
 
   const date =
     document.getElementById(
       "transactionDate"
-    )?.value
-    ?.trim();
-
+    ).value;
 
   const amountInput =
     Number(
       document.getElementById(
         "transactionAmount"
-      )?.value
-      || 0
+      ).value || 0
     );
-
 
   const category =
     document.getElementById(
       "transactionCategory"
-    )?.value
-    ?.trim();
-
+    ).value;
 
   const paymentMethod =
     document.getElementById(
       "paymentMethod"
-    )?.value
-    ?.trim();
-
+    ).value;
 
   const note =
     document.getElementById(
       "transactionNote"
-    )?.value
-    ?.trim()
-    || "";
-
-
-  /* =========================
-     前端驗證
-  ========================= */
+    ).value.trim();
 
 
   if (!date) {
@@ -4128,14 +3608,11 @@ async function addTransaction(
     );
 
     return;
-
   }
 
 
   if (
-    !Number.isFinite(
-      amountInput
-    ) ||
+    !amountInput ||
     amountInput <= 0
   ) {
 
@@ -4144,7 +3621,6 @@ async function addTransaction(
     );
 
     return;
-
   }
 
 
@@ -4155,88 +3631,41 @@ async function addTransaction(
     );
 
     return;
-
   }
 
 
   /*
-    payment_method 即使選單出現異常，
-    也不允許傳 null。
-  */
+    重要：
+    transactions.amount 使用正負值判斷收入／支出
 
-  const safePaymentMethod =
-    PAYMENT_METHODS.includes(
-      paymentMethod
-    )
-      ? paymentMethod
-      : "其他";
-
-
-  /*
-    amount：
-
-    收入 = 正數
-    支出 = 負數
+    收入：+
+    支出：-
   */
 
   const signedAmount =
     transactionType === "income"
-      ? Math.abs(
-          amountInput
+      ? Math.abs(amountInput)
+      : -Math.abs(amountInput);
+
+
+  /*
+    重要：
+    item 是 transactions 的 NOT NULL 欄位。
+
+    使用使用者輸入的項目／備註。
+    如果沒有輸入，就使用分類名稱。
+  */
+
+  const item =
+    note ||
+    (
+      category === "income"
+        ? "收入"
+        : (
+          categoryMap[category]?.name ||
+          "未分類"
         )
-      : -Math.abs(
-          amountInput
-        );
-
-
-  /*
-    item 是資料庫可能設定 NOT NULL 的欄位。
-
-    如果使用者沒有輸入備註，
-    就自動使用分類名稱。
-
-    因此 item 永遠不會是 null。
-  */
-
-  let item = "";
-
-
-  if (note) {
-
-    item =
-      note;
-
-  } else if (
-    category === "income"
-  ) {
-
-    item =
-      "收入";
-
-  } else if (
-    categoryMap[category]
-  ) {
-
-    item =
-      categoryMap[
-        category
-      ].name;
-
-  } else {
-
-    item =
-      "未分類";
-
-  }
-
-
-  /*
-    最後再做一次保險。
-  */
-
-  item =
-    String(item || "未分類")
-      .trim();
+    );
 
 
   const row = {
@@ -4247,17 +3676,15 @@ async function addTransaction(
     ledger_id:
       currentLedger.id,
 
-    date:
-      date,
+    date,
 
-    item:
-      item,
+    item,
 
-    category:
-      category,
+    category,
 
     payment_method:
-      safePaymentMethod,
+      paymentMethod ||
+      "其他",
 
     amount:
       signedAmount,
@@ -4268,72 +3695,20 @@ async function addTransaction(
   };
 
 
-  /*
-    在真正 insert 前印出資料。
-
-    如果 Supabase 還有錯誤，
-    可以直接從瀏覽器 Console 看到送出的內容。
-  */
-
-  console.log(
-    "新增記帳資料：",
-    row
-  );
-
-
-  const button =
-    document.getElementById(
-      "addTransactionBtn"
-    );
-
-
-  if (button) {
-
-    button.disabled =
-      true;
-
-    button.textContent =
-      "儲存中...";
-
-  }
-
-
   try {
 
     const {
-      data,
       error
     } =
       await db
         .from("transactions")
-        .insert(
-          row
-        )
-        .select()
-        .single();
+        .insert(row);
 
 
     if (error) {
-
-      console.error(
-        "Supabase transactions insert error:",
-        error
-      );
-
       throw error;
-
     }
 
-
-    console.log(
-      "新增成功：",
-      data
-    );
-
-
-    /*
-      清空表單
-    */
 
     document
       .getElementById(
@@ -4342,28 +3717,18 @@ async function addTransaction(
       .reset();
 
 
-    /*
-      恢復今天日期。
-    */
-
     document.getElementById(
       "transactionDate"
     ).value =
-      getLocalDateString();
+      new Date()
+        .toISOString()
+        .slice(0, 10);
 
-
-    /*
-      恢復支出模式。
-    */
 
     setTransactionType(
       "expense"
     );
 
-
-    /*
-      重新載入目前帳本資料。
-    */
 
     await loadData();
 
@@ -4379,47 +3744,10 @@ async function addTransaction(
       error
     );
 
-
-    /*
-      特別處理常見 NOT NULL 錯誤。
-    */
-
-    const message =
-      getErrorMessage(
-        error
-      );
-
-
-    if (
-      message.includes(
-        "null value"
-      )
-    ) {
-
-      showToast(
-        "記帳失敗：資料庫有欄位不允許空值，請查看 Console"
-      );
-
-    } else {
-
-      showToast(
-        "記帳失敗：" +
-        message
-      );
-
-    }
-
-  } finally {
-
-    if (button) {
-
-      button.disabled =
-        false;
-
-      button.textContent =
-        "新增記帳";
-
-    }
+    showToast(
+      "記帳失敗：" +
+      error.message
+    );
 
   }
 
@@ -4437,18 +3765,14 @@ function renderTransactions() {
       "transactionList"
     );
 
-
-  if (!container) {
-    return;
-  }
+  if (!container) return;
 
 
   const search =
     (
       document.getElementById(
         "searchFilter"
-      )?.value ||
-      ""
+      )?.value || ""
     )
       .trim()
       .toLowerCase();
@@ -4480,18 +3804,13 @@ function renderTransactions() {
 
           const text =
             [
-
               tx.item,
-
               tx.note,
-
               tx.payment_method
-
             ]
               .filter(Boolean)
               .join(" ")
               .toLowerCase();
-
 
           return text.includes(
             search
@@ -4526,18 +3845,14 @@ function renderTransactions() {
     list =
       list.filter(
         tx =>
-          getTransactionType(
-            tx
-          ) ===
+          getTransactionType(tx) ===
           typeFilter
       );
 
   }
 
 
-  if (
-    list.length === 0
-  ) {
+  if (list.length === 0) {
 
     container.innerHTML = `
       <div class="empty">
@@ -4546,7 +3861,6 @@ function renderTransactions() {
     `;
 
     return;
-
   }
 
 
@@ -4554,30 +3868,21 @@ function renderTransactions() {
     list
       .map(
         tx =>
-          transactionHtml(
-            tx
-          )
+          transactionHtml(tx)
       )
       .join("");
 
 }
 
 
-function transactionHtml(
-  tx
-) {
+function transactionHtml(tx) {
 
   const type =
-    getTransactionType(
-      tx
-    );
-
+    getTransactionType(tx);
 
   const amount =
     Math.abs(
-      Number(
-        tx.amount || 0
-      )
+      Number(tx.amount || 0)
     );
 
 
@@ -4589,7 +3894,7 @@ function transactionHtml(
 
   const categoryText =
     categoryInfo
-      ? `${categoryInfo.icon} ${escapeHtml(categoryInfo.name)}`
+      ? `${categoryInfo.icon} ${categoryInfo.name}`
       : (
         tx.category === "income"
           ? "💰 收入"
@@ -4612,14 +3917,7 @@ function transactionHtml(
       : `-$${formatMoney(amount)}`;
 
 
-  const txId =
-    escapeHtml(
-      tx.id
-    );
-
-
   return `
-
     <div class="transaction-item">
 
       <div class="transaction-main">
@@ -4671,14 +3969,14 @@ function transactionHtml(
 
           <button
             class="btn btn-secondary btn-small"
-            onclick="openEditModal('${txId}')"
+            onclick="openEditModal('${tx.id}')"
           >
             編輯
           </button>
 
           <button
             class="btn btn-danger btn-small"
-            onclick="deleteTransaction('${txId}')"
+            onclick="deleteTransaction('${tx.id}')"
           >
             刪除
           </button>
@@ -4688,7 +3986,6 @@ function transactionHtml(
       </div>
 
     </div>
-
   `;
 
 }
@@ -4698,17 +3995,13 @@ function transactionHtml(
    Edit Transaction
 ========================================================= */
 
-function openEditModal(
-  id
-) {
+function openEditModal(id) {
 
   const tx =
     transactions.find(
       item =>
-        String(item.id) ===
-        String(id)
+        item.id === id
     );
-
 
   if (!tx) {
 
@@ -4717,14 +4010,11 @@ function openEditModal(
     );
 
     return;
-
   }
 
 
   editTransactionType =
-    getTransactionType(
-      tx
-    );
+    getTransactionType(tx);
 
 
   document.getElementById(
@@ -4743,9 +4033,7 @@ function openEditModal(
     "editAmount"
   ).value =
     Math.abs(
-      Number(
-        tx.amount || 0
-      )
+      Number(tx.amount || 0)
     );
 
 
@@ -4754,13 +4042,9 @@ function openEditModal(
   );
 
 
-  const paymentSelect =
-    document.getElementById(
-      "editPaymentMethod"
-    );
-
-
-  paymentSelect.value =
+  document.getElementById(
+    "editPaymentMethod"
+  ).value =
     PAYMENT_METHODS.includes(
       tx.payment_method
     )
@@ -4789,9 +4073,7 @@ function openEditModal(
     .getElementById(
       "editModal"
     )
-    .classList.remove(
-      "hidden"
-    );
+    .classList.remove("hidden");
 
 }
 
@@ -4806,13 +4088,7 @@ function renderEditCategoryOptions(
     );
 
 
-  if (!select) {
-    return;
-  }
-
-
-  select.innerHTML =
-    "";
+  select.innerHTML = "";
 
 
   if (
@@ -4827,41 +4103,33 @@ function renderEditCategoryOptions(
     `;
 
     return;
-
   }
 
 
   Object.entries(
     categoryMap
   ).forEach(
-    (
-      [key, info]
-    ) => {
+    ([key, info]) => {
 
       const option =
         document.createElement(
           "option"
         );
 
-
       option.value =
         key;
-
 
       option.textContent =
         `${info.icon} ${info.name}`;
 
-
       if (
-        key ===
-        selectedCategory
+        key === selectedCategory
       ) {
 
         option.selected =
           true;
 
       }
-
 
       select.appendChild(
         option
@@ -4881,15 +4149,10 @@ function setEditTransactionType(
     type;
 
 
-  const categorySelect =
+  const currentCategory =
     document.getElementById(
       "editCategory"
-    );
-
-
-  const currentCategory =
-    categorySelect?.value ||
-    "other";
+    ).value;
 
 
   if (
@@ -4903,9 +4166,7 @@ function setEditTransactionType(
   } else {
 
     renderEditCategoryOptions(
-      categoryMap[
-        currentCategory
-      ]
+      categoryMap[currentCategory]
         ? currentCategory
         : "other"
     );
@@ -4929,14 +4190,6 @@ function updateEditTypeButtons() {
     document.getElementById(
       "editIncomeBtn"
     );
-
-
-  if (
-    !expenseBtn ||
-    !incomeBtn
-  ) {
-    return;
-  }
 
 
   expenseBtn.className =
@@ -4967,28 +4220,12 @@ function closeEditModal() {
     .getElementById(
       "editModal"
     )
-    .classList.add(
-      "hidden"
-    );
+    .classList.add("hidden");
 
 }
 
 
 async function saveEditedTransaction() {
-
-  if (
-    !currentUser ||
-    !currentLedger
-  ) {
-
-    showToast(
-      "登入狀態或帳本狀態已失效"
-    );
-
-    return;
-
-  }
-
 
   const id =
     document.getElementById(
@@ -4999,50 +4236,33 @@ async function saveEditedTransaction() {
   const date =
     document.getElementById(
       "editDate"
-    ).value
-    ?.trim();
+    ).value;
 
 
   const amountInput =
     Number(
       document.getElementById(
         "editAmount"
-      ).value ||
-      0
+      ).value || 0
     );
 
 
   const category =
     document.getElementById(
       "editCategory"
-    ).value
-    ?.trim();
+    ).value;
 
 
   const paymentMethod =
     document.getElementById(
       "editPaymentMethod"
-    ).value
-    ?.trim();
+    ).value;
 
 
   const note =
     document.getElementById(
       "editNote"
-    ).value
-    ?.trim()
-    || "";
-
-
-  if (!id) {
-
-    showToast(
-      "找不到記帳 ID"
-    );
-
-    return;
-
-  }
+    ).value.trim();
 
 
   if (!date) {
@@ -5052,14 +4272,11 @@ async function saveEditedTransaction() {
     );
 
     return;
-
   }
 
 
   if (
-    !Number.isFinite(
-      amountInput
-    ) ||
+    !amountInput ||
     amountInput <= 0
   ) {
 
@@ -5068,132 +4285,30 @@ async function saveEditedTransaction() {
     );
 
     return;
-
   }
-
-
-  if (!category) {
-
-    showToast(
-      "請選擇分類"
-    );
-
-    return;
-
-  }
-
-
-  const safePaymentMethod =
-    PAYMENT_METHODS.includes(
-      paymentMethod
-    )
-      ? paymentMethod
-      : "其他";
 
 
   /*
-    item 永遠保持有值。
+    item 仍然必須有值
   */
 
-  let item = "";
-
-
-  if (note) {
-
-    item =
-      note;
-
-  } else if (
-    category === "income"
-  ) {
-
-    item =
-      "收入";
-
-  } else if (
-    categoryMap[category]
-  ) {
-
-    item =
-      categoryMap[
-        category
-      ].name;
-
-  } else {
-
-    item =
-      "未分類";
-
-  }
-
-
-  item =
-    String(
-      item ||
-      "未分類"
-    ).trim();
+  const item =
+    note ||
+    (
+      category === "income"
+        ? "收入"
+        : (
+          categoryMap[category]?.name ||
+          "未分類"
+        )
+    );
 
 
   const signedAmount =
     editTransactionType ===
     "income"
-      ? Math.abs(
-          amountInput
-        )
-      : -Math.abs(
-          amountInput
-        );
-
-
-  const updateData = {
-
-    date:
-      date,
-
-    item:
-      item,
-
-    category:
-      category,
-
-    payment_method:
-      safePaymentMethod,
-
-    amount:
-      signedAmount,
-
-    note:
-      note || null
-
-  };
-
-
-  console.log(
-    "更新記帳資料：",
-    {
-      id,
-      ledger_id:
-        currentLedger.id,
-      ...updateData
-    }
-  );
-
-
-  const button =
-    document.getElementById(
-      "saveEditBtn"
-    );
-
-
-  if (button) {
-
-    button.disabled =
-      true;
-
-    button.textContent =
-      "儲存中...";
-
-  }
+      ? Math.abs(amountInput)
+      : -Math.abs(amountInput);
 
 
   try {
@@ -5203,9 +4318,25 @@ async function saveEditedTransaction() {
     } =
       await db
         .from("transactions")
-        .update(
-          updateData
-        )
+        .update({
+
+          date,
+
+          item,
+
+          category,
+
+          payment_method:
+            paymentMethod ||
+            "其他",
+
+          amount:
+            signedAmount,
+
+          note:
+            note || null
+
+        })
         .eq(
           "id",
           id
@@ -5225,7 +4356,6 @@ async function saveEditedTransaction() {
 
     await loadData();
 
-
     showToast(
       "記帳已更新"
     );
@@ -5237,23 +4367,10 @@ async function saveEditedTransaction() {
       error
     );
 
-
     showToast(
       "更新失敗：" +
-      getErrorMessage(error)
+      error.message
     );
-
-  } finally {
-
-    if (button) {
-
-      button.disabled =
-        false;
-
-      button.textContent =
-        "儲存";
-
-    }
 
   }
 
@@ -5264,35 +4381,27 @@ async function saveEditedTransaction() {
    Delete Transaction
 ========================================================= */
 
-async function deleteTransaction(
-  id
-) {
+async function deleteTransaction(id) {
 
   const tx =
     transactions.find(
       item =>
-        String(item.id) ===
-        String(id)
+        item.id === id
     );
 
 
-  if (!tx) {
-    return;
-  }
+  if (!tx) return;
 
 
   const confirmed =
     confirm(
       `確定要刪除「${
-        tx.item ||
-        "這筆記帳"
+        tx.item || "這筆記帳"
       }」嗎？`
     );
 
 
-  if (!confirmed) {
-    return;
-  }
+  if (!confirmed) return;
 
 
   try {
@@ -5320,21 +4429,17 @@ async function deleteTransaction(
 
     await loadData();
 
-
     showToast(
       "記帳已刪除"
     );
 
   } catch (error) {
 
-    console.error(
-      "deleteTransaction",
-      error
-    );
+    console.error(error);
 
     showToast(
       "刪除失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -5346,18 +4451,14 @@ async function deleteTransaction(
    Navigation
 ========================================================= */
 
-function showPage(
-  page
-) {
+function showPage(page) {
 
   currentPage =
     page;
 
 
   document
-    .querySelectorAll(
-      ".page"
-    )
+    .querySelectorAll(".page")
     .forEach(
       section => {
 
@@ -5385,9 +4486,7 @@ function showPage(
 
 
   document
-    .querySelectorAll(
-      ".nav-btn"
-    )
+    .querySelectorAll(".nav-btn")
     .forEach(
       button => {
 
@@ -5401,18 +4500,14 @@ function showPage(
     );
 
 
-  if (
-    page === "budget"
-  ) {
+  if (page === "budget") {
 
     populateBudgetForm();
 
   }
 
 
-  if (
-    page === "transactions"
-  ) {
+  if (page === "transactions") {
 
     renderTransactions();
 
@@ -5425,20 +4520,9 @@ function showPage(
    Month
 ========================================================= */
 
-function changeMonth(
-  delta
-) {
+function changeMonth(delta) {
 
-  currentMonth =
-    normalizeMonth(
-      currentMonth
-    );
-
-
-  const [
-    year,
-    month
-  ] =
+  const [year, month] =
     currentMonth
       .split("-")
       .map(Number);
@@ -5455,14 +4539,11 @@ function changeMonth(
   const y =
     date.getFullYear();
 
-
   const m =
     String(
       date.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
+    )
+      .padStart(2, "0");
 
 
   currentMonth =
@@ -5527,7 +4608,6 @@ function updateMonthInputs() {
       "currentMonth"
     );
 
-
   const budgetInput =
     document.getElementById(
       "budgetMonth"
@@ -5558,40 +4638,21 @@ function updateMonthInputs() {
 
 function clearFilters() {
 
-  const search =
-    document.getElementById(
-      "searchFilter"
-    );
+  document.getElementById(
+    "searchFilter"
+  ).value = "";
 
 
-  const category =
-    document.getElementById(
-      "categoryFilter"
-    );
+  document.getElementById(
+    "categoryFilter"
+  ).value =
+    "all";
 
 
-  const type =
-    document.getElementById(
-      "typeFilter"
-    );
-
-
-  if (search) {
-    search.value =
-      "";
-  }
-
-
-  if (category) {
-    category.value =
-      "all";
-  }
-
-
-  if (type) {
-    type.value =
-      "all";
-  }
+  document.getElementById(
+    "typeFilter"
+  ).value =
+    "all";
 
 
   renderTransactions();
@@ -5604,20 +4665,6 @@ function clearFilters() {
 ========================================================= */
 
 async function startApp() {
-
-  /*
-    防止 onAuthStateChange 與 init 同時觸發，
-    導致整個 App 重複初始化。
-  */
-
-  if (appStarted) {
-    return;
-  }
-
-
-  appStarted =
-    true;
-
 
   document
     .getElementById(
@@ -5638,10 +4685,7 @@ async function startApp() {
 
 
   currentMonth =
-    normalizeMonth(
-      currentMonth ||
-      getSafeCurrentMonth()
-    );
+    getSafeCurrentMonth();
 
 
   updateMonthInputs();
@@ -5652,7 +4696,9 @@ async function startApp() {
   document.getElementById(
     "transactionDate"
   ).value =
-    getLocalDateString();
+    new Date()
+      .toISOString()
+      .slice(0, 10);
 
 
   setTransactionType(
@@ -5670,7 +4716,6 @@ async function startApp() {
     );
 
     return;
-
   }
 
 
@@ -5707,10 +4752,6 @@ async function init() {
 
     } else {
 
-      appStarted =
-        false;
-
-
       document
         .getElementById(
           "authPage"
@@ -5718,7 +4759,6 @@ async function init() {
         .classList.remove(
           "hidden"
         );
-
 
       document
         .getElementById(
@@ -5732,15 +4772,7 @@ async function init() {
 
   } catch (error) {
 
-    console.error(
-      "init",
-      error
-    );
-
-
-    appStarted =
-      false;
-
+    console.error(error);
 
     document
       .getElementById(
@@ -5750,7 +4782,6 @@ async function init() {
         "hidden"
       );
 
-
     document
       .getElementById(
         "app"
@@ -5759,10 +4790,9 @@ async function init() {
         "hidden"
       );
 
-
     showToast(
       "啟動失敗：" +
-      getErrorMessage(error)
+      error.message
     );
 
   }
@@ -5788,15 +4818,7 @@ db.auth.onAuthStateChange(
       currentUser =
         session.user;
 
-      /*
-        避免登入時重複 startApp。
-      */
-
-      if (!appStarted) {
-
-        await startApp();
-
-      }
+      await startApp();
 
     } else {
 
@@ -5810,12 +4832,6 @@ db.auth.onAuthStateChange(
 
       transactions = [];
 
-      budget = {};
-
-      appStarted =
-        false;
-
-
       document
         .getElementById(
           "authPage"
@@ -5823,7 +4839,6 @@ db.auth.onAuthStateChange(
         .classList.remove(
           "hidden"
         );
-
 
       document
         .getElementById(
@@ -5905,4 +4920,3 @@ init();
 
 </body>
 </html>
-```
