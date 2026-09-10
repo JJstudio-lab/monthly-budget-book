@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>每月預算記帳本 V3.1.4</title>
+  <title>每月預算記帳本 V3.1.5</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1039,7 +1039,7 @@
 
       <div class="brand">
         💰 每月預算記帳本
-        <span class="version-badge">V3.1.4</span>
+        <span class="version-badge">V3.1.5</span>
       </div>
 
       <div class="topbar-spacer"></div>
@@ -2077,7 +2077,7 @@
    Version
 ========================================================= */
 
-const APP_VERSION = "V3.1.4";
+const APP_VERSION = "V3.1.5";
 
 
 /* =========================================================
@@ -2179,18 +2179,6 @@ const categoryMap = {
    Transaction Type Helper
 ========================================================= */
 
-/*
-  V3.1.2
-
-  transactions 資料表沒有 type 欄位。
-
-  因此：
-  + 正數 = 收入
-  - 負數 = 支出
-
-  同時保留對舊資料 type 欄位的相容判斷。
-*/
-
 function getTransactionType(tx) {
 
   if (
@@ -2230,21 +2218,6 @@ function getTransactionAbsoluteAmount(tx) {
 
 }
 
-
-/*
-  V3.1.4 新增：
-
-  資料庫的 transactions 資料表裡有一個
-  "item" 欄位被設定為 NOT NULL（必填），
-  但舊版程式碼在新增 / 編輯記帳時完全沒有
-  帶這個欄位，導致寫入時出現：
-
-    null value in column "item" of relation
-    "transactions" violates not-null constraint
-
-  這裡統一產生 item 的內容：
-  優先用「備註」，備註沒填就用「分類名稱」。
-*/
 
 function buildItemValue(
   note,
@@ -2680,6 +2653,8 @@ async function logout() {
     .auth
     .signOut();
 
+  window.location.reload();
+
 }
 
 
@@ -2715,6 +2690,27 @@ async function init() {
     await startApp();
 
   }
+
+
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+
+    if (event === 'SIGNED_IN' && session?.user) {
+
+      currentUser = session.user;
+
+      await startApp();
+
+    } else if (event === 'SIGNED_OUT') {
+
+      currentUser = null;
+
+      document.getElementById("auth-page")?.classList.remove("hidden");
+
+      document.getElementById("app")?.classList.add("hidden");
+
+    }
+
+  });
 
 }
 
@@ -3609,11 +3605,11 @@ async function renderCurrentLedgerTools(
               </div>
 
               <div class="member-name">
-                ${name}
+                ${escapeHtml(name)}
               </div>
 
               <div class="member-role">
-                ${role}
+                ${escapeHtml(role)}
               </div>
 
             </div>
@@ -4386,14 +4382,6 @@ async function addTransaction() {
   }
 
 
-  /*
-    重要：
-    不再傳送 type 欄位。
-
-    收入 = 正數
-    支出 = 負數
-  */
-
   const amount =
     transactionType === "income"
       ? Math.abs(amountInput)
@@ -4420,11 +4408,6 @@ async function addTransaction() {
     note:
       note || null,
 
-    /*
-      V3.1.4 修正：
-      transactions.item 是 NOT NULL 欄位，
-      這裡一定要帶值，否則會違反資料庫限制。
-    */
     item:
       buildItemValue(
         note,
@@ -4709,12 +4692,6 @@ async function saveEditedTransaction() {
   }
 
 
-  /*
-    不再更新 type。
-
-    只根據編輯後的類型決定 amount 正負。
-  */
-
   const amount =
     type === "income"
       ? Math.abs(amountInput)
@@ -4747,13 +4724,6 @@ async function saveEditedTransaction() {
           note:
             note || null,
 
-          /*
-            V3.1.4 修正：
-            編輯時同樣要更新 item，
-            避免和備註 / 分類不同步，
-            也避免未來若 item 仍是
-            NOT NULL 而被資料庫拒絕。
-          */
           item:
             buildItemValue(
               note,
@@ -5915,99 +5885,18 @@ function showPage(
 
   }
 
-
-  if (
-    page === "budget"
-  ) {
-
-    renderBudgetPage();
-
-  }
-
-
-  if (
-    page === "details"
-  ) {
-
-    renderTransactions();
-
-  }
-
 }
 
 
 /* =========================================================
-   Auth Listener
+   App Initialization Listener
 ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
-  async (
-    event,
-    session
-  ) => {
+window.addEventListener('DOMContentLoaded', () => {
 
-    if (session?.user) {
+  init();
 
-      currentUser =
-        session.user;
-
-      currentMonth =
-        normalizeMonth(
-          currentMonth
-        );
-
-
-      await startApp();
-
-    } else {
-
-      currentUser =
-        null;
-
-      ledgers = [];
-
-      currentLedger =
-        null;
-
-      transactions = [];
-
-      budget =
-        null;
-
-
-      document
-        .getElementById(
-          "app"
-        )
-        .classList
-        .add("hidden");
-
-
-      document
-        .getElementById(
-          "auth-page"
-        )
-        .classList
-        .remove("hidden");
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   DOM Ready
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    init();
-
-  }
-);
+});
 
 </script>
 
