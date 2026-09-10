@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>每月預算記帳本</title>
+  <title>每月預算記帳本 V3.1.2</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -53,10 +53,6 @@
     .hidden {
       display: none !important;
     }
-
-    /* =========================
-       Auth
-    ========================= */
 
     #auth-page {
       min-height: 100vh;
@@ -176,10 +172,6 @@
       width: 100%;
     }
 
-    /* =========================
-       App / Topbar
-    ========================= */
-
     #app {
       min-height: 100vh;
     }
@@ -207,6 +199,18 @@
       font-weight: 800;
       font-size: 19px;
       white-space: nowrap;
+    }
+
+    .version-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 3px 7px;
+      border-radius: 7px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 800;
+      vertical-align: middle;
     }
 
     .topbar-spacer {
@@ -248,10 +252,6 @@
       padding: 8px;
     }
 
-    /* =========================
-       Navigation
-    ========================= */
-
     .desktop-nav {
       max-width: 1200px;
       margin: 0 auto;
@@ -278,10 +278,6 @@
       display: none;
     }
 
-    /* =========================
-       Main
-    ========================= */
-
     .main {
       max-width: 1200px;
       margin: 0 auto;
@@ -306,10 +302,6 @@
       color: var(--muted);
     }
 
-    /* =========================
-       Cards
-    ========================= */
-
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -322,10 +314,6 @@
       margin: 0 0 18px;
       font-size: 18px;
     }
-
-    /* =========================
-       Stats
-    ========================= */
 
     .stats-grid {
       display: grid;
@@ -364,10 +352,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
-
-    /* =========================
-       Budget
-    ========================= */
 
     .budget-list {
       display: flex;
@@ -467,20 +451,12 @@
       font-weight: 700;
     }
 
-    .budget-field-icon {
-      font-size: 20px;
-    }
-
     .budget-actions {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
       margin-top: 20px;
     }
-
-    /* =========================
-       Recent / Transactions
-    ========================= */
 
     .recent-list,
     .transaction-list {
@@ -560,10 +536,6 @@
       font-weight: 700;
     }
 
-    /* =========================
-       Transaction Form
-    ========================= */
-
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -606,10 +578,6 @@
       justify-content: flex-end;
     }
 
-    /* =========================
-       Filters
-    ========================= */
-
     .filter-grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
@@ -639,10 +607,6 @@
       background: #fee2e2;
       color: var(--danger);
     }
-
-    /* =========================
-       Ledger Modal
-    ========================= */
 
     .modal-overlay {
       position: fixed;
@@ -803,10 +767,6 @@
       font-size: 12px;
     }
 
-    /* =========================
-       Toast / Loading
-    ========================= */
-
     #toast {
       position: fixed;
       left: 50%;
@@ -852,12 +812,7 @@
       font-weight: 700;
     }
 
-    /* =========================
-       Responsive
-    ========================= */
-
     @media (max-width: 950px) {
-
       .user-info {
         display: none;
       }
@@ -877,11 +832,9 @@
       .topbar-spacer {
         display: none;
       }
-
     }
 
     @media (max-width: 650px) {
-
       .topbar-inner {
         min-height: auto;
         padding: 11px 14px;
@@ -1002,788 +955,370 @@
         font-weight: 800;
       }
 
+      .version-badge {
+        font-size: 9px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- =========================
-       Auth
-  ========================== -->
+<section id="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">💰</div>
 
-  <section id="auth-page">
+    <h1 class="auth-title">
+      每月預算記帳本
+    </h1>
 
-    <div class="auth-card">
+    <p class="auth-subtitle">
+      管理每個月的收入、支出與預算
+    </p>
 
-      <div class="auth-logo">💰</div>
-
-      <h1 class="auth-title">
-        每月預算記帳本
-      </h1>
-
-      <p class="auth-subtitle">
-        管理每個月的收入、支出與預算
-      </p>
-
-      <div class="auth-tabs">
-
-        <button
-          id="loginTab"
-          class="auth-tab active"
-          onclick="setAuthMode('login')"
-        >
-          登入
-        </button>
-
-        <button
-          id="registerTab"
-          class="auth-tab"
-          onclick="setAuthMode('register')"
-        >
-          註冊
-        </button>
-
-      </div>
-
-      <div class="form-group">
-
-        <label class="form-label">
-          Email
-        </label>
-
-        <input
-          id="authEmail"
-          class="form-input"
-          type="email"
-          placeholder="you@example.com"
-        />
-
-      </div>
-
-      <div class="form-group">
-
-        <label class="form-label">
-          密碼
-        </label>
-
-        <input
-          id="authPassword"
-          class="form-input"
-          type="password"
-          placeholder="至少 6 個字元"
-        />
-
-      </div>
-
+    <div class="auth-tabs">
       <button
-        id="authSubmitBtn"
-        class="btn btn-primary btn-full"
-        onclick="submitAuth()"
+        id="loginTab"
+        class="auth-tab active"
+        onclick="setAuthMode('login')"
       >
         登入
       </button>
 
+      <button
+        id="registerTab"
+        class="auth-tab"
+        onclick="setAuthMode('register')"
+      >
+        註冊
+      </button>
     </div>
 
-  </section>
+    <div class="form-group">
+      <label class="form-label">
+        Email
+      </label>
+
+      <input
+        id="authEmail"
+        class="form-input"
+        type="email"
+        placeholder="you@example.com"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        密碼
+      </label>
+
+      <input
+        id="authPassword"
+        class="form-input"
+        type="password"
+        placeholder="至少 6 個字元"
+      />
+    </div>
+
+    <button
+      id="authSubmitBtn"
+      class="btn btn-primary btn-full"
+      onclick="submitAuth()"
+    >
+      登入
+    </button>
+  </div>
+</section>
 
 
-  <!-- =========================
-       App
-  ========================== -->
+<div id="app" class="hidden">
 
-  <div id="app" class="hidden">
+  <header class="topbar">
 
-    <header class="topbar">
+    <div class="topbar-inner">
 
-      <div class="topbar-inner">
+      <div class="brand">
+        💰 每月預算記帳本
+        <span class="version-badge">V3.1.2</span>
+      </div>
 
-        <div class="brand">
-          💰 每月預算記帳本
+      <div class="topbar-spacer"></div>
+
+      <button
+        id="ledgerSwitcher"
+        class="ledger-button"
+        onclick="openLedgerModal()"
+      >
+        📚 我的帳本
+      </button>
+
+      <input
+        id="monthPicker"
+        class="month-picker"
+        type="month"
+        onchange="changeMonth(this.value)"
+      />
+
+      <div
+        id="userEmail"
+        class="user-info"
+      ></div>
+
+      <button
+        class="logout-btn"
+        onclick="logout()"
+      >
+        登出
+      </button>
+
+    </div>
+  </header>
+
+
+  <nav class="desktop-nav">
+
+    <button
+      id="nav-home"
+      class="nav-btn active"
+      onclick="showPage('home')"
+    >
+      🏠 首頁
+    </button>
+
+    <button
+      id="nav-add"
+      class="nav-btn"
+      onclick="showPage('add')"
+    >
+      ➕ 記帳
+    </button>
+
+    <button
+      id="nav-budget"
+      class="nav-btn"
+      onclick="showPage('budget')"
+    >
+      💰 預算
+    </button>
+
+    <button
+      id="nav-details"
+      class="nav-btn"
+      onclick="showPage('details')"
+    >
+      📋 明細
+    </button>
+
+  </nav>
+
+
+  <main class="main">
+
+    <section
+      id="page-home"
+      class="page active"
+    >
+
+      <h1 class="page-title">
+        🏠 本月概況
+      </h1>
+
+      <p class="page-subtitle">
+        <span id="homeMonthText"></span>
+        的財務狀況
+      </p>
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">
+            💵 本月收入
+          </div>
+
+          <div
+            id="statIncome"
+            class="stat-value income"
+          >
+            $0
+          </div>
         </div>
 
-        <div class="topbar-spacer"></div>
+        <div class="stat-card">
+          <div class="stat-label">
+            💸 本月總支出
+          </div>
 
-        <button
-          id="ledgerSwitcher"
-          class="ledger-button"
-          onclick="openLedgerModal()"
-        >
-          📚 我的帳本
-        </button>
+          <div
+            id="statExpense"
+            class="stat-value expense"
+          >
+            $0
+          </div>
+        </div>
 
-        <input
-          id="monthPicker"
-          class="month-picker"
-          type="month"
-          onchange="changeMonth(this.value)"
-        />
+        <div class="stat-card">
+          <div class="stat-label">
+            💰 本月剩餘
+          </div>
 
-        <div
-          id="userEmail"
-          class="user-info"
-        ></div>
+          <div
+            id="statRemaining"
+            class="stat-value"
+          >
+            $0
+          </div>
+        </div>
 
-        <button
-          class="logout-btn"
-          onclick="logout()"
-        >
-          登出
-        </button>
+        <div class="stat-card">
+          <div class="stat-label">
+            💳 信用卡支出
+          </div>
+
+          <div
+            id="statCreditCard"
+            class="stat-value"
+          >
+            $0
+          </div>
+
+          <div class="stat-note">
+            依付款方式統計
+          </div>
+        </div>
 
       </div>
 
-    </header>
 
+      <div class="dashboard-grid">
 
-    <nav class="desktop-nav">
+        <div class="card">
 
-      <button
-        id="nav-home"
-        class="nav-btn active"
-        onclick="showPage('home')"
-      >
-        🏠 首頁
-      </button>
+          <h2 class="card-title">
+            📊 預算使用狀況
+          </h2>
 
-      <button
-        id="nav-add"
-        class="nav-btn"
-        onclick="showPage('add')"
-      >
-        ➕ 記帳
-      </button>
-
-      <button
-        id="nav-budget"
-        class="nav-btn"
-        onclick="showPage('budget')"
-      >
-        💰 預算
-      </button>
-
-      <button
-        id="nav-details"
-        class="nav-btn"
-        onclick="showPage('details')"
-      >
-        📋 明細
-      </button>
-
-    </nav>
-
-
-    <main class="main">
-
-      <!-- =========================
-           Home
-      ========================== -->
-
-      <section
-        id="page-home"
-        class="page active"
-      >
-
-        <h1 class="page-title">
-          🏠 本月概況
-        </h1>
-
-        <p class="page-subtitle">
-          <span id="homeMonthText"></span>
-          的財務狀況
-        </p>
-
-
-        <div class="stats-grid">
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              💵 本月收入
-            </div>
-
-            <div
-              id="statIncome"
-              class="stat-value income"
-            >
-              $0
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              💸 本月總支出
-            </div>
-
-            <div
-              id="statExpense"
-              class="stat-value expense"
-            >
-              $0
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              💰 本月剩餘
-            </div>
-
-            <div
-              id="statRemaining"
-              class="stat-value"
-            >
-              $0
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              💳 信用卡支出
-            </div>
-
-            <div
-              id="statCreditCard"
-              class="stat-value"
-            >
-              $0
-            </div>
-
-            <div class="stat-note">
-              依付款方式統計
-            </div>
-
-          </div>
+          <div
+            id="homeBudgetList"
+            class="budget-list"
+          ></div>
 
         </div>
 
 
-        <div class="dashboard-grid">
+        <div class="card">
 
-          <div class="card">
+          <h2 class="card-title">
+            🧾 最近記帳
+          </h2>
 
-            <h2 class="card-title">
-              📊 預算使用狀況
-            </h2>
+          <div
+            id="homeRecentList"
+            class="recent-list"
+          ></div>
 
-            <div
-              id="homeBudgetList"
-              class="budget-list"
-            ></div>
+          <button
+            class="view-all-btn"
+            onclick="showPage('details')"
+          >
+            查看全部明細 →
+          </button>
 
-          </div>
+        </div>
+
+      </div>
+
+    </section>
 
 
-          <div class="card">
+    <section
+      id="page-add"
+      class="page"
+    >
 
-            <h2 class="card-title">
-              🧾 最近記帳
-            </h2>
+      <h1 class="page-title">
+        ➕ 記一筆
+      </h1>
 
-            <div
-              id="homeRecentList"
-              class="recent-list"
-            ></div>
+      <p class="page-subtitle">
+        <span id="addMonthText"></span>
+      </p>
+
+      <div class="card">
+
+        <div class="form-group">
+
+          <label class="form-label">
+            類型
+          </label>
+
+          <div class="type-toggle">
 
             <button
-              class="view-all-btn"
-              onclick="showPage('details')"
+              id="expenseTypeBtn"
+              class="type-option active expense-option"
+              onclick="setTransactionType('expense')"
             >
-              查看全部明細 →
+              💸 支出
+            </button>
+
+            <button
+              id="incomeTypeBtn"
+              class="type-option income-option"
+              onclick="setTransactionType('income')"
+            >
+              💵 收入
             </button>
 
           </div>
 
         </div>
 
-      </section>
 
-
-      <!-- =========================
-           Add
-      ========================== -->
-
-      <section
-        id="page-add"
-        class="page"
-      >
-
-        <h1 class="page-title">
-          ➕ 記一筆
-        </h1>
-
-        <p class="page-subtitle">
-          <span id="addMonthText"></span>
-        </p>
-
-
-        <div class="card">
+        <div class="form-grid">
 
           <div class="form-group">
 
             <label class="form-label">
-              類型
+              日期
             </label>
 
-            <div class="type-toggle">
-
-              <button
-                id="expenseTypeBtn"
-                class="type-option active expense-option"
-                onclick="setTransactionType('expense')"
-              >
-                💸 支出
-              </button>
-
-              <button
-                id="incomeTypeBtn"
-                class="type-option income-option"
-                onclick="setTransactionType('income')"
-              >
-                💵 收入
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <div class="form-grid">
-
-            <div class="form-group">
-
-              <label class="form-label">
-                日期
-              </label>
-
-              <input
-                id="txDate"
-                class="form-input"
-                type="date"
-              />
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label class="form-label">
-                金額
-              </label>
-
-              <input
-                id="txAmount"
-                class="form-input"
-                type="number"
-                min="0"
-                step="1"
-                placeholder="例如 250"
-              />
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label class="form-label">
-                分類
-              </label>
-
-              <select
-                id="txCategory"
-                class="form-select"
-              >
-
-                <option value="necessary">
-                  🏠 必要生活費
-                </option>
-
-                <option value="credit_card">
-                  💳 信用卡
-                </option>
-
-                <option value="cash_reserve">
-                  💵 現金／預備金
-                </option>
-
-                <option value="free_spending">
-                  🎮 自由支出
-                </option>
-
-                <option value="investment">
-                  📈 投資
-                </option>
-
-                <option value="other">
-                  📦 其他
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label class="form-label">
-                付款方式
-              </label>
-
-              <select
-                id="txPaymentMethod"
-                class="form-select"
-              >
-
-                <option value="credit_card">
-                  💳 信用卡
-                </option>
-
-                <option value="cash">
-                  💵 現金
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label class="form-label">
-                備註
-              </label>
-
-              <input
-                id="txNote"
-                class="form-input"
-                type="text"
-                placeholder="例如：晚餐、日用品、薪水..."
-              />
-
-            </div>
-
-          </div>
-
-
-          <div class="add-actions">
-
-            <button
-              class="btn btn-primary"
-              onclick="addTransaction()"
-            >
-              ➕ 儲存這筆記帳
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           Budget
-      ========================== -->
-
-      <section
-        id="page-budget"
-        class="page"
-      >
-
-        <h1 class="page-title">
-          💰 每月預算
-        </h1>
-
-        <p class="page-subtitle">
-          <span id="budgetMonthText"></span>
-        </p>
-
-
-        <div class="budget-summary">
-
-          <div class="summary-box">
-
-            <div class="summary-label">
-              月收入
-            </div>
-
-            <div
-              id="budgetIncomeSummary"
-              class="summary-value income"
-            >
-              $0
-            </div>
-
-          </div>
-
-
-          <div class="summary-box">
-
-            <div class="summary-label">
-              預算總額
-            </div>
-
-            <div
-              id="budgetTotalSummary"
-              class="summary-value"
-            >
-              $0
-            </div>
-
-          </div>
-
-
-          <div class="summary-box">
-
-            <div class="summary-label">
-              預算剩餘
-            </div>
-
-            <div
-              id="budgetRemainingSummary"
-              class="summary-value"
-            >
-              $0
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="card">
-
-          <div id="budgetView">
-
-            <div
-              id="budgetViewGrid"
-              class="budget-edit-grid"
-            ></div>
-
-            <div class="budget-actions">
-
-              <button
-                class="btn btn-primary"
-                onclick="startBudgetEdit()"
-              >
-                ✏️ 編輯預算
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <div
-            id="budgetEdit"
-            class="hidden"
-          >
-
-            <div class="budget-edit-grid">
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    💵 月收入
-                  </div>
-                </div>
-
-                <input
-                  id="budget_income"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    🏠 必要生活費
-                  </div>
-                </div>
-
-                <input
-                  id="budget_necessary"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    💳 信用卡
-                  </div>
-                </div>
-
-                <input
-                  id="budget_credit_card"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    💵 現金／預備金
-                  </div>
-                </div>
-
-                <input
-                  id="budget_cash_reserve"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    🎮 自由支出
-                  </div>
-                </div>
-
-                <input
-                  id="budget_free_spending"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    📈 投資
-                  </div>
-                </div>
-
-                <input
-                  id="budget_investment"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-
-              <div class="budget-field">
-
-                <div class="budget-field-top">
-                  <div class="budget-field-name">
-                    📦 其他
-                  </div>
-                </div>
-
-                <input
-                  id="budget_other"
-                  class="form-input"
-                  type="number"
-                  min="0"
-                />
-
-              </div>
-
-            </div>
-
-
-            <div class="budget-actions">
-
-              <button
-                class="btn btn-secondary"
-                onclick="cancelBudgetEdit()"
-              >
-                取消
-              </button>
-
-              <button
-                class="btn btn-primary"
-                onclick="saveBudget()"
-              >
-                💾 儲存預算
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =========================
-           Details
-      ========================== -->
-
-      <section
-        id="page-details"
-        class="page"
-      >
-
-        <h1 class="page-title">
-          📋 記帳明細
-        </h1>
-
-        <p class="page-subtitle">
-          <span id="detailsMonthText"></span>
-        </p>
-
-
-        <div class="card">
-
-          <div class="filter-grid">
-
             <input
-              id="searchInput"
+              id="txDate"
               class="form-input"
-              type="text"
-              placeholder="🔎 搜尋備註..."
-              oninput="renderTransactions()"
+              type="date"
             />
 
+          </div>
+
+
+          <div class="form-group">
+
+            <label class="form-label">
+              金額
+            </label>
+
+            <input
+              id="txAmount"
+              class="form-input"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="例如 250"
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label class="form-label">
+              分類
+            </label>
 
             <select
-              id="filterCategory"
+              id="txCategory"
               class="form-select"
-              onchange="renderTransactions()"
             >
-
-              <option value="">
-                全部分類
-              </option>
-
               <option value="necessary">
                 🏠 必要生活費
               </option>
@@ -1807,402 +1342,743 @@
               <option value="other">
                 📦 其他
               </option>
-
-            </select>
-
-
-            <select
-              id="filterType"
-              class="form-select"
-              onchange="renderTransactions()"
-            >
-
-              <option value="">
-                全部類型
-              </option>
-
-              <option value="expense">
-                💸 支出
-              </option>
-
-              <option value="income">
-                💵 收入
-              </option>
-
             </select>
 
           </div>
 
 
+          <div class="form-group">
+
+            <label class="form-label">
+              付款方式
+            </label>
+
+            <select
+              id="txPaymentMethod"
+              class="form-select"
+            >
+              <option value="credit_card">
+                💳 信用卡
+              </option>
+
+              <option value="cash">
+                💵 現金
+              </option>
+            </select>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label class="form-label">
+              備註
+            </label>
+
+            <input
+              id="txNote"
+              class="form-input"
+              type="text"
+              placeholder="例如：晚餐、日用品、薪水..."
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="add-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="addTransaction()"
+          >
+            ➕ 儲存這筆記帳
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="page-budget"
+      class="page"
+    >
+
+      <h1 class="page-title">
+        💰 每月預算
+      </h1>
+
+      <p class="page-subtitle">
+        <span id="budgetMonthText"></span>
+      </p>
+
+
+      <div class="budget-summary">
+
+        <div class="summary-box">
+
+          <div class="summary-label">
+            月收入
+          </div>
+
           <div
-            id="transactionList"
-            class="transaction-list"
+            id="budgetIncomeSummary"
+            class="summary-value income"
+          >
+            $0
+          </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+          <div class="summary-label">
+            預算總額
+          </div>
+
+          <div
+            id="budgetTotalSummary"
+            class="summary-value"
+          >
+            $0
+          </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+          <div class="summary-label">
+            預算剩餘
+          </div>
+
+          <div
+            id="budgetRemainingSummary"
+            class="summary-value"
+          >
+            $0
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div id="budgetView">
+
+          <div
+            id="budgetViewGrid"
+            class="budget-edit-grid"
           ></div>
 
-        </div>
+          <div class="budget-actions">
 
-      </section>
+            <button
+              class="btn btn-primary"
+              onclick="startBudgetEdit()"
+            >
+              ✏️ 編輯預算
+            </button>
 
-    </main>
-
-
-    <!-- Mobile -->
-
-    <nav class="mobile-nav">
-
-      <button
-        id="mobile-nav-home"
-        class="mobile-nav-btn active"
-        onclick="showPage('home')"
-      >
-        🏠<br />
-        首頁
-      </button>
-
-      <button
-        id="mobile-nav-add"
-        class="mobile-nav-btn"
-        onclick="showPage('add')"
-      >
-        ➕<br />
-        記帳
-      </button>
-
-      <button
-        id="mobile-nav-budget"
-        class="mobile-nav-btn"
-        onclick="showPage('budget')"
-      >
-        💰<br />
-        預算
-      </button>
-
-      <button
-        id="mobile-nav-details"
-        class="mobile-nav-btn"
-        onclick="showPage('details')"
-      >
-        📋<br />
-        明細
-      </button>
-
-    </nav>
-
-  </div>
-
-
-  <!-- =========================
-       Ledger Modal
-  ========================== -->
-
-  <div
-    id="ledgerModal"
-    class="modal-overlay"
-    onclick="handleLedgerOverlayClick(event)"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 class="modal-title">
-          📚 我的帳本
-        </h2>
-
-        <button
-          class="modal-close"
-          onclick="closeLedgerModal()"
-        >
-          ✕
-        </button>
-
-      </div>
-
-
-      <div
-        id="ledgerList"
-        class="ledger-list"
-      ></div>
-
-
-      <div class="ledger-section">
-
-        <h3 class="ledger-section-title">
-          ➕ 建立情侶共用帳本
-        </h3>
-
-        <div class="form-group">
-
-          <input
-            id="sharedLedgerName"
-            class="form-input"
-            type="text"
-            placeholder="例如：我們的生活費"
-          />
+          </div>
 
         </div>
 
-        <button
-          class="btn btn-primary btn-full"
-          onclick="createSharedLedger()"
-        >
-          建立共用帳本
-        </button>
-
-      </div>
-
-
-      <div class="ledger-section">
-
-        <h3 class="ledger-section-title">
-          🔑 加入共用帳本
-        </h3>
-
-        <div class="form-group">
-
-          <input
-            id="inviteCodeInput"
-            class="form-input"
-            type="text"
-            placeholder="輸入對方給你的邀請碼"
-          />
-
-        </div>
-
-        <button
-          class="btn btn-secondary btn-full"
-          onclick="joinSharedLedger()"
-        >
-          加入帳本
-        </button>
-
-      </div>
-
-
-      <div
-        id="currentLedgerTools"
-        class="ledger-section hidden"
-      >
-
-        <h3 class="ledger-section-title">
-          ⚙️ 目前帳本
-        </h3>
 
         <div
-          id="currentLedgerInfo"
+          id="budgetEdit"
+          class="hidden"
+        >
+
+          <div class="budget-edit-grid">
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  💵 月收入
+                </div>
+              </div>
+
+              <input
+                id="budget_income"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  🏠 必要生活費
+                </div>
+              </div>
+
+              <input
+                id="budget_necessary"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  💳 信用卡
+                </div>
+              </div>
+
+              <input
+                id="budget_credit_card"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  💵 現金／預備金
+                </div>
+              </div>
+
+              <input
+                id="budget_cash_reserve"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  🎮 自由支出
+                </div>
+              </div>
+
+              <input
+                id="budget_free_spending"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  📈 投資
+                </div>
+              </div>
+
+              <input
+                id="budget_investment"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+
+            <div class="budget-field">
+              <div class="budget-field-top">
+                <div class="budget-field-name">
+                  📦 其他
+                </div>
+              </div>
+
+              <input
+                id="budget_other"
+                class="form-input"
+                type="number"
+                min="0"
+              />
+            </div>
+
+          </div>
+
+
+          <div class="budget-actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="cancelBudgetEdit()"
+            >
+              取消
+            </button>
+
+            <button
+              class="btn btn-primary"
+              onclick="saveBudget()"
+            >
+              💾 儲存預算
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="page-details"
+      class="page"
+    >
+
+      <h1 class="page-title">
+        📋 記帳明細
+      </h1>
+
+      <p class="page-subtitle">
+        <span id="detailsMonthText"></span>
+      </p>
+
+
+      <div class="card">
+
+        <div class="filter-grid">
+
+          <input
+            id="searchInput"
+            class="form-input"
+            type="text"
+            placeholder="🔎 搜尋備註..."
+            oninput="renderTransactions()"
+          />
+
+
+          <select
+            id="filterCategory"
+            class="form-select"
+            onchange="renderTransactions()"
+          >
+            <option value="">
+              全部分類
+            </option>
+
+            <option value="necessary">
+              🏠 必要生活費
+            </option>
+
+            <option value="credit_card">
+              💳 信用卡
+            </option>
+
+            <option value="cash_reserve">
+              💵 現金／預備金
+            </option>
+
+            <option value="free_spending">
+              🎮 自由支出
+            </option>
+
+            <option value="investment">
+              📈 投資
+            </option>
+
+            <option value="other">
+              📦 其他
+            </option>
+          </select>
+
+
+          <select
+            id="filterType"
+            class="form-select"
+            onchange="renderTransactions()"
+          >
+            <option value="">
+              全部類型
+            </option>
+
+            <option value="expense">
+              💸 支出
+            </option>
+
+            <option value="income">
+              💵 收入
+            </option>
+          </select>
+
+        </div>
+
+
+        <div
+          id="transactionList"
+          class="transaction-list"
         ></div>
 
       </div>
 
+    </section>
+
+  </main>
+
+
+  <nav class="mobile-nav">
+
+    <button
+      id="mobile-nav-home"
+      class="mobile-nav-btn active"
+      onclick="showPage('home')"
+    >
+      🏠<br />
+      首頁
+    </button>
+
+    <button
+      id="mobile-nav-add"
+      class="mobile-nav-btn"
+      onclick="showPage('add')"
+    >
+      ➕<br />
+      記帳
+    </button>
+
+    <button
+      id="mobile-nav-budget"
+      class="mobile-nav-btn"
+      onclick="showPage('budget')"
+    >
+      💰<br />
+      預算
+    </button>
+
+    <button
+      id="mobile-nav-details"
+      class="mobile-nav-btn"
+      onclick="showPage('details')"
+    >
+      📋<br />
+      明細
+    </button>
+
+  </nav>
+
+</div>
+
+
+<div
+  id="ledgerModal"
+  class="modal-overlay"
+  onclick="handleLedgerOverlayClick(event)"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 class="modal-title">
+        📚 我的帳本
+      </h2>
+
+      <button
+        class="modal-close"
+        onclick="closeLedgerModal()"
+      >
+        ✕
+      </button>
+
     </div>
 
-  </div>
+
+    <div
+      id="ledgerList"
+      class="ledger-list"
+    ></div>
 
 
-  <!-- =========================
-       Edit Modal
-  ========================== -->
+    <div class="ledger-section">
 
-  <div
-    id="editModal"
-    class="modal-overlay"
-    onclick="handleEditOverlayClick(event)"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <h2 class="modal-title">
-          ✏️ 編輯記帳
-        </h2>
-
-        <button
-          class="modal-close"
-          onclick="closeEditModal()"
-        >
-          ✕
-        </button>
-
-      </div>
-
-
-      <input
-        id="editId"
-        type="hidden"
-      />
-
+      <h3 class="ledger-section-title">
+        ➕ 建立情侶共用帳本
+      </h3>
 
       <div class="form-group">
-
-        <label class="form-label">
-          日期
-        </label>
 
         <input
-          id="editDate"
-          class="form-input"
-          type="date"
-        />
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label class="form-label">
-          金額
-        </label>
-
-        <input
-          id="editAmount"
-          class="form-input"
-          type="number"
-          min="0"
-        />
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label class="form-label">
-          類型
-        </label>
-
-        <select
-          id="editType"
-          class="form-select"
-        >
-
-          <option value="expense">
-            💸 支出
-          </option>
-
-          <option value="income">
-            💵 收入
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label class="form-label">
-          分類
-        </label>
-
-        <select
-          id="editCategory"
-          class="form-select"
-        >
-
-          <option value="necessary">
-            🏠 必要生活費
-          </option>
-
-          <option value="credit_card">
-            💳 信用卡
-          </option>
-
-          <option value="cash_reserve">
-            💵 現金／預備金
-          </option>
-
-          <option value="free_spending">
-            🎮 自由支出
-          </option>
-
-          <option value="investment">
-            📈 投資
-          </option>
-
-          <option value="other">
-            📦 其他
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label class="form-label">
-          付款方式
-        </label>
-
-        <select
-          id="editPaymentMethod"
-          class="form-select"
-        >
-
-          <option value="credit_card">
-            💳 信用卡
-          </option>
-
-          <option value="cash">
-            💵 現金
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label class="form-label">
-          備註
-        </label>
-
-        <input
-          id="editNote"
+          id="sharedLedgerName"
           class="form-input"
           type="text"
+          placeholder="例如：我們的生活費"
         />
 
       </div>
 
+      <button
+        class="btn btn-primary btn-full"
+        onclick="createSharedLedger()"
+      >
+        建立共用帳本
+      </button>
 
-      <div class="budget-actions">
+    </div>
 
-        <button
-          class="btn btn-secondary"
-          onclick="closeEditModal()"
-        >
-          取消
-        </button>
 
-        <button
-          class="btn btn-primary"
-          onclick="saveEditedTransaction()"
-        >
-          💾 儲存
-        </button>
+    <div class="ledger-section">
+
+      <h3 class="ledger-section-title">
+        🔑 加入共用帳本
+      </h3>
+
+      <div class="form-group">
+
+        <input
+          id="inviteCodeInput"
+          class="form-input"
+          type="text"
+          placeholder="輸入對方給你的邀請碼"
+        />
 
       </div>
 
+      <button
+        class="btn btn-secondary btn-full"
+        onclick="joinSharedLedger()"
+      >
+        加入帳本
+      </button>
+
+    </div>
+
+
+    <div
+      id="currentLedgerTools"
+      class="ledger-section hidden"
+    >
+
+      <h3 class="ledger-section-title">
+        ⚙️ 目前帳本
+      </h3>
+
+      <div id="currentLedgerInfo"></div>
+
     </div>
 
   </div>
 
+</div>
 
-  <div id="toast"></div>
+
+<div
+  id="editModal"
+  class="modal-overlay"
+  onclick="handleEditOverlayClick(event)"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 class="modal-title">
+        ✏️ 編輯記帳
+      </h2>
+
+      <button
+        class="modal-close"
+        onclick="closeEditModal()"
+      >
+        ✕
+      </button>
+
+    </div>
 
 
-  <div id="loading">
+    <input
+      id="editId"
+      type="hidden"
+    />
 
-    <div class="loading-box">
-      ⏳ 處理中...
+
+    <div class="form-group">
+
+      <label class="form-label">
+        日期
+      </label>
+
+      <input
+        id="editDate"
+        class="form-input"
+        type="date"
+      />
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        金額
+      </label>
+
+      <input
+        id="editAmount"
+        class="form-input"
+        type="number"
+        min="0"
+      />
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        類型
+      </label>
+
+      <select
+        id="editType"
+        class="form-select"
+      >
+        <option value="expense">
+          💸 支出
+        </option>
+
+        <option value="income">
+          💵 收入
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        分類
+      </label>
+
+      <select
+        id="editCategory"
+        class="form-select"
+      >
+        <option value="necessary">
+          🏠 必要生活費
+        </option>
+
+        <option value="credit_card">
+          💳 信用卡
+        </option>
+
+        <option value="cash_reserve">
+          💵 現金／預備金
+        </option>
+
+        <option value="free_spending">
+          🎮 自由支出
+        </option>
+
+        <option value="investment">
+          📈 投資
+        </option>
+
+        <option value="other">
+          📦 其他
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        付款方式
+      </label>
+
+      <select
+        id="editPaymentMethod"
+        class="form-select"
+      >
+        <option value="credit_card">
+          💳 信用卡
+        </option>
+
+        <option value="cash">
+          💵 現金
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        備註
+      </label>
+
+      <input
+        id="editNote"
+        class="form-input"
+        type="text"
+      />
+
+    </div>
+
+
+    <div class="budget-actions">
+
+      <button
+        class="btn btn-secondary"
+        onclick="closeEditModal()"
+      >
+        取消
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="saveEditedTransaction()"
+      >
+        💾 儲存
+      </button>
+
     </div>
 
   </div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<div id="loading">
+
+  <div class="loading-box">
+    ⏳ 處理中...
+  </div>
+
+</div>
 
 
 <script>
+
+/* =========================================================
+   Version
+========================================================= */
+
+const APP_VERSION = "V3.1.2";
+
 
 /* =========================================================
    Supabase
@@ -2300,6 +2176,62 @@ const categoryMap = {
 
 
 /* =========================================================
+   Transaction Type Helper
+========================================================= */
+
+/*
+  V3.1.2
+
+  transactions 資料表沒有 type 欄位。
+
+  因此：
+  + 正數 = 收入
+  - 負數 = 支出
+
+  同時保留對舊資料 type 欄位的相容判斷。
+*/
+
+function getTransactionType(tx) {
+
+  if (
+    tx &&
+    typeof tx.type === "string" &&
+    (
+      tx.type === "income" ||
+      tx.type === "expense"
+    )
+  ) {
+
+    return tx.type;
+
+  }
+
+
+  const amount =
+    Number(
+      tx?.amount || 0
+    );
+
+
+  return amount >= 0
+    ? "income"
+    : "expense";
+
+}
+
+
+function getTransactionAbsoluteAmount(tx) {
+
+  return Math.abs(
+    Number(
+      tx?.amount || 0
+    )
+  );
+
+}
+
+
+/* =========================================================
    Date Helpers
 ========================================================= */
 
@@ -2335,11 +2267,6 @@ function normalizeMonth(month) {
 
 }
 
-
-/*
-  UI 使用 YYYY-MM
-  Supabase budgets.month 使用 YYYY-MM-01
-*/
 
 function monthToDate(month) {
 
@@ -3901,12 +3828,6 @@ async function loadBudget() {
   if (!currentLedger) return;
 
 
-  /*
-    重要修正：
-    budgets.month 是 PostgreSQL date
-    所以查詢時必須使用 YYYY-MM-01
-  */
-
   const monthDate =
     monthToDate(
       currentMonth
@@ -4043,12 +3964,6 @@ async function saveBudget() {
 
   }
 
-
-  /*
-    重要修正：
-    month 欄位是 date
-    必須送 YYYY-MM-01
-  */
 
   const row = {
 
@@ -4342,6 +4257,10 @@ function setDefaultTransactionDate() {
 }
 
 
+/* =========================================================
+   Add Transaction
+========================================================= */
+
 async function addTransaction() {
 
   if (!currentUser) {
@@ -4372,7 +4291,7 @@ async function addTransaction() {
     ).value;
 
 
-  const amount =
+  const amountInput =
     Number(
       document.getElementById(
         "txAmount"
@@ -4414,9 +4333,9 @@ async function addTransaction() {
 
   if (
     !Number.isFinite(
-      amount
+      amountInput
     ) ||
-    amount <= 0
+    amountInput <= 0
   ) {
 
     toast(
@@ -4426,6 +4345,20 @@ async function addTransaction() {
     return;
 
   }
+
+
+  /*
+    重要：
+    不再傳送 type 欄位。
+
+    收入 = 正數
+    支出 = 負數
+  */
+
+  const amount =
+    transactionType === "income"
+      ? Math.abs(amountInput)
+      : -Math.abs(amountInput);
 
 
   const row = {
@@ -4439,9 +4372,6 @@ async function addTransaction() {
     date,
 
     amount,
-
-    type:
-      transactionType,
 
     category,
 
@@ -4568,13 +4498,17 @@ function openEditModal(id) {
   document.getElementById(
     "editAmount"
   ).value =
-    tx.amount || 0;
+    getTransactionAbsoluteAmount(
+      tx
+    );
 
 
   document.getElementById(
     "editType"
   ).value =
-    tx.type || "expense";
+    getTransactionType(
+      tx
+    );
 
 
   document.getElementById(
@@ -4634,6 +4568,10 @@ function handleEditOverlayClick(
 }
 
 
+/* =========================================================
+   Save Edited Transaction
+========================================================= */
+
 async function saveEditedTransaction() {
 
   if (!currentLedger) {
@@ -4659,7 +4597,7 @@ async function saveEditedTransaction() {
     ).value;
 
 
-  const amount =
+  const amountInput =
     Number(
       document.getElementById(
         "editAmount"
@@ -4707,9 +4645,9 @@ async function saveEditedTransaction() {
 
   if (
     !Number.isFinite(
-      amount
+      amountInput
     ) ||
-    amount <= 0
+    amountInput <= 0
   ) {
 
     toast(
@@ -4719,6 +4657,18 @@ async function saveEditedTransaction() {
     return;
 
   }
+
+
+  /*
+    不再更新 type。
+
+    只根據編輯後的類型決定 amount 正負。
+  */
+
+  const amount =
+    type === "income"
+      ? Math.abs(amountInput)
+      : -Math.abs(amountInput);
 
 
   showLoading(true);
@@ -4738,8 +4688,6 @@ async function saveEditedTransaction() {
           date,
 
           amount,
-
-          type,
 
           category,
 
@@ -4823,7 +4771,9 @@ async function deleteTransaction(
   if (
     !confirm(
       `確定要刪除這筆 ${formatMoney(
-        tx.amount
+        getTransactionAbsoluteAmount(
+          tx
+        )
       )} 的記帳嗎？`
     )
   ) {
@@ -4905,15 +4855,20 @@ function calculateTotals() {
   transactions.forEach(
     tx => {
 
+      const type =
+        getTransactionType(
+          tx
+        );
+
+
       const amount =
-        Number(
-          tx.amount || 0
+        getTransactionAbsoluteAmount(
+          tx
         );
 
 
       if (
-        tx.type ===
-        "income"
+        type === "income"
       ) {
 
         income += amount;
@@ -4962,7 +4917,7 @@ function getCategoryExpense(
   return transactions
     .filter(
       tx =>
-        tx.type ===
+        getTransactionType(tx) ===
           "expense" &&
         tx.category ===
           category
@@ -4973,8 +4928,8 @@ function getCategoryExpense(
         tx
       ) =>
         total +
-        Number(
-          tx.amount || 0
+        getTransactionAbsoluteAmount(
+          tx
         ),
       0
     );
@@ -5579,8 +5534,9 @@ function renderTransactionItem(
 
 
   const income =
-    tx.type ===
-    "income";
+    getTransactionType(
+      tx
+    ) === "income";
 
 
   const recorder =
@@ -5594,6 +5550,12 @@ function renderTransactionItem(
     "credit_card"
       ? "信用卡"
       : "現金";
+
+
+  const displayAmount =
+    getTransactionAbsoluteAmount(
+      tx
+    );
 
 
   return `
@@ -5656,7 +5618,7 @@ function renderTransactionItem(
             ? "+"
             : "-"
         }${formatMoney(
-          tx.amount
+          displayAmount
         )}
 
       </div>
@@ -5764,7 +5726,7 @@ function renderTransactions() {
 
         if (
           type &&
-          tx.type !==
+          getTransactionType(tx) !==
             type
         ) {
 
@@ -5922,10 +5884,6 @@ supabaseClient.auth.onAuthStateChange(
   ) => {
 
     if (session?.user) {
-
-      /*
-        避免登入狀態更新時遺失目前月份
-      */
 
       currentUser =
         session.user;
